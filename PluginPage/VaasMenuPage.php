@@ -42,29 +42,66 @@ if (!class_exists('VaasMenuPage')) {
 
         public function SetupMenu(): void
         {
-
-            \add_menu_page('G Data VaaS', 'VaaS', 'manage_options', 'vaas-menu', [$this, 'MainMenuItem'], \plugin_dir_url(__FILE__) . "../PluginPage/assets/gdata16.png");
             $scanFindings = \json_decode(\get_option('wp_vaas_plugin_scan_findings'));
             if ($scanFindings > 0) {
-                \add_submenu_page("vaas-menu", "Scan Findings", "Scan Findings", "manage_options", "vaas-menu-scan-findings", [$this, 'ScanFindings'], \plugin_dir_url(__FILE__) . "../PluginPage/assets/virus.png");
+                \add_menu_page('G Data VaaS', 'VaaS <span class="awaiting-mod">' . count($scanFindings) . '</span>', 'manage_options', 'vaas-menu', \plugin_dir_url(__FILE__) . "../PluginPage/assets/gdata16.png");
+                \add_submenu_page('vaas-menu', 'Credentials', 'Credentials', 'manage_options', 'vaas-menu', [$this, 'MainMenuItem']);
+                \add_submenu_page("vaas-menu", "Scan Findings", 'Scan Findings <span class="awaiting-mod">' . count($scanFindings) . '</span>', "manage_options", "vaas-menu-scan-findings", [$this, 'ScanFindings'], \plugin_dir_url(__FILE__) . "../PluginPage/assets/virus.png");
+            } else {
+                \add_menu_page('G Data VaaS', 'VaaS', 'manage_options', 'vaas-menu', [$this, 'MainMenuItem'], \plugin_dir_url(__FILE__) . "../PluginPage/assets/gdata16.png");
             }
         }
 
         public function ScanFindings(): void
         {
-            echo "<h1>We found Malware</h1>";
-            (array) $scanFindings = \json_decode(\get_option('wp_vaas_plugin_scan_findings'));
-            if (count($scanFindings) > 0) {
-                echo "<ul>";
-                foreach ($scanFindings as $finding) {
-                    echo "<li>$finding</li>";
-                }
-                echo "</ul>";
+
+?>
+<h1>We found Malware</h1>
+<table class="wp-list-table widefat fixed striped table-view-list pages">
+    <thead>
+        <tr>
+            <td id="cb" class="manage-column column-cb check-column"><label class="screen-reader-text"
+                    for="cb-select-all-1">Select All</label><input id="cb-select-all-1" type="checkbox"></td>
+            <th scope="col" id="title" class="manage-column column-title column-primary">
+                File
+            </th>
+        </tr>
+    </thead>
+
+    <tbody id="the-list">
+        <?
+        (array) $scanFindings = \json_decode(\get_option('wp_vaas_plugin_scan_findings'));
+        if (count($scanFindings) > 0) {
+            foreach ($scanFindings as $finding) {
+            ?>
+        <tr>
+            <th scope="row" class="check-column"> <label class="screen-reader-text" for="cb-select-3">
+                    Delete File</label>
+                <input id="cb-select-3" type="checkbox" name="post[]" value="3">
+                <div class="locked-indicator">
+                    <span class="locked-indicator-icon" aria-hidden="true"></span>
+                    <span class="screen-reader-text">
+                        Delete File</span>
+                </div>
+            </th>
+            <td>
+                <?
+                echo $finding;
+            ?>
+            </td>
+        </tr>
+        <?
             }
         }
+        ?>
 
-        public function MainMenuItem(): void
-        {
+    </tbody>
+</table>
+<?
+}
+
+public function MainMenuItem(): void
+{
 ?>
 <h2>VaaS Settings</h2>
 <form action="options.php" method="post">
