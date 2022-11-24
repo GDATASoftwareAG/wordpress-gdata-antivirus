@@ -1,0 +1,18 @@
+{
+	"name": "${localWorkspaceFolderBasename}",
+	"dockerComposeFile": "docker-compose.yml",
+	"service": "wordpress",
+	"forwardPorts": [
+		80
+	],
+	"workspaceFolder": "/var/www/html/",
+	"postCreateCommand": "/var/www/html/.devcontainer/setup.sh",
+	"remoteUser": "www-data",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"DEVSENSE.phptools-vscode"
+			]
+		}
+	}
+}

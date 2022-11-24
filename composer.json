@@ -1,0 +1,17 @@
+{
+    "name": "gdatacyberdefenseag/wp-vaas",
+    "autoload": {
+        "psr-4": {
+            "Gdatacyberdefenseag\\WpVaas\\": "."
+        }
+    },
+    "authors": [
+        {
+            "name": "Simonis, Matthias",
+            "email": "Matthias.Simonis@gdata.de"
+        }
+    ],
+    "require": {
+        "gdata/vaas": "^2.0"
+    }
+}
