@@ -43,12 +43,13 @@ if (!class_exists('VaasMenuPage')) {
         public function SetupMenu(): void
         {
             $scanFindings = \json_decode(\get_option('wp_vaas_plugin_scan_findings'));
-            if ($scanFindings > 0) {
+            if (count($scanFindings) > 0) {
                 \add_menu_page('G Data VaaS', 'VaaS <span class="awaiting-mod">' . count($scanFindings) . '</span>', 'manage_options', 'vaas-menu', \plugin_dir_url(__FILE__) . "../PluginPage/assets/gdata16.png");
                 \add_submenu_page('vaas-menu', 'Credentials', 'Credentials', 'manage_options', 'vaas-menu', [$this, 'MainMenuItem']);
                 \add_submenu_page("vaas-menu", "Scan Findings", 'Scan Findings <span class="awaiting-mod">' . count($scanFindings) . '</span>', "manage_options", "vaas-menu-scan-findings", [$this, 'ScanFindings'], \plugin_dir_url(__FILE__) . "../PluginPage/assets/virus.png");
             } else {
-                \add_menu_page('G Data VaaS', 'VaaS', 'manage_options', 'vaas-menu', [$this, 'MainMenuItem'], \plugin_dir_url(__FILE__) . "../PluginPage/assets/gdata16.png");
+                \add_menu_page('G Data VaaS', 'VaaS', 'manage_options', 'vaas-menu', \plugin_dir_url(__FILE__) . "../PluginPage/assets/gdata16.png");
+                \add_submenu_page('vaas-menu', 'Credentials', 'Credentials', 'manage_options', 'vaas-menu', [$this, 'MainMenuItem']);
             }
         }
 

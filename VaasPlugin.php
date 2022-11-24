@@ -29,6 +29,21 @@ if (!class_exists('VaasPlugin')) {
             if (!empty($options['client_id']) && !empty($options['client_secret'])) {
                 $this->ScanClient = new ScanClient();
             }
+            $this->ValidateFindings();
+        }
+
+        public function ValidateFindings()
+        {
+            $scanFindings = \json_decode(\get_option('wp_vaas_plugin_scan_findings'));
+            $beforeCount = count($scanFindings);
+            $scanFindings = \array_filter($scanFindings, static function ($element) {
+                return file_exists($element);
+            });
+
+            $afterCount = count($scanFindings);
+            if ($beforeCount != $afterCount) {
+                \update_option("wp_vaas_plugin_scan_findings", json_encode($scanFindings));
+            }
         }
     }
 }
