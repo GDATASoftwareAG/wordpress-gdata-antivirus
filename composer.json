@@ -12,6 +12,6 @@
         }
     ],
     "require": {
-        "gdata/vaas": "^2.0"
+        "gdata/vaas": "^6.0"
     }
 }

@@ -1,18 +1,41 @@
+// For format details, https://containers.dev/implementors/json_reference/.
 {
-	"name": "${localWorkspaceFolderBasename}",
-	"dockerComposeFile": "docker-compose.yml",
-	"service": "wordpress",
-	"forwardPorts": [
-		80
-	],
-	"workspaceFolder": "/var/www/html/",
-	"postCreateCommand": "/var/www/html/.devcontainer/setup.sh",
-	"remoteUser": "www-data",
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				"DEVSENSE.phptools-vscode"
-			]
-		}
-	}
+  "name": "WordPress Development Environment",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
+  "customizations": {
+    "vscode": {
+      // Set *default* container specific settings.json values on container create.
+      "settings": {},
+      // Add the IDs of extensions you want installed when the container is created.
+      "extensions": [
+        "ms-azuretools.vscode-docker"
+      ]
+    }
+  },
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [
+    8080,
+    3306
+  ],
+  // Maps a port number, "host:port" value, range, or regular expression to a set of default options. See port attributes for available options
+  "portsAttributes": {
+    "8080": {
+      "label": "WordPress Development/Testing Site"
+    },
+    "3306": {
+      "label": "MariaDB"
+    }
+  },
+  // Use `onCreateCommand` to run commands as part of the container creation.
+  //"onCreateCommand": "chmod +x .devcontainer/install.sh && .devcontainer/install.sh",
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "chmod +x .devcontainer/setup.sh && .devcontainer/setup.sh",
+  // Use 'postStartCommand' to run commands after the container has started.
+  "remoteUser": "www-data",
+  // A set of name-value pairs that sets or overrides environment variables for the devcontainer.json supporting service / tool (or sub-processes like terminals) but not the container as a whole.
+  "remoteEnv": {
+    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
+  }
 }

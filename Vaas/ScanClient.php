@@ -11,41 +11,40 @@ class ScanClient
     private Vaas $vaas;
     public function __construct()
     {
-        $this->vaas = new Vaas(null);
         $options = \get_option('wp_vaas_plugin_options');
-
+        $this->vaas = new Vaas(null);
         $this->clientCredentialsGrantAuthenticator = new ClientCredentialsGrantAuthenticator(
-            $options['client_id'], $options['client_secret'],
-            "https://keycloak-vaas.gdatasecurity.de/realms/vaas/protocol/openid-connect/token"
+            $options['client_id'],
+            $options['client_secret'],
+            "https://account.gdata.de/realms/vaas-production/protocol/openid-connect/token"
         );
 
         \add_action("gd_scan_single_file_action", [$this, "scanSingleFile"], 10, 1);
-
-        \add_filter("wp_handle_upload", [$this, "scan"]);
-
-        \add_option("wp_vaas_plugin_scan_findings", \json_encode([]));
+        \add_filter("wp_handle_upload_prefilter", [$this, "scanSingleFile"]);
+        \add_filter("wp_handle_sideload_prefilter", [$this, "scanSingleFile"]);
     }
 
-    public function scanSingleFile(string $fileName): void
+    public function scanSingleFile($file)
     {
+        if (defined('WP_DEBUG_LOG')) {
+            \file_put_contents(WP_DEBUG_LOG, "wp-vaas: scanning " . $file["name"] . "\n", FILE_APPEND);
+        };
         $this->vaas->connect($this->clientCredentialsGrantAuthenticator->getToken());
 
-        $verdict = $this->vaas->ForFile($fileName);
+        $verdict = $this->vaas->ForFile($file["tmp_name"]);
         if ($verdict->Verdict == \VaasSdk\Message\Verdict::MALICIOUS) {
-            $scanFindings = \json_decode(\get_option('wp_vaas_plugin_scan_findings'));
-            if ($scanFindings == null) {
-                $scanFindings = [];
-            }
-            \array_push($scanFindings, $fileName);
-            \update_option("wp_vaas_plugin_scan_findings", json_encode($scanFindings));
+            $file['error'] = "virus found";
         }
+        return $file;
     }
-
 
     public function scan(array $upload): array
     {
-        \file_put_contents(\plugin_dir_path(__FILE__) . "/log", "scan", FILE_APPEND);
-        \wp_schedule_single_event(time() + 2, 'gd_scan_single_file_action', array($upload["file"]), true);
+        if (defined('WP_DEBUG_LOG') && WP_DEBUG_LOG !== false && WP_DEBUG_LOG !== "") {
+            \file_put_contents(WP_DEBUG_LOG, "wp-vaas: schedule scan " . $upload["file"] . "\n", FILE_APPEND);
+        };
+
+        \wp_schedule_single_event(time() + 5, 'gd_scan_single_file_action', array($upload["file"]), true);
 
         return $upload;
     }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * VaaS
  * Version: 0.0.1
@@ -11,6 +12,7 @@
  * @license  none www.gdata.de
  * @link     www.gdata.de
  */
+
 namespace Gdatacyberdefenseag\WpVaas;
 
 use Gdatacyberdefenseag\WpVaas\PluginPage\VaasMenuPage;
@@ -24,25 +26,16 @@ if (!class_exists('VaasPlugin')) {
         public function __construct()
         {
             new VaasMenuPage();
+            \add_option("wp_vaas_plugin_scan_findings", "[]");
+
+            \add_option("wp_vaas_plugin_options", [
+                'client_secret' => '',
+                'client_id' => ''
+            ]);
 
             $options = \get_option('wp_vaas_plugin_options');
             if (!empty($options['client_id']) && !empty($options['client_secret'])) {
                 $this->ScanClient = new ScanClient();
-            }
-            $this->ValidateFindings();
-        }
-
-        public function ValidateFindings()
-        {
-            $scanFindings = \json_decode(\get_option('wp_vaas_plugin_scan_findings'));
-            $beforeCount = count($scanFindings);
-            $scanFindings = \array_filter($scanFindings, static function ($element) {
-                return file_exists($element);
-            });
-
-            $afterCount = count($scanFindings);
-            if ($beforeCount != $afterCount) {
-                \update_option("wp_vaas_plugin_scan_findings", json_encode($scanFindings));
             }
         }
     }
