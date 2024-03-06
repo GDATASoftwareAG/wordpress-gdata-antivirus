@@ -1,15 +1,21 @@
 <?php
 /**
- * Plugin Name: wp-vaas
- * Version: 0.0.1
- * Requires PHP: 7.3
- * Plugin URI: www.gdata.de
+ * wp-vaas
  * 
  * @category Security
  * @package  GD_Scan
- * @author   G DATA CyberDefense AG <info@gdata.de>
- * @license  none www.gdata.de
- * @link     www.gdata.de
+ * @author   G DATA CyberDefense AG <oem@gdata.de>
+ * @license  https://github.com/GDATASoftwareAG/vaas/blob/main/LICENSE
+ * @link     https://github.com/GDATASoftwareAG/vaas
+ *
+ * @wordpress-plugin
+ * Plugin Name: wp-vaas
+ * Version: 0.0.1
+ * Requires PHP: 8.1
+ * Plugin URI: https://github.com/GDATASoftwareAG/wp-vaas
+ * Description: Vaas is a virus scanner for your WordPress installation.
+ * License: MIT License
+ * License URI: https://github.com/GDATASoftwareAG/vaas/blob/main/LICENSE
  */
 namespace Gdatacyberdefenseag\WpVaas;
 

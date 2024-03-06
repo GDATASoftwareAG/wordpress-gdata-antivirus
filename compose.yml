@@ -1,8 +1,3 @@
-# This is the Compose file for command-line services.
-# Anything that doesn't need to be run as part of the main `docker-compose up'
-# command should reside in here and be invoked by a helper script.
-version: "3.7"
-
 services:
   app:
     build:
@@ -39,7 +34,6 @@ services:
       MYSQL_PASSWORD: wordpress
     volumes:
       - db:/var/lib/mysql
-      - ./tests/db-wordpress_test.sql:/docker-entrypoint-initdb.d/db-wordpress_test.sql
     networks:
       - wp-vaas
 

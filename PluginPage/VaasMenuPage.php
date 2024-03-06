@@ -21,14 +21,14 @@ if (!class_exists('VaasMenuPage')) {
                 ]
             ]);
 
-            \add_settings_section('wp_vaas_credentials', 'Credentials', [$this, 'wp_vaas_credentials_text'], 'wp_vaas_plugin');
-            \add_settings_field("wp_vaas_setting_client_id", "Client ID", [$this, 'wp_vaas_setting_client_id'], 'wp_vaas_plugin', 'wp_vaas_credentials');
-            \add_settings_field("wp_vaas_setting_client_secret", "Client Secret", [$this, 'wp_vaas_setting_client_secret'], 'wp_vaas_plugin', 'wp_vaas_credentials');
+            \add_settings_section('wp_vaas_credentials', esc_html__('Credentials'), [$this, 'wp_vaas_credentials_text'], 'wp_vaas_plugin');
+            \add_settings_field("wp_vaas_setting_client_id", esc_html__("Client ID"), [$this, 'wp_vaas_setting_client_id'], 'wp_vaas_plugin', 'wp_vaas_credentials');
+            \add_settings_field("wp_vaas_setting_client_secret", esc_html__("Client Secret"), [$this, 'wp_vaas_setting_client_secret'], 'wp_vaas_plugin', 'wp_vaas_credentials');
         }
 
         function wp_vaas_credentials_text()
         {
-            echo '<p>Here you can set all the options for using the API</p>';
+            echo '<p>' . esc_html__("Here you can set all the options for using the API") . '</p>';
         }
 
         function wp_vaas_setting_client_id()

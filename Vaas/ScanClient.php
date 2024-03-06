@@ -33,7 +33,7 @@ class ScanClient
 
         $verdict = $this->vaas->ForFile($file["tmp_name"]);
         if ($verdict->Verdict == \VaasSdk\Message\Verdict::MALICIOUS) {
-            $file['error'] = "virus found";
+            $file['error'] = __("virus found");
         }
         return $file;
     }

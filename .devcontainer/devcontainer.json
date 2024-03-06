@@ -1,7 +1,7 @@
 // For format details, https://containers.dev/implementors/json_reference/.
 {
   "name": "WordPress Development Environment",
-  "dockerComposeFile": "../docker-compose.yml",
+  "dockerComposeFile": "../compose.yml",
   "service": "app",
   "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
   "customizations": {
