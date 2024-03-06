@@ -26,7 +26,6 @@ if (!class_exists('VaasPlugin')) {
         public function __construct()
         {
             new VaasMenuPage();
-            \add_option("wp_vaas_plugin_scan_findings", "[]");
 
             \add_option("wp_vaas_plugin_options", [
                 'client_secret' => '',
