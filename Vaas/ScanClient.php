@@ -19,7 +19,8 @@ class ScanClient
             "https://account.gdata.de/realms/vaas-production/protocol/openid-connect/token"
         );
 
-        \add_action("gd_scan_single_file_action", [$this, "scanSingleFile"], 10, 1);
+        \add_option("wp_vaas_plugin_scan_findings", \json_encode([]));
+
         \add_filter("wp_handle_upload_prefilter", [$this, "scanSingleFile"]);
         \add_filter("wp_handle_sideload_prefilter", [$this, "scanSingleFile"]);
     }
@@ -38,14 +39,39 @@ class ScanClient
         return $file;
     }
 
-    public function scan(array $upload): array
+    public function fullScan()
     {
-        if (defined('WP_DEBUG_LOG') && WP_DEBUG_LOG !== false && WP_DEBUG_LOG !== "") {
-            \file_put_contents(WP_DEBUG_LOG, "wp-vaas: schedule scan " . $upload["file"] . "\n", FILE_APPEND);
+        if (defined('WP_DEBUG_LOG')) {
+            \file_put_contents(WP_DEBUG_LOG, "requested full scan\n", FILE_APPEND);
         };
+        if (defined('WP_DEBUG_LOG')) {
+            \file_put_contents(WP_DEBUG_LOG, "scanning while wordpress directory: " . ABSPATH .  "\n", FILE_APPEND);
+        };
+        $this->vaas->connect($this->clientCredentialsGrantAuthenticator->getToken());
 
-        \wp_schedule_single_event(time() + 5, 'gd_scan_single_file_action', array($upload["file"]), true);
-
-        return $upload;
+        $it = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(ABSPATH, \FilesystemIterator::SKIP_DOTS));
+        foreach ($it as $filePath) {
+            if ($filePath->isDir()) {
+                continue;
+            }
+            if (defined('WP_DEBUG_LOG')) {
+                \file_put_contents(WP_DEBUG_LOG, "scanning file: " . $filePath .  "\n", FILE_APPEND);
+            };
+            $verdict = $this->vaas->ForFile($filePath);
+            if ($verdict->Verdict == \VaasSdk\Message\Verdict::MALICIOUS) {
+                if (defined('WP_DEBUG_LOG')) {
+                    \file_put_contents(WP_DEBUG_LOG, "virus found: " . $filePath .  "\n", FILE_APPEND);
+                };
+                $scanFindings = \json_decode(\get_option('wp_vaas_plugin_scan_findings'));
+                if ($scanFindings == null) {
+                    $scanFindings = [];
+                }
+                if (\in_array($filePath->__toString(), $scanFindings)) {
+                    continue;
+                }
+                \array_push($scanFindings, $filePath->__toString());
+                \update_option("wp_vaas_plugin_scan_findings", json_encode($scanFindings));
+            }
+        }
     }
 }

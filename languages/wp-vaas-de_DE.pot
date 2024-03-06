@@ -23,3 +23,38 @@ msgstr "wp-vaas"
 #: wp-vaas.php
 msgid "Vaas is a virus scanner for your WordPress installation."
 msgstr "Vaas ist ein Antivirus für deine WordPress Installation."
+
+#. Menu String
+#: PluginPage/VaasMenuPage.php
+msgid "We found Malware"
+msgstr "Wir haben Malware gefunden"
+
+#. Menu String
+#: PluginPage/VaasMenuPage.php
+msgid "Cannot delete file: "
+msgstr "Konnte Datei nicht entfernen: "
+
+#. Menu String
+#: PluginPage/VaasMenuPage.php
+msgid "No files to delete given."
+msgstr "Keine Datein zum entfernen angegeben."
+
+#. Menu String
+#: PluginPage/VaasMenuPage.php
+msgid "Remove Files"
+msgstr "Dateien entfernen"
+
+#. Menu String
+#: PluginPage/VaasMenuPage.php
+msgid "Full Scan started"
+msgstr "Voll-Scan gestartet"
+
+#. Menu String
+#: PluginPage/VaasMenuPage.php
+msgid "Full Scan"
+msgstr "Voll-Scan"
+
+#. Menu String
+#: PluginPage/VaasMenuPage.php
+msgid "Scan finished"
+msgstr "Scan abgeschlossen"
