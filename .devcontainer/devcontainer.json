@@ -28,6 +28,9 @@
       "label": "MariaDB"
     }
   },
+  "containerEnv": {
+    "SHELL": "/bin/bash"
+  },
   // Use `onCreateCommand` to run commands as part of the container creation.
   //"onCreateCommand": "chmod +x .devcontainer/install.sh && .devcontainer/install.sh",
   // Use 'postCreateCommand' to run commands after the container is created.

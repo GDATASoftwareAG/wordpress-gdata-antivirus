@@ -3,7 +3,7 @@
 /**
  * VaaS
  * Version: 0.0.1
- * Requires PHP: 7.3
+ * Requires PHP: 8.1
  * Plugin URI: www.gdata.de
  * 
  * @category Security

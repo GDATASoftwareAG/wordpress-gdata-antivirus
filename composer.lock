@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3cdf6b312e3313304b96e8befd7a6675",
+    "content-hash": "f2fe0c8b6880f0847090381d789ca761",
     "packages": [
         {
             "name": "brick/math",
@@ -63,23 +63,23 @@
         },
         {
             "name": "gdata/vaas",
-            "version": "6.1.0",
+            "version": "7.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GDATASoftwareAG/vaas-php.git",
-                "reference": "db601fe40cb178e5cf2505d9085ae2deda4c3e86"
+                "reference": "d8d7483248deba391b1c2ad6b580121005e0ad00"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GDATASoftwareAG/vaas-php/zipball/db601fe40cb178e5cf2505d9085ae2deda4c3e86",
-                "reference": "db601fe40cb178e5cf2505d9085ae2deda4c3e86",
+                "url": "https://api.github.com/repos/GDATASoftwareAG/vaas-php/zipball/d8d7483248deba391b1c2ad6b580121005e0ad00",
+                "reference": "d8d7483248deba391b1c2ad6b580121005e0ad00",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/guzzle": "^7",
-                "league/oauth2-client": "^2.4.0",
-                "netresearch/jsonmapper": "^4.1",
-                "php": "^7.4 || ^8",
+                "league/oauth2-client": "^2.7",
+                "netresearch/jsonmapper": "^4.4",
+                "php": "^8.1",
                 "psr/log": "^1.1 || ^2.0 || ^3.0",
                 "ramsey/uuid": "^4.7 || ^4.2",
                 "textalk/websocket": "^1.6 || ^1.5"
@@ -104,9 +104,9 @@
             ],
             "support": {
                 "issues": "https://github.com/GDATASoftwareAG/vaas-php/issues",
-                "source": "https://github.com/GDATASoftwareAG/vaas-php/tree/v6.1.0"
+                "source": "https://github.com/GDATASoftwareAG/vaas-php/tree/v7.2.0"
             },
-            "time": "2023-08-25T09:10:22+00:00"
+            "time": "2024-02-29T10:41:40+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
