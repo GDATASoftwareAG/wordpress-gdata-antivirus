@@ -2,7 +2,7 @@
 
 ## Overview
 
-Welcome to the WordPress Antivirus Plugin (wp-vaas) with G DATA VaaS integration! This plugin adds an additional layer of security to your WordPress installation by utilizing the powerful antivirus service from G DATA CyberDefense AG, known as VaaS (Verdict as a Service). This integration ensures that your WordPress website remains protected from potential threats and malware.
+Welcome to the WordPress Antivirus Plugin (wordpress-gdata-antivirus) with G DATA VaaS integration! This plugin adds an additional layer of security to your WordPress installation by utilizing the powerful antivirus service from G DATA CyberDefense AG, known as VaaS (Verdict as a Service). This integration ensures that your WordPress website remains protected from potential threats and malware.
 
 ## Features
 
@@ -14,7 +14,7 @@ Welcome to the WordPress Antivirus Plugin (wp-vaas) with G DATA VaaS integration
 
 ## Installation
 
-1. **Download the Plugin:** Download the plugin zip file from the [GitHub repository](https://github.com/GDATASoftwareAG/wp-vaas).
+1. **Download the Plugin:** Download the plugin zip file from the [GitHub repository](https://github.com/GDATASoftwareAG/wordpress-gdata-antivirus).
 
 2. **Upload and Activate:** Upload the plugin to your WordPress installation and activate it through the WordPress dashboard.
 
@@ -38,10 +38,10 @@ For any issues, questions, or feedback, please contact oem@gdata.de. We apprecia
 
 ## License
 
-This WordPress Antivirus Plugin is released under the [MIT License](https://github.com/GDATASoftwareAG/wp-vaas/blob/main/LICENSE). Feel free to contribute, share, and modify the plugin within the terms of the license.
+This WordPress Antivirus Plugin is released under the [MIT License](https://github.com/GDATASoftwareAG/wordpress-gdata-antivirus/blob/main/LICENSE). Feel free to contribute, share, and modify the plugin within the terms of the license.
 
 ## Disclaimer
 
 While this plugin enhances the security of your WordPress installation, no security measure is foolproof. Regular backups and other security best practices are still recommended to ensure the safety of your website.
 
-Thank you for choosing the wp-vaas. Stay secure!
+Thank you for choosing the wordpress-gdata-antivirus. Stay secure!

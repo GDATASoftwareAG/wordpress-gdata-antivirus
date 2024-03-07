@@ -30,14 +30,14 @@ if (!class_exists('VaasMenuPage')) {
                 ]
             ]);
 
-            \add_settings_section('wp_vaas_credentials', esc_html__('Credentials', "wp-vaas"), [$this, 'wp_vaas_credentials_text'], 'wp_vaas_plugin');
-            \add_settings_field("wp_vaas_setting_client_id", esc_html__("Client ID", "wp-vaas"), [$this, 'wp_vaas_setting_client_id'], 'wp_vaas_plugin', 'wp_vaas_credentials');
-            \add_settings_field("wp_vaas_setting_client_secret", esc_html__("Client Secret", "wp-vaas"), [$this, 'wp_vaas_setting_client_secret'], 'wp_vaas_plugin', 'wp_vaas_credentials');
+            \add_settings_section('wp_vaas_credentials', esc_html__('Credentials', "wordpress-gdata-antivirus"), [$this, 'wp_vaas_credentials_text'], 'wp_vaas_plugin');
+            \add_settings_field("wp_vaas_setting_client_id", esc_html__("Client ID", "wordpress-gdata-antivirus"), [$this, 'wp_vaas_setting_client_id'], 'wp_vaas_plugin', 'wp_vaas_credentials');
+            \add_settings_field("wp_vaas_setting_client_secret", esc_html__("Client Secret", "wordpress-gdata-antivirus"), [$this, 'wp_vaas_setting_client_secret'], 'wp_vaas_plugin', 'wp_vaas_credentials');
         }
 
         function wp_vaas_credentials_text()
         {
-            echo '<p>' . esc_html__("Here you can set all the options for using the API", "wp-vaas") . '</p>';
+            echo '<p>' . esc_html__("Here you can set all the options for using the API", "wordpress-gdata-antivirus") . '</p>';
         }
 
         function wp_vaas_setting_client_id()
@@ -73,8 +73,8 @@ if (!class_exists('VaasMenuPage')) {
 
         public function DeleteFindings(): void
         {
-            if (!wp_verify_nonce($_POST['wp-vaas-delete-findings-nonce'], 'wp-vaas-delete-findings')) {
-                wp_die(__('Invalid nonce specified', "wp-vaas"), __('Error', "wp-vaas"), array(
+            if (!wp_verify_nonce($_POST['wordpress-gdata-antivirus-delete-findings-nonce'], 'wordpress-gdata-antivirus-delete-findings')) {
+                wp_die(__('Invalid nonce specified', "wordpress-gdata-antivirus"), __('Error', "wordpress-gdata-antivirus"), array(
                     'response'     => 403,
                     'back_link' => $_SERVER["HTTP_REFERER"],
 
@@ -83,7 +83,7 @@ if (!class_exists('VaasMenuPage')) {
             }
 
             if (!isset($_POST["files"])) {
-                $this->AdminNotices->addNotice(__("No files to delete given.", "wp-vaas"));
+                $this->AdminNotices->addNotice(__("No files to delete given.", "wordpress-gdata-antivirus"));
                 \wp_redirect($_SERVER["HTTP_REFERER"]);
                 return;
             }
@@ -91,7 +91,7 @@ if (!class_exists('VaasMenuPage')) {
             $deletedFiles = [];
             foreach ($_POST["files"] as $file) {
                 if (!is_writable($file)) {
-                    $this->AdminNotices->addNotice(__("Cannot delete file: ", "wp-vaas") . $file);
+                    $this->AdminNotices->addNotice(__("Cannot delete file: ", "wordpress-gdata-antivirus") . $file);
                 } else {
                     \unlink($file);
                     $deletedFiles = \array_push($deletedFiles, $file);
@@ -113,10 +113,10 @@ if (!class_exists('VaasMenuPage')) {
 
         public function FullScan(): void
         {
-            $this->AdminNotices->addNotice(__("Full Scan started", "wp-vaas"));
+            $this->AdminNotices->addNotice(__("Full Scan started", "wordpress-gdata-antivirus"));
 
-            if (!wp_verify_nonce($_POST['wp-vaas-full-scan-nonce'], 'wp-vaas-full-scan')) {
-                wp_die(__('Invalid nonce specified', "wp-vaas"), __('Error', "wp-vaas"), array(
+            if (!wp_verify_nonce($_POST['wordpress-gdata-antivirus-full-scan-nonce'], 'wordpress-gdata-antivirus-full-scan')) {
+                wp_die(__('Invalid nonce specified', "wordpress-gdata-antivirus"), __('Error', "wordpress-gdata-antivirus"), array(
                     'response'     => 403,
                     'back_link' => $_SERVER["HTTP_REFERER"],
 
@@ -128,7 +128,7 @@ if (!class_exists('VaasMenuPage')) {
 
             \wp_redirect($_SERVER["HTTP_REFERER"]);
 
-            $this->AdminNotices->addNotice(__("Scan finished", "wp-vaas"));
+            $this->AdminNotices->addNotice(__("Scan finished", "wordpress-gdata-antivirus"));
         }
 
         public function FullScanMenu(): void
@@ -136,8 +136,8 @@ if (!class_exists('VaasMenuPage')) {
 ?>
             <form action="admin-post.php" method="post">
                 <input type="hidden" name="action" value="full_scan">
-                <? wp_nonce_field('wp-vaas-full-scan', 'wp-vaas-full-scan-nonce'); ?>
-                <?php submit_button(__('Full Scan', "wp-vaas")); ?>
+                <? wp_nonce_field('wordpress-gdata-antivirus-full-scan', 'wordpress-gdata-antivirus-full-scan-nonce'); ?>
+                <?php submit_button(__('Full Scan', "wordpress-gdata-antivirus")); ?>
             </form>
         <?
         }
@@ -189,8 +189,8 @@ if (!class_exists('VaasMenuPage')) {
                 </table>
 
                 <input type="hidden" name="action" value="delete_findings">
-                <? wp_nonce_field('wp-vaas-delete-findings', 'wp-vaas-delete-findings-nonce'); ?>
-                <?php submit_button(__('Remove Files', "wp-vaas")); ?>
+                <? wp_nonce_field('wordpress-gdata-antivirus-delete-findings', 'wordpress-gdata-antivirus-delete-findings-nonce'); ?>
+                <?php submit_button(__('Remove Files', "wordpress-gdata-antivirus")); ?>
             </form>
 
         <?
@@ -206,7 +206,7 @@ if (!class_exists('VaasMenuPage')) {
                 \do_settings_sections('wp_vaas_plugin'); ?>
                 <input name="submit" class="button button-primary" type="submit" value="
     <?
-            \esc_attr_e('Save', "wp-vaas");
+            \esc_attr_e('Save', "wordpress-gdata-antivirus");
     ?>
     " />
             </form>

@@ -1,6 +1,6 @@
 <?php
 /**
- * wp-vaas
+ * wordpress-gdata-antivirus
  * 
  * @category Security
  * @package  GD_Scan
@@ -9,10 +9,10 @@
  * @link     https://github.com/GDATASoftwareAG/vaas
  *
  * @wordpress-plugin
- * Plugin Name: wp-vaas
+ * Plugin Name: wordpress-gdata-antivirus
  * Version: 0.0.1
  * Requires PHP: 8.1
- * Plugin URI: https://github.com/GDATASoftwareAG/wp-vaas
+ * Plugin URI: https://github.com/GDATASoftwareAG/wordpress-gdata-antivirus
  * Description: Vaas is a virus scanner for your WordPress installation.
  * License: MIT License
  * License URI: https://github.com/GDATASoftwareAG/vaas/blob/main/LICENSE

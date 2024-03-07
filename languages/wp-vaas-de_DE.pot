@@ -2,8 +2,8 @@
 # This file is distributed under the MIT License.
 msgid ""
 msgstr ""
-"Project-Id-Version: wp-vaas 0.0.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wp-vaas\n"
+"Project-Id-Version: wordpress-gdata-antivirus 0.0.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/wordpress-gdata-antivirus\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -12,15 +12,15 @@ msgstr ""
 "POT-Creation-Date: 2024-03-06T16:37:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.10.0\n"
-"X-Domain: wp-vaas\n"
+"X-Domain: wordpress-gdata-antivirus\n"
 
 #. Plugin Name of the plugin
-#: wp-vaas.php
-msgid "wp-vaas"
-msgstr "wp-vaas"
+#: wordpress-gdata-antivirus.php
+msgid "wordpress-gdata-antivirus"
+msgstr "wordpress-gdata-antivirus"
 
 #. Description of the plugin
-#: wp-vaas.php
+#: wordpress-gdata-antivirus.php
 msgid "Vaas is a virus scanner for your WordPress installation."
 msgstr "Vaas ist ein Antivirus für deine WordPress Installation."
 

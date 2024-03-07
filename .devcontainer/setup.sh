@@ -6,7 +6,7 @@ set -eux
 # false always return 1
 SITE_HOST="http://localhost:8080"
 
-PLUGIN_DIR=/workspaces/wp-vaas
+PLUGIN_DIR=/workspaces/wordpress-gdata-antivirus
 
 # Install Composer dependencies.
 cd "${PLUGIN_DIR}"

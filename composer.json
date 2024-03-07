@@ -1,5 +1,5 @@
 {
-    "name": "gdatacyberdefenseag/wp-vaas",
+    "name": "gdatacyberdefenseag/wordpress-gdata-antivirus",
     "autoload": {
         "psr-4": {
             "Gdatacyberdefenseag\\WpVaas\\": "."

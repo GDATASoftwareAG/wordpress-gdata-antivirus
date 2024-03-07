@@ -29,7 +29,7 @@ class ScanClient
     public function scanSingleFile($file)
     {
         if (defined('WP_DEBUG_LOG')) {
-            \file_put_contents(WP_DEBUG_LOG, "wp-vaas: scanning " . $file["name"] . "\n", FILE_APPEND);
+            \file_put_contents(WP_DEBUG_LOG, "wordpress-gdata-antivirus: scanning " . $file["name"] . "\n", FILE_APPEND);
         };
         $this->vaas->connect($this->clientCredentialsGrantAuthenticator->getToken());
 
