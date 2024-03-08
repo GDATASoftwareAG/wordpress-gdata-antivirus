@@ -1,2 +1,13 @@
 /vendor/
-/local-env/
+/local-env/*
+/local-env/wp-content/
+/local-env/wp-content/plugins/*
+/local-env/wp-content/themes/
+
+# Local Development Exceptions.
+!/local-env/.gitkeep
+!/local-env/wp-content/
+!/local-env/wp-content/.gitkeep
+!/local-env/wp-content/plugins/.gitkeep
+!/local-env/wp-content/plugins/wordpress-gdata-antivirus/
+!/local-env/wp-content/plugins/wordpress-gdata-antivirus/.gitkeep
