@@ -21,7 +21,7 @@ use Gdatacyberdefenseag\WpVaas\Vaas\ScanClient;
 if (!class_exists('VaasPlugin')) {
     class VaasPlugin
     {
-        public ScanClient $ScanClient;
+        public ?ScanClient $ScanClient = null;
 
         public function __construct()
         {
@@ -29,6 +29,8 @@ if (!class_exists('VaasPlugin')) {
                 'client_secret' => '',
                 'client_id' => ''
             ]);
+            \add_option("wp_vaas_plugin_scan_findings", []);
+            
 
             $options = \get_option('wp_vaas_plugin_options');
             if (!empty($options['client_id']) && !empty($options['client_secret'])) {
@@ -41,7 +43,7 @@ if (!class_exists('VaasPlugin')) {
 
         public function ValidateFindings()
         {
-            $scanFindings = \json_decode(\get_option('wp_vaas_plugin_scan_findings'));
+            $scanFindings = \get_option('wp_vaas_plugin_scan_findings');
             $beforeCount = count($scanFindings);
             $scanFindings = \array_filter($scanFindings, static function ($element) {
                 return file_exists($element);
@@ -49,7 +51,7 @@ if (!class_exists('VaasPlugin')) {
 
             $afterCount = count($scanFindings);
             if ($beforeCount != $afterCount) {
-                \update_option("wp_vaas_plugin_scan_findings", json_encode($scanFindings));
+                \update_option("wp_vaas_plugin_scan_findings", $scanFindings);
             }
         }
     }

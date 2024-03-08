@@ -19,9 +19,6 @@ class ScanClient
             $options['client_secret'],
             "https://account.gdata.de/realms/vaas-production/protocol/openid-connect/token"
         );
-
-        \add_option("wp_vaas_plugin_scan_findings", \json_encode([]));
-
         \add_filter("wp_handle_upload_prefilter", [$this, "scanSingleFile"]);
         \add_filter("wp_handle_sideload_prefilter", [$this, "scanSingleFile"]);
     }
@@ -68,7 +65,7 @@ class ScanClient
                 if (defined('WP_DEBUG_LOG')) {
                     \file_put_contents(WP_DEBUG_LOG, "virus found: " . $filePath .  "\n", FILE_APPEND);
                 };
-                $scanFindings = \json_decode(\get_option('wp_vaas_plugin_scan_findings'));
+                $scanFindings = \get_option('wp_vaas_plugin_scan_findings');
                 if ($scanFindings == null) {
                     $scanFindings = [];
                 }
@@ -76,7 +73,7 @@ class ScanClient
                     continue;
                 }
                 \array_push($scanFindings, $filePath->__toString());
-                \update_option("wp_vaas_plugin_scan_findings", json_encode($scanFindings));
+                \update_option("wp_vaas_plugin_scan_findings", $scanFindings);
             }
         }
         $time_end = microtime(true);

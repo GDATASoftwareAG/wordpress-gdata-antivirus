@@ -7,10 +7,10 @@ use Gdatacyberdefenseag\WpVaas\Vaas\ScanClient;
 if (!class_exists('VaasMenuPage')) {
     class VaasMenuPage
     {
-        private ScanClient $ScanClient;
+        private ?ScanClient $ScanClient;
         private AdminNotices $AdminNotices;
 
-        public function __construct(ScanClient $scanClient)
+        public function __construct(?ScanClient $scanClient)
         {
             $this->ScanClient = $scanClient;
             $this->AdminNotices = new AdminNotices();
@@ -54,7 +54,7 @@ if (!class_exists('VaasMenuPage')) {
 
         public function SetupMenu(): void
         {
-            $scanFindings = \json_decode(\get_option('wp_vaas_plugin_scan_findings'));
+            $scanFindings = \get_option('wp_vaas_plugin_scan_findings');
             if (count($scanFindings) > 0) {
                 $menuTitle = 'VaaS <span class="awaiting-mod">' . count($scanFindings) . '</span>';
                 \add_menu_page('G Data VaaS', $menuTitle, 'manage_options', 'vaas-menu', [$this, 'CredentialsMenuItem'], \plugin_dir_url(__FILE__) . "../PluginPage/assets/gdata16.png");
@@ -98,14 +98,14 @@ if (!class_exists('VaasMenuPage')) {
                 }
             }
 
-            $scanFindings = \json_decode(\get_option('wp_vaas_plugin_scan_findings'));
+            $scanFindings = \get_option('wp_vaas_plugin_scan_findings');
             $beforeCount = count($scanFindings);
             $scanFindings = \array_filter($scanFindings, function ($element) use ($deletedFiles) {
                 return !\in_array($element, $deletedFiles);
             });
             $afterCount = count($scanFindings);
             if ($beforeCount != $afterCount) {
-                \update_option("wp_vaas_plugin_scan_findings", json_encode($scanFindings));
+                \update_option("wp_vaas_plugin_scan_findings", $scanFindings);
             }
 
             \wp_redirect($_SERVER["HTTP_REFERER"]);
@@ -160,7 +160,7 @@ if (!class_exists('VaasMenuPage')) {
 
                     <tbody id="the-list">
                         <?
-                        (array) $scanFindings = \json_decode(\get_option('wp_vaas_plugin_scan_findings'));
+                        (array) $scanFindings = \get_option('wp_vaas_plugin_scan_findings');
                         if (count($scanFindings) > 0) {
                             foreach ($scanFindings as $finding) {
                         ?>

@@ -41,6 +41,5 @@ volumes:
   db:
   wordpress:
 
-
 networks:
   wordpress-gdata-antivirus:
