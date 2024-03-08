@@ -40,6 +40,18 @@ For any issues, questions, or feedback, please contact oem@gdata.de. We apprecia
 
 This WordPress Antivirus Plugin is released under the [MIT License](https://github.com/GDATASoftwareAG/wordpress-gdata-antivirus/blob/main/LICENSE). Feel free to contribute, share, and modify the plugin within the terms of the license.
 
+## Contribution
+
+Contributions are welcome! To get started with development, please use the provided devcontainer. This will ensure that you have a consistent development environment that's ready to go.
+
+### Using the Devcontainer
+
+The devcontainer is configured to mount the source code into the containers. This allows you to work on the code from your local machine, while running and testing it in an environment that closely matches the deployment environment.
+
+### Caveat
+
+Please note that when running a full scan in WordPress, the scan will be performed twice. This is due to the way the source code is mounted into the containers. While this does not affect the functionality of the scan, it does mean that scans will take approximately twice as long to complete.
+
 ## Disclaimer
 
 While this plugin enhances the security of your WordPress installation, no security measure is foolproof. Regular backups and other security best practices are still recommended to ensure the safety of your website.
