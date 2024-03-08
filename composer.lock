@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f2fe0c8b6880f0847090381d789ca761",
+    "content-hash": "342da4761b96bd9acda8091802ae334d",
     "packages": [
         {
             "name": "brick/math",
@@ -63,16 +63,16 @@
         },
         {
             "name": "gdata/vaas",
-            "version": "7.2.0",
+            "version": "7.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GDATASoftwareAG/vaas-php.git",
-                "reference": "d8d7483248deba391b1c2ad6b580121005e0ad00"
+                "reference": "fc1716a39af85da5d489899c93fa657b8d98837f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GDATASoftwareAG/vaas-php/zipball/d8d7483248deba391b1c2ad6b580121005e0ad00",
-                "reference": "d8d7483248deba391b1c2ad6b580121005e0ad00",
+                "url": "https://api.github.com/repos/GDATASoftwareAG/vaas-php/zipball/fc1716a39af85da5d489899c93fa657b8d98837f",
+                "reference": "fc1716a39af85da5d489899c93fa657b8d98837f",
                 "shasum": ""
             },
             "require": {
@@ -104,9 +104,9 @@
             ],
             "support": {
                 "issues": "https://github.com/GDATASoftwareAG/vaas-php/issues",
-                "source": "https://github.com/GDATASoftwareAG/vaas-php/tree/v7.2.0"
+                "source": "https://github.com/GDATASoftwareAG/vaas-php/tree/v7.2.1"
             },
-            "time": "2024-02-29T10:41:40+00:00"
+            "time": "2024-03-08T10:30:05+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
