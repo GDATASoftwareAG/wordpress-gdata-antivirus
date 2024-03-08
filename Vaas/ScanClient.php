@@ -4,6 +4,7 @@ namespace Gdatacyberdefenseag\WpVaas\Vaas;
 
 use VaasSdk\Vaas;
 use VaasSdk\ClientCredentialsGrantAuthenticator;
+use VaasSdk\VaasOptions;
 use GuzzleHttp\Psr7;
 
 class ScanClient
@@ -13,7 +14,7 @@ class ScanClient
     public function __construct()
     {
         $options = \get_option('wp_vaas_plugin_options');
-        $this->vaas = new Vaas(null);
+        $this->vaas = new Vaas(null, null, new VaasOptions(false, false));
         $this->clientCredentialsGrantAuthenticator = new ClientCredentialsGrantAuthenticator(
             $options['client_id'],
             $options['client_secret'],
@@ -25,7 +26,7 @@ class ScanClient
 
     public function scanSingleFile($file)
     {
-        if (defined('WP_DEBUG_LOG')) {
+        if (defined('WP_DEBUG_LOG') && is_string(WP_DEBUG_LOG)) {
             \file_put_contents(WP_DEBUG_LOG, "wordpress-gdata-antivirus: scanning " . $file["name"] . "\n", FILE_APPEND);
         };
         $this->vaas->connect($this->clientCredentialsGrantAuthenticator->getToken());
@@ -40,10 +41,10 @@ class ScanClient
     public function fullScan()
     {
         $time_start = microtime(true);
-        if (defined('WP_DEBUG_LOG')) {
+        if (defined('WP_DEBUG_LOG') && is_string(WP_DEBUG_LOG)) {
             \file_put_contents(WP_DEBUG_LOG, "requested full scan\n", FILE_APPEND);
         };
-        if (defined('WP_DEBUG_LOG')) {
+        if (defined('WP_DEBUG_LOG') && is_string(WP_DEBUG_LOG)) {
             \file_put_contents(WP_DEBUG_LOG, "scanning while wordpress directory: " . ABSPATH .  "\n", FILE_APPEND);
         };
         $this->vaas->connect($this->clientCredentialsGrantAuthenticator->getToken());
@@ -56,13 +57,13 @@ class ScanClient
             if ($filePath->isDir()) {
                 continue;
             }
-            if (defined('WP_DEBUG_LOG')) {
+            if (defined('WP_DEBUG_LOG') && is_string(WP_DEBUG_LOG)) {
                 \file_put_contents(WP_DEBUG_LOG, "scanning file: " . $filePath .  "\n", FILE_APPEND);
             };
 
             $verdict = $this->vaas->ForStream(Psr7\Utils::streamFor(fopen($filePath, 'r')));
             if ($verdict->Verdict == \VaasSdk\Message\Verdict::MALICIOUS) {
-                if (defined('WP_DEBUG_LOG')) {
+                if (defined('WP_DEBUG_LOG') && is_string(WP_DEBUG_LOG)) {
                     \file_put_contents(WP_DEBUG_LOG, "virus found: " . $filePath .  "\n", FILE_APPEND);
                 };
                 $scanFindings = \get_option('wp_vaas_plugin_scan_findings');
@@ -78,7 +79,7 @@ class ScanClient
         }
         $time_end = microtime(true);
         $execution_time = ($time_end - $time_start);
-        if (defined('WP_DEBUG_LOG')) {
+        if (defined('WP_DEBUG_LOG') && is_string(WP_DEBUG_LOG)) {
             \file_put_contents(WP_DEBUG_LOG, "scan finished in $execution_time seconds\n", FILE_APPEND);
         };
     }
