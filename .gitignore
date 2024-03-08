@@ -3,6 +3,7 @@
 /local-env/wp-content/
 /local-env/wp-content/plugins/*
 /local-env/wp-content/themes/
+.zip
 
 # Local Development Exceptions.
 !/local-env/.gitkeep
