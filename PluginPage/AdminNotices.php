@@ -1,6 +1,6 @@
 <?php
 
-namespace Gdatacyberdefenseag\WpVaas\PluginPage;
+namespace Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage;
 
 class AdminNotices
 {
