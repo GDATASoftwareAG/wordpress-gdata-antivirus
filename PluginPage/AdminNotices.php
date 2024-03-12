@@ -2,45 +2,44 @@
 
 namespace Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage;
 
-class AdminNotices
-{
-
-    public static $_notices = array();
-
-    /**
-     * Constructor
-     */
-    public function __construct()
+if (!class_exists('AdminNotices')) {
+    class AdminNotices
     {
-        add_action('admin_notices', array($this, 'outputNotices'));
-        add_action('shutdown', array($this, 'saveNotices'));
-    }
 
-    public static function addNotice($text)
-    {
-        self::$_notices[] = $text;
-    }
+        public static $_notices = array();
 
-    public function saveNotices()
-    {
-        update_option('custom_notices', self::$_notices);
-    }
+        public function __construct()
+        {
+            add_action('admin_notices', array($this, 'outputNotices'));
+            add_action('shutdown', array($this, 'saveNotices'));
+        }
 
-    public function outputNotices()
-    {
-        $notices = maybe_unserialize(get_option('custom_notices'));
+        public static function addNotice($text)
+        {
+            self::$_notices[] = $text;
+        }
 
-        if (!empty($notices)) {
+        public function saveNotices()
+        {
+            update_option('WordpressGdataAntivirusMenuNotices', self::$_notices);
+        }
 
-            echo '<div id="notice" class="notice notice-info is-dismissible">';
+        public function outputNotices()
+        {
+            $notices = maybe_unserialize(get_option('WordpressGdataAntivirusMenuNotices'));
 
-            foreach ($notices as $notice) {
-                echo '<p>' . wp_kses_post($notice) . '</p>';
+            if (!empty($notices)) {
+
+                echo '<div id="notice" class="notice notice-info is-dismissible">';
+
+                foreach ($notices as $notice) {
+                    echo '<p>' . wp_kses_post($notice) . '</p>';
+                }
+
+                echo '</div>';
+
+                delete_option('WordpressGdataAntivirusMenuNotices');
             }
-
-            echo '</div>';
-
-            delete_option('custom_notices');
         }
     }
 }
