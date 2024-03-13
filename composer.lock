@@ -63,16 +63,16 @@
         },
         {
             "name": "gdata/vaas",
-            "version": "7.2.1",
+            "version": "7.2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GDATASoftwareAG/vaas-php.git",
-                "reference": "fc1716a39af85da5d489899c93fa657b8d98837f"
+                "reference": "fb7624be22aaae1078f0d31a396cdde0b9c621c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GDATASoftwareAG/vaas-php/zipball/fc1716a39af85da5d489899c93fa657b8d98837f",
-                "reference": "fc1716a39af85da5d489899c93fa657b8d98837f",
+                "url": "https://api.github.com/repos/GDATASoftwareAG/vaas-php/zipball/fb7624be22aaae1078f0d31a396cdde0b9c621c4",
+                "reference": "fb7624be22aaae1078f0d31a396cdde0b9c621c4",
                 "shasum": ""
             },
             "require": {
@@ -104,9 +104,9 @@
             ],
             "support": {
                 "issues": "https://github.com/GDATASoftwareAG/vaas-php/issues",
-                "source": "https://github.com/GDATASoftwareAG/vaas-php/tree/v7.2.1"
+                "source": "https://github.com/GDATASoftwareAG/vaas-php/tree/v7.2.2"
             },
-            "time": "2024-03-08T10:30:05+00:00"
+            "time": "2024-03-13T09:52:32+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",
