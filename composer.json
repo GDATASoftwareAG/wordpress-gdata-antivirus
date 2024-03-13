@@ -12,7 +12,6 @@
         }
     ],
     "require": {
-        "gdata/vaas": "^7.0",
-        "wpdesk/wp-mutex": "^1.0"
+        "gdata/vaas": "^7.0"
     }
 }
