@@ -2,7 +2,7 @@
     "name": "gdatacyberdefenseag/wordpress-gdata-antivirus",
     "autoload": {
         "psr-4": {
-            "Gdatacyberdefenseag\\WpVaas\\": "."
+            "Gdatacyberdefenseag\\WordpressGdataAntivirus\\": "."
         }
     },
     "authors": [
