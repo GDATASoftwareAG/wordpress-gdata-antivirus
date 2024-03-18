@@ -113,10 +113,10 @@ if (!class_exists('WordpressGdataAntivirusMenuPage')) {
 ?>
             <h2>VaaS Settings</h2>
             <form action="options.php" method="post">
-                <?
+                <?php
                 \settings_fields('wordpress_gdata_antivirus_options_credentials');
                 \do_settings_sections(WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG); ?>
-                <input name="submit" class="button button-primary" type="submit" value="<? \esc_attr_e('Save', "wordpress-gdata-antivirus"); ?>" />
+                <input name="submit" class="button button-primary" type="submit" value="<?php \esc_attr_e('Save', "wordpress-gdata-antivirus"); ?>" />
             </form>
 <?php
         }

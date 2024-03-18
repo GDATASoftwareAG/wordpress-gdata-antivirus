@@ -5,7 +5,7 @@
  * Version: 0.0.1
  * Requires PHP: 8.1
  * Plugin URI: www.gdata.de
- * 
+ *
  * @category Security
  * @package  GD_Scan
  * @author   G DATA CyberDefense AG <info@gdata.de>

@@ -5,6 +5,7 @@ namespace Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\FullScan;
 use Gdatacyberdefenseag\WordpressGdataAntivirus\Vaas\ScanClient;
 use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\AdminNotices;
 use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\Findings\FindingsMenuPage;
+use Gdatacyberdefenseag\WordpressGdataAntivirus\Logging\WordpressGdataAntivirusPluginDebugLogger;
 
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_SLUG', WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG . "-findings");
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_OPERATIONS_TABLE_NAME', "WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_OPERATIONS");
@@ -49,9 +50,9 @@ if (!class_exists('FullScanMenuPage')) {
             $scheduleStart = \get_option('wordpress_gdata_antivirus_options_full_scan_schedule_start', "01:00");
             $next = wp_next_scheduled("wordpress_gdata_antivirus_scheduled_full_scan");
             if (defined('WP_DEBUG_LOG') && is_string(WP_DEBUG_LOG)) {
-                \file_put_contents(WP_DEBUG_LOG, "fullScanEnabled: " . $fullScanEnabled . "\n", FILE_APPEND);
-                \file_put_contents(WP_DEBUG_LOG, "scheduleStart: " . $scheduleStart . "\n", FILE_APPEND);
-                \file_put_contents(WP_DEBUG_LOG, "next: " . $next . "\n", FILE_APPEND);
+                WordpressGdataAntivirusPluginDebugLogger::Log('fullScanEnabled: ' . $fullScanEnabled . "\n");
+                WordpressGdataAntivirusPluginDebugLogger::Log('scheduleStart: ' . $scheduleStart . "\n");
+                WordpressGdataAntivirusPluginDebugLogger::Log('next: ' . $next . "\n");
             };
 
             if (!$fullScanEnabled && $next) {
@@ -61,13 +62,9 @@ if (!class_exists('FullScanMenuPage')) {
 
             if ($fullScanEnabled && !$next) {
                 $timestamp = strtotime($scheduleStart);
-                if (defined('WP_DEBUG_LOG') && is_string(WP_DEBUG_LOG)) {
-                    \file_put_contents(WP_DEBUG_LOG, "schedule start timestamp: " . $timestamp . "\n", FILE_APPEND);
-                };
+                WordpressGdataAntivirusPluginDebugLogger::Log('schedule start timestamp: ' . $timestamp . "\n");
                 $scheduled = \wp_schedule_event($timestamp, 'daily', "wordpress_gdata_antivirus_scheduled_full_scan");
-                if (defined('WP_DEBUG_LOG') && is_string(WP_DEBUG_LOG)) {
-                    \file_put_contents(WP_DEBUG_LOG, "scheduled: " . var_export($scheduled, true) . "\n", FILE_APPEND);
-                };
+                WordpressGdataAntivirusPluginDebugLogger::Log('scheduled: ' . var_export($scheduled, true) . "\n");
                 return;
             }
             $nextScheduleStart = date("H:i", $next);
@@ -239,9 +236,6 @@ if (!class_exists('FullScanMenuPage')) {
             if (!$fullScanEnabled)
                 return $option;
             if (preg_match("#^[0-9]{2}:[0-9]{2}$#", $value) !== 1) {
-                if (defined('WP_DEBUG_LOG') && is_string(WP_DEBUG_LOG)) {
-                    \file_put_contents(WP_DEBUG_LOG, "does not match pattern\n", FILE_APPEND);
-                };
                 $value = $option;
                 add_settings_error(
                     'wordpress_gdata_antivirus_options_full_scan_schedule_start',
@@ -274,24 +268,20 @@ if (!class_exists('FullScanMenuPage')) {
             $scheduleStart = \get_option('wordpress_gdata_antivirus_options_full_scan_schedule_start', "01:00");
             $fullScanEnabled =
                 (bool)\get_option('wordpress_gdata_antivirus_options_full_scan_schedule_enabled', false);
-            if (defined('WP_DEBUG_LOG') && is_string(WP_DEBUG_LOG)) {
-                \file_put_contents(WP_DEBUG_LOG, "scheduleStart: " . $scheduleStart . "\n", FILE_APPEND);
-            };
+            WordpressGdataAntivirusPluginDebugLogger::Log('scheduleStart: ' . $scheduleStart . "\n");
+
             echo "<input id='wordpress_gdata_antivirus_options_full_scan_schedule_start' name='wordpress_gdata_antivirus_options_full_scan_schedule_start' type='text' value='" . \esc_attr($scheduleStart) . "' " . ($fullScanEnabled ? '' : 'disabled') . "/>";
         }
 
         public function FullScanInteractive(): void
         {
             if (!wp_verify_nonce($_POST['wordpress-gdata-antivirus-full-scan-nonce'], 'wordpress-gdata-antivirus-full-scan')) {
-                wp_die(__('Invalid nonce specified', "wordpress-gdata-antivirus"), __('Error', "wordpress-gdata-antivirus"), array(
-                    'response'     => 403,
-                    'back_link' => $_SERVER["HTTP_REFERER"],
-
-                ));
-                return;
+                wp_die(__('Invalid nonce specified', "wordpress-gdata-antivirus"), __('Error', "wordpress-gdata-antivirus"), [
+                    'response'  => 403
+                ]);
             }
             $this->FullScan();
-            \wp_redirect($_SERVER["HTTP_REFERER"]);
+            \wp_safe_redirect($_SERVER["HTTP_REFERER"]);
         }
 
         public function FullScan(): void
@@ -321,9 +311,8 @@ if (!class_exists('FullScanMenuPage')) {
         public function scanBatch(array $files): void
         {
             try {
-                if (defined('WP_DEBUG_LOG') && is_string(WP_DEBUG_LOG)) {
-                    \file_put_contents(WP_DEBUG_LOG, "does not match pattern" + "\n", FILE_APPEND);
-                };
+                WordpressGdataAntivirusPluginDebugLogger::Log("does not match pattern\n");
+
                 foreach ($files as $file) {
                     if ($this->ScanClient->scanFile($file) == \VaasSdk\Message\Verdict::MALICIOUS) {
                         $this->FindingsMenuPage->AddFinding($file);
@@ -347,26 +336,26 @@ if (!class_exists('FullScanMenuPage')) {
 ?>
             <h2>VaaS Settings</h2>
             <form action="options.php" method="post">
-                <?
+                <?php
                 \settings_fields('wordpress_gdata_antivirus_options_full_scan_run');
                 \do_settings_sections(WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_SLUG); ?>
-                <input name="submit" class="button button-primary" type="submit" value="<? \esc_attr_e('Save', "wordpress-gdata-antivirus"); ?>" />
+                <input name="submit" class="button button-primary" type="submit" value="<?php \esc_attr_e('Save', "wordpress-gdata-antivirus"); ?>" />
             </form>
-            <?
+            <?php
             $scheduledScans = $this->GetScheduledScans();
             $finishedScans = $this->GetFinishedScans();
             if ($scheduledScans <= $finishedScans) {
             ?>
                 <form action="admin-post.php" method="post">
                     <input type="hidden" name="action" value="full_scan">
-                    <? wp_nonce_field('wordpress-gdata-antivirus-full-scan', 'wordpress-gdata-antivirus-full-scan-nonce'); ?>
+                    <?php wp_nonce_field('wordpress-gdata-antivirus-full-scan', 'wordpress-gdata-antivirus-full-scan-nonce'); ?>
                     <?php submit_button(__('Run Full Scan', "wordpress-gdata-antivirus")); ?>
                 </form>
-            <?
+            <?php
             } else {
             ?>
-                <p><? _e("Full Scan is running. " . $finishedScans . " of " . $scheduledScans . " batches are finished", "wordpress-gdata-antivirus"); ?></p>
-<?
+                <p><?php \esc_html_e("Full Scan is running. " . $finishedScans . " of " . $scheduledScans . " batches are finished", "wordpress-gdata-antivirus"); ?></p>
+<?php
             }
         }
     }

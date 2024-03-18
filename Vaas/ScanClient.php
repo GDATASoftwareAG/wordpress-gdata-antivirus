@@ -6,6 +6,7 @@ use VaasSdk\Vaas;
 use VaasSdk\ClientCredentialsGrantAuthenticator;
 use VaasSdk\VaasOptions;
 use VaasSdk\Message\Verdict;
+use Gdatacyberdefenseag\WordpressGdataAntivirus\Logging\WordpressGdataAntivirusPluginDebugLogger;
 
 if (!class_exists('ScanClient')) {
     class ScanClient
@@ -19,28 +20,26 @@ if (!class_exists('ScanClient')) {
             $this->clientCredentialsGrantAuthenticator = new ClientCredentialsGrantAuthenticator(
                 $options['client_id'],
                 $options['client_secret'],
-                "https://account.gdata.de/realms/vaas-production/protocol/openid-connect/token"
+                'https://account.gdata.de/realms/vaas-production/protocol/openid-connect/token'
             );
             $this->vaas->connect($this->clientCredentialsGrantAuthenticator->getToken());
 
-            \add_filter("wp_handle_upload_prefilter", [$this, "scanSingleFile"]);
-            \add_filter("wp_handle_sideload_prefilter", [$this, "scanSingleFile"]);
+            \add_filter('wp_handle_upload_prefilter', [$this, 'scanSingleFile']);
+            \add_filter('wp_handle_sideload_prefilter', [$this, 'scanSingleFile']);
         }
 
         public function scanSingleFile($file)
         {
-            $verdict = $this->scanFile($file["tmp_name"]);
+            $verdict = $this->scanFile($file['tmp_name']);
             if ($verdict == \VaasSdk\Message\Verdict::MALICIOUS) {
-                $file['error'] = __("virus found");
+                $file['error'] = __('virus found');
             }
             return $file;
         }
 
         public function scanFile($filePath): Verdict
         {
-            if (defined('WP_DEBUG_LOG') && is_string(WP_DEBUG_LOG)) {
-                \file_put_contents(WP_DEBUG_LOG, "wordpress-gdata-antivirus: scanning " . $filePath . "\n", FILE_APPEND);
-            };
+            WordpressGdataAntivirusPluginDebugLogger::Log('wordpress-gdata-antivirus: scanning ' . $filePath . "\n");
             return $this->vaas->ForFile($filePath)->Verdict;
         }
     }

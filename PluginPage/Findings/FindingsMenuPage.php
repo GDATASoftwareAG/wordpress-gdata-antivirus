@@ -135,18 +135,15 @@ if (!class_exists('FindingsMenuPage')) {
         public function DeleteFindings(): void
         {
             if (!wp_verify_nonce($_POST['wordpress-gdata-antivirus-delete-findings-nonce'], 'wordpress-gdata-antivirus-delete-findings')) {
-                wp_die(__('Invalid nonce specified', "wordpress-gdata-antivirus"), __('Error', "wordpress-gdata-antivirus"), array(
-                    'response'     => 403,
-                    'back_link' => $_SERVER["HTTP_REFERER"],
-
-                ));
-                return;
+                wp_die(__('Invalid nonce specified', "wordpress-gdata-antivirus"), __('Error', "wordpress-gdata-antivirus"), [
+                    'response'  => intval(403),
+                    'back_link' => true,
+                ]);
             }
 
             if (!isset($_POST["files"])) {
                 $this->AdminNotices->addNotice(__("No files to delete given.", "wordpress-gdata-antivirus"));
-                \wp_redirect($_SERVER["HTTP_REFERER"]);
-                return;
+                \wp_safe_redirect($_SERVER["HTTP_REFERER"]);
             }
 
             foreach ($_POST["files"] as $file) {
@@ -158,13 +155,13 @@ if (!class_exists('FindingsMenuPage')) {
                 }
             }
 
-            \wp_redirect($_SERVER["HTTP_REFERER"]);
+            \wp_safe_redirect($_SERVER["HTTP_REFERER"]);
         }
 
         public function FindingsList(): void
         {
 ?>
-            <h1><? _e("We found Malware"); ?></h1>
+            <h1><?php esc_html_e("We found Malware"); ?></h1>
             <form action="admin-post.php" method="post">
 
                 <table class="wp-list-table widefat fixed striped table-view-list pages">
@@ -178,7 +175,7 @@ if (!class_exists('FindingsMenuPage')) {
                     </thead>
 
                     <tbody id="the-list">
-                        <?
+                        <?php
                         $findings = $this->GetAllFindings();
                         if (count($findings) > 0) {
                             foreach ($findings as $finding) {
@@ -186,7 +183,7 @@ if (!class_exists('FindingsMenuPage')) {
                                 <tr>
                                     <th scope="row" class="check-column"> <label class="screen-reader-text" for="cb-select-3">
                                             Delete File</label>
-                                        <input id="cb-select-3" type="checkbox" name="files[]" value="<? echo $finding["file_path"] ?>">
+                                        <input id="cb-select-3" type="checkbox" name="files[]" value="<?php \esc_html_e($finding["file_path"]) ?>">
                                         <div class="locked-indicator">
                                             <span class="locked-indicator-icon" aria-hidden="true"></span>
                                             <span class="screen-reader-text">
@@ -194,12 +191,12 @@ if (!class_exists('FindingsMenuPage')) {
                                         </div>
                                     </th>
                                     <td>
-                                        <?
-                                        echo $finding["file_path"];
+                                        <?php
+                                        \esc_html_e($finding["file_path"]);
                                         ?>
                                     </td>
                                 </tr>
-                        <?
+                        <?php
                             }
                         }
                         ?>
@@ -208,11 +205,11 @@ if (!class_exists('FindingsMenuPage')) {
                 </table>
 
                 <input type="hidden" name="action" value="delete_findings">
-                <? wp_nonce_field('wordpress-gdata-antivirus-delete-findings', 'wordpress-gdata-antivirus-delete-findings-nonce'); ?>
+                <?php wp_nonce_field('wordpress-gdata-antivirus-delete-findings', 'wordpress-gdata-antivirus-delete-findings-nonce'); ?>
                 <?php submit_button(__('Remove Files', "wordpress-gdata-antivirus")); ?>
             </form>
 
-<?
+<?php
         }
     }
 }
