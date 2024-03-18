@@ -31,7 +31,7 @@ if (!class_exists('ScanClient')) {
         public function scanSingleFile($file)
         {
             $verdict = $this->scanFile($file['tmp_name']);
-            if ($verdict == \VaasSdk\Message\Verdict::MALICIOUS) {
+            if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict) {
                 $file['error'] = __('virus found');
             }
             return $file;

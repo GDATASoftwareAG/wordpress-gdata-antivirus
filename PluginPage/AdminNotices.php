@@ -6,7 +6,7 @@ if (!class_exists('AdminNotices')) {
     class AdminNotices
     {
 
-        public static $_notices = array();
+        private static $notices = array();
 
         public function __construct()
         {
@@ -16,12 +16,12 @@ if (!class_exists('AdminNotices')) {
 
         public static function addNotice($text)
         {
-            self::$_notices[] = $text;
+            self::$notices[] = $text;
         }
 
         public function saveNotices()
         {
-            update_option('WordpressGdataAntivirusMenuNotices', self::$_notices);
+            update_option('WordpressGdataAntivirusMenuNotices', self::$notices);
         }
 
         public function outputNotices()
