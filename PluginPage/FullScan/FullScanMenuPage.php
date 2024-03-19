@@ -8,7 +8,7 @@ use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\Findings\FindingsMenu
 use Gdatacyberdefenseag\WordpressGdataAntivirus\Logging\WordpressGdataAntivirusPluginDebugLogger;
 use WP;
 
-define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_SLUG', WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG . '-findings');
+define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_SLUG', WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG . '-full-scan');
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_OPERATIONS_TABLE_NAME', 'WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_OPERATIONS');
 
 if (!class_exists('FullScanMenuPage')) {
