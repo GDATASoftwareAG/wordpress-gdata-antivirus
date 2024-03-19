@@ -299,9 +299,6 @@ if (!class_exists('FullScanMenuPage')) {
                 if ($filePath->isDir()) {
                     continue;
                 }
-                if (!str_contains($filePath->getPathname(), "sentry")) {
-                    continue;
-                }
                 WordpressGdataAntivirusPluginDebugLogger::Log($filePath->getPathname());
                 \array_push($files, $filePath->getPathname());
                 if (count($files) >= $batchSize) {
