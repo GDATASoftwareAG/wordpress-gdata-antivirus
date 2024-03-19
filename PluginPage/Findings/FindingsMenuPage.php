@@ -3,6 +3,7 @@
 namespace Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\Findings;
 
 use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\AdminNotices;
+use Gdatacyberdefenseag\WordpressGdataAntivirus\Logging\WordpressGdataAntivirusPluginDebugLogger;
 
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FINDINGS_SLUG', WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG . '-findings');
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FINDINGS_TABLE_NAME', 'WORDPRESS_GDATA_ANTIVIRUS_MENU_FINDINGS_TABLE');
@@ -44,44 +45,55 @@ if (!class_exists('FindingsMenuPage')) {
 
             require_once ABSPATH . 'wp-admin/includes/upgrade.php';
             dbDelta($sql);
+            \wp_cache_set($this->getTableName(), 'true', 'WordPressGdataAntivirus');
         }
 
         public function FindingsTableExist(): bool
         {
-            global $wpdb;
-            return $wpdb->get_var("SHOW TABLES LIKE '" . $this->getTableName() . "'") === $this->getTableName();
+            $tablesExists = \wp_cache_get($this->getTableName(), 'WordPressGdataAntivirus');
+            if (false === $tablesExists) {
+                global $wpdb;
+                $exists = $wpdb->get_var('SHOW TABLES LIKE \'' . $this->getTableName() . '\'') === $this->getTableName();
+                \wp_cache_set($this->getTableName(), \wp_json_encode($exists), 'WordPressGdataAntivirus');
+                return $exists;
+            }
+            if ('true' !== $tablesExists) {
+                return true;
+            }
+            return false;
         }
 
         public function RemoveFindingsTable()
         {
-            if (!$this->FindingsTableExist())
+            if (!$this->FindingsTableExist()) {
                 return;
+            }
             global $wpdb;
-
             $wpdb->query('DROP TABLE IF EXISTS ' . $this->getTableName());
+            \wp_cache_set($this->getTableName(), 'false', 'WordPressGdataAntivirus');
         }
 
         public function AddFinding(string $file): void
         {
-            if (!$this->FindingsTableExist())
+            if (!$this->FindingsTableExist()) {
                 return;
+            }
             global $wpdb;
             try {
                 $wpdb->insert(
                     $this->getTableName(),
-                    array(
-                        'file_path' => $file
-                    )
+                    ['file_path' => $file]
                 );
             } catch (\Exception $e) {
-                // Do nothing
+                WordpressGdataAntivirusPluginDebugLogger::Log($e->getMessage());
             }
         }
 
         public function DeleteFinding(string $file): void
         {
-            if (!$this->FindingsTableExist())
+            if (!$this->FindingsTableExist()) {
                 return;
+            }
             global $wpdb;
             $wpdb->delete(
                 $this->getTableName(),
@@ -91,8 +103,9 @@ if (!class_exists('FindingsMenuPage')) {
 
         public function ValidateFindings(): void
         {
-            if (!$this->FindingsTableExist())
+            if (!$this->FindingsTableExist()) {
                 return;
+            }
             $findings = $this->GetAllFindings();
 
             foreach ($findings as $finding) {
@@ -104,16 +117,18 @@ if (!class_exists('FindingsMenuPage')) {
 
         public function GetAllFindings(): array
         {
-            if (!$this->FindingsTableExist())
+            if (!$this->FindingsTableExist()) {
                 return [];
+            }
             global $wpdb;
             return $wpdb->get_results('SELECT file_path FROM ' . $this->getTableName(), ARRAY_A);
         }
 
         public function GetFindingsCount(): int
         {
-            if (!$this->FindingsTableExist())
+            if (!$this->FindingsTableExist()) {
                 return 0;
+            }
             global $wpdb;
             return $wpdb->get_var('SELECT COUNT(*) FROM ' . $this->getTableName());
         }
@@ -132,28 +147,37 @@ if (!class_exists('FindingsMenuPage')) {
 
         public function DeleteFindings(): void
         {
-            if (!wp_verify_nonce($_POST['wordpress-gdata-antivirus-delete-findings-nonce'], 'wordpress-gdata-antivirus-delete-findings')) {
-                wp_die(__('Invalid nonce specified', 'wordpress-gdata-antivirus'), __('Error', 'wordpress-gdata-antivirus'), [
-                    'response'  => intval(403),
-                    'back_link' => true,
+            if (!isset($_POST['wordpress-gdata-antivirus-delete-findings-nonce'])) {
+                wp_die(\esc_html__('Invalid nonce specified', 'wordpress-gdata-antivirus'), \esc_html__('Error', 'wordpress-gdata-antivirus'), [
+                    'response' => \intval(403),
+                ]);
+            }
+            if (!wp_verify_nonce(sanitize_key($_POST['wordpress-gdata-antivirus-delete-findings-nonce']), 'wordpress-gdata-antivirus-delete-findings')) {
+                wp_die(\esc_html__('Invalid nonce specified', 'wordpress-gdata-antivirus'), \esc_html__('Error', 'wordpress-gdata-antivirus'), [
+                    'response' => \intval(403),
                 ]);
             }
 
-            if (!isset($_POST["files"])) {
-                $this->AdminNotices->addNotice(__('No files to delete given.', 'wordpress-gdata-antivirus'));
-                \wp_safe_redirect($_SERVER['HTTP_REFERER']);
+            if (!isset($_POST['files'])) {
+                $this->AdminNotices->addNotice(\esc_html__('No files to delete given.', 'wordpress-gdata-antivirus'));
+                \wp_safe_redirect(\wp_unslash(\wp_get_referer()));
+            }
+            if (!\is_array($_POST['files'])) {
+                $this->AdminNotices->addNotice(\esc_html__('No files to delete given.', 'wordpress-gdata-antivirus'));
+                \wp_safe_redirect(\wp_unslash(\wp_get_referer()));
             }
 
-            foreach ($_POST['files'] as $file) {
+            $files = array_values(\wp_unslash($_POST['files']));
+            foreach ($files as $file) {
                 if (!is_writable($file)) {
-                    $this->AdminNotices->addNotice(__('Cannot delete file: ', 'wordpress-gdata-antivirus') . $file);
+                    $this->AdminNotices->addNotice(\esc_html__('Cannot delete file: ', 'wordpress-gdata-antivirus') . $file);
                 } else {
                     \wp_delete_file($file);
                     $this->DeleteFinding($file);
                 }
             }
 
-            \wp_safe_redirect($_SERVER['HTTP_REFERER']);
+            \wp_safe_redirect(\wp_unslash(\wp_get_referer()));
         }
 
         public function FindingsList(): void

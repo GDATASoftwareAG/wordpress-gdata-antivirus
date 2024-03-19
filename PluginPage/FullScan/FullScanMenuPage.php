@@ -280,7 +280,7 @@ if (!class_exists('FullScanMenuPage')) {
                     'response' => 403,
                 ]);
             }
-            if (!wp_verify_nonce(esc_url_raw(\wp_unslash($_POST['wordpress-gdata-antivirus-full-scan-nonce'])), 'wordpress-gdata-antivirus-full-scan')) {
+            if (!wp_verify_nonce(\sanitize_key($_POST['wordpress-gdata-antivirus-full-scan-nonce']), 'wordpress-gdata-antivirus-full-scan')) {
                 wp_die(\esc_html__('Invalid nonce specified', 'wordpress-gdata-antivirus'), \esc_html__('Error', 'wordpress-gdata-antivirus'), [
                     'response' => 403,
                 ]);
