@@ -2,7 +2,7 @@
 
 /**
  * wordpress-gdata-antivirus
- * 
+ *
  * @category Security
  * @package  GD_Scan
  * @author   G DATA CyberDefense AG <oem@gdata.de>
@@ -23,6 +23,6 @@ namespace Gdatacyberdefenseag\WordpressGdataAntivirus;
 
 define('PLUGIN_WITH_CLASSES__FILE__', __FILE__);
 
-require_once dirname(__FILE__) . "/vendor/autoload.php";
+require_once __DIR__ . '/vendor/autoload.php';
 
-$plugin = new WordpressGdataAntivirusPlugin();
+new WordpressGdataAntivirusPlugin();
