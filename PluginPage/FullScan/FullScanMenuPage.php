@@ -6,6 +6,7 @@ use Gdatacyberdefenseag\WordpressGdataAntivirus\Vaas\ScanClient;
 use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\AdminNotices;
 use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\Findings\FindingsMenuPage;
 use Gdatacyberdefenseag\WordpressGdataAntivirus\Logging\WordpressGdataAntivirusPluginDebugLogger;
+use WP;
 
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_SLUG', WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG . '-findings');
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_OPERATIONS_TABLE_NAME', 'WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_OPERATIONS');
@@ -49,11 +50,6 @@ if (!class_exists('FullScanMenuPage')) {
             $fullScanEnabled = (bool)\get_option('wordpress_gdata_antivirus_options_full_scan_schedule_enabled', false);
             $scheduleStart = \get_option('wordpress_gdata_antivirus_options_full_scan_schedule_start', '01:00');
             $next = wp_next_scheduled('wordpress_gdata_antivirus_scheduled_full_scan');
-            if (defined('WP_DEBUG_LOG') && is_string(WP_DEBUG_LOG)) {
-                WordpressGdataAntivirusPluginDebugLogger::Log('fullScanEnabled: ' . $fullScanEnabled . "\n");
-                WordpressGdataAntivirusPluginDebugLogger::Log('scheduleStart: ' . $scheduleStart . "\n");
-                WordpressGdataAntivirusPluginDebugLogger::Log('next: ' . $next . "\n");
-            }
 
             if (!$fullScanEnabled && $next) {
                 \wp_unschedule_event($next, 'wordpress_gdata_antivirus_scheduled_full_scan');
@@ -62,8 +58,8 @@ if (!class_exists('FullScanMenuPage')) {
 
             if ($fullScanEnabled && !$next) {
                 $timestamp = strtotime($scheduleStart);
-                WordpressGdataAntivirusPluginDebugLogger::Log('schedule start timestamp: ' . $timestamp . "\n");
-                $scheduled = \wp_schedule_event($timestamp, 'daily', 'wordpress_gdata_antivirus_scheduled_full_scan');
+                WordpressGdataAntivirusPluginDebugLogger::Log('schedule start timestamp: ' . $timestamp);
+                \wp_schedule_event($timestamp, 'daily', 'wordpress_gdata_antivirus_scheduled_full_scan');
                 return;
             }
             $nextScheduleStart = gmdate('H:i', $next);
@@ -268,7 +264,7 @@ if (!class_exists('FullScanMenuPage')) {
             $scheduleStart = \get_option('wordpress_gdata_antivirus_options_full_scan_schedule_start', '01:00');
             $fullScanEnabled =
                 (bool)\get_option('wordpress_gdata_antivirus_options_full_scan_schedule_enabled', false);
-            WordpressGdataAntivirusPluginDebugLogger::Log('scheduleStart: ' . $scheduleStart . "\n");
+            WordpressGdataAntivirusPluginDebugLogger::Log('scheduleStart: ' . $scheduleStart);
 
             echo "<input id='wordpress_gdata_antivirus_options_full_scan_schedule_start' name='wordpress_gdata_antivirus_options_full_scan_schedule_start' type='text' value='" . \esc_attr($scheduleStart) . "' " . ($fullScanEnabled ? '' : 'disabled') . '/>';
         }
@@ -303,6 +299,10 @@ if (!class_exists('FullScanMenuPage')) {
                 if ($filePath->isDir()) {
                     continue;
                 }
+                if (!str_contains($filePath->getPathname(), "sentry")) {
+                    continue;
+                }
+                WordpressGdataAntivirusPluginDebugLogger::Log($filePath->getPathname());
                 \array_push($files, $filePath->getPathname());
                 if (count($files) >= $batchSize) {
                     $this->IncreaseScheduledScans();
@@ -311,15 +311,18 @@ if (!class_exists('FullScanMenuPage')) {
                     $files = [];
                 }
             }
+            if (count($files) > 0) {
+                $this->IncreaseScheduledScans();
+                \wp_schedule_single_event(time(), 'wordpress_gdata_antivirus_scan_batch', ['files' => $files]);
+            }
         }
 
         public function scanBatch(array $files): void
         {
             try {
-                WordpressGdataAntivirusPluginDebugLogger::Log("does not match pattern\n");
-
                 foreach ($files as $file) {
                     if ($this->ScanClient->scanFile($file) === \VaasSdk\Message\Verdict::MALICIOUS) {
+                        WordpressGdataAntivirusPluginDebugLogger::Log("add to findings " . $file);
                         $this->FindingsMenuPage->AddFinding($file);
                     }
                 }

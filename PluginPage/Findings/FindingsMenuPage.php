@@ -57,7 +57,7 @@ if (!class_exists('FindingsMenuPage')) {
                 \wp_cache_set($this->getTableName(), \wp_json_encode($exists), 'WordPressGdataAntivirus');
                 return $exists;
             }
-            if ('true' !== $tablesExists) {
+            if ('true' === $tablesExists) {
                 return true;
             }
             return false;
@@ -78,6 +78,7 @@ if (!class_exists('FindingsMenuPage')) {
             if (!$this->FindingsTableExist()) {
                 return;
             }
+
             global $wpdb;
             try {
                 $wpdb->insert(

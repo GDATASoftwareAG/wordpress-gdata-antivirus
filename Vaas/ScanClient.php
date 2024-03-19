@@ -39,8 +39,11 @@ if (!class_exists('ScanClient')) {
 
         public function scanFile($filePath): Verdict
         {
-            WordpressGdataAntivirusPluginDebugLogger::Log('wordpress-gdata-antivirus: scanning ' . $filePath . "\n");
-            return $this->vaas->ForFile($filePath)->Verdict;
+            $verdict = $this->vaas->ForFile($filePath)->Verdict;
+            WordpressGdataAntivirusPluginDebugLogger::Log(
+                'wordpress-gdata-antivirus: verdict for file ' . $filePath . ': ' . var_export($verdict, true)
+            );
+            return $verdict;
         }
     }
 }
