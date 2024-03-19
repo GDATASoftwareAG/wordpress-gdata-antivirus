@@ -1,7 +1,7 @@
 <?php
 
 /**
- * wordpress-gdata-antivirus
+ * G DATA Antivirus
  *
  * @category Security
  * @package  GD_Scan
@@ -10,7 +10,7 @@
  * @link     https://github.com/GDATASoftwareAG/vaas
  *
  * @wordpress-plugin
- * Plugin Name: wordpress-gdata-antivirus
+ * Plugin Name: G DATA Antivirus
  * Version: 0.0.1
  * Requires PHP: 8.1
  * Plugin URI: https://github.com/GDATASoftwareAG/wordpress-gdata-antivirus
