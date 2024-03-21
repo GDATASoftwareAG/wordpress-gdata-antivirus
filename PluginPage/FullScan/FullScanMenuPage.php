@@ -8,7 +8,7 @@ use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\Findings\FindingsMenu
 use Gdatacyberdefenseag\WordpressGdataAntivirus\Logging\WordpressGdataAntivirusPluginDebugLogger;
 use WP;
 
-define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_SLUG', WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG . '-findings');
+define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_SLUG', WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG . '-full-scan');
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_OPERATIONS_TABLE_NAME', 'WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_OPERATIONS');
 
 if (!class_exists('FullScanMenuPage')) {
@@ -299,9 +299,6 @@ if (!class_exists('FullScanMenuPage')) {
                 if ($filePath->isDir()) {
                     continue;
                 }
-                if (!str_contains($filePath->getPathname(), "sentry")) {
-                    continue;
-                }
                 WordpressGdataAntivirusPluginDebugLogger::Log($filePath->getPathname());
                 \array_push($files, $filePath->getPathname());
                 if (count($files) >= $batchSize) {
@@ -342,7 +339,7 @@ if (!class_exists('FullScanMenuPage')) {
             settings_errors('wordpress_gdata_antivirus_options_full_scan_schedule_start');
             settings_errors('wordpress_gdata_antivirus_options_full_scan_batch_size');
 ?>
-            <h2>VaaS Settings</h2>
+            <h2>Full Scan Settings</h2>
             <form action="options.php" method="post">
                 <?php
                 \settings_fields('wordpress_gdata_antivirus_options_full_scan_run');

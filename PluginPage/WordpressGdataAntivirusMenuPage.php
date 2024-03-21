@@ -4,6 +4,7 @@ namespace Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage;
 
 use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\Findings\FindingsMenuPage;
 use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\FullScan\FullScanMenuPage;
+use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\OnDemandScan\OnDemandScan;
 
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG', 'wordpress-gdata-antivirus-menu');
 
@@ -12,6 +13,7 @@ if (!class_exists('WordpressGdataAntivirusMenuPage')) {
     {
         public FullScanMenuPage $FullScanMenuPage;
         public FindingsMenuPage $FindingsMenuPage;
+        public OnDemandScan $OnDemandScan;
 
         public function __construct()
         {
@@ -20,6 +22,7 @@ if (!class_exists('WordpressGdataAntivirusMenuPage')) {
 
             $this->FindingsMenuPage = new FindingsMenuPage();
             $this->FullScanMenuPage = new FullScanMenuPage($this->FindingsMenuPage);
+            $this->OnDemandScan = new OnDemandScan();
         }
 
         public function SetupFileds(): void
