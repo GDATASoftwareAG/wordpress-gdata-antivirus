@@ -5,4 +5,7 @@ sudo apt-get install -y bash-completion vim
 sudo bash -c "docker completion bash > /usr/share/bash-completion/completions/docker"
 sudo bash -c "composer completion bash > /usr/share/bash-completion/completions/composer"
 
-echo ". /usr/share/bash-completion/bash_completion" >> /home/vscode/.bashrcsource 
+echo ". /usr/share/bash-completion/bash_completion" >> /home/vscode/.bashrcsource
+
+pwd
+docker compose up
