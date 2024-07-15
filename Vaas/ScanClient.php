@@ -3,14 +3,16 @@
 namespace Gdatacyberdefenseag\WordpressGdataAntivirus\Vaas;
 
 use VaasSdk\Vaas;
-use VaasSdk\ClientCredentialsGrantAuthenticator;
-use VaasSdk\VaasOptions;
-use VaasSdk\Message\Verdict;
-use Gdatacyberdefenseag\WordpressGdataAntivirus\Logging\WordpressGdataAntivirusPluginDebugLogger;
-use GuzzleHttp\Psr7\Stream;
+use VaasSdk\Authentication\ClientCredentialsGrantAuthenticator;
+use GuzzleHttp\Psr7;
 
-if (!class_exists('ScanClient')) {
-    class ScanClient
+use function Amp\ByteStream\Internal\tryToCreateReadableStreamFromResource;
+
+class ScanClient
+{
+    private ClientCredentialsGrantAuthenticator $clientCredentialsGrantAuthenticator;
+    private Vaas $vaas;
+    public function __construct()
     {
         private ClientCredentialsGrantAuthenticator $clientCredentialsGrantAuthenticator;
         private Vaas $vaas;
@@ -32,17 +34,27 @@ if (!class_exists('ScanClient')) {
                 \add_filter('wp_handle_upload_prefilter', [$this, 'scanSingleUpload']);
                 \add_filter('wp_handle_sideload_prefilter', [$this, 'scanSingleUpload']);
             }
-
-            $commentScanEnabled = (bool)\get_option('wordpress_gdata_antivirus_options_on_demand_scan_comment_scan_enabled', false);
-            $pingbackScanEnabled = (bool)\get_option('wordpress_gdata_antivirus_options_on_demand_scan_pingback_scan_enabled', false);
-            // we don't need to add the filter if both comment and pingback scan are disabled
-            if ($commentScanEnabled === true || $pingbackScanEnabled === true) {
-                \add_filter('preprocess_comment', [$this, 'scanComment']);
+            if ($filePath->isDir()) {
+                continue;
             }
-
-            $postScanEnabled = (bool)\get_option('wordpress_gdata_antivirus_options_on_demand_scan_post_scan_enabled', false);
-            if ($postScanEnabled === true) {
-                \add_filter('wp_insert_post_data', [$this, 'scanPost']);
+            if (defined('WP_DEBUG_LOG')) {
+                \file_put_contents(WP_DEBUG_LOG, "scanning file: " . $filePath .  "\n", FILE_APPEND);
+            };
+			
+            $verdict = $this->vaas->ForStream(tryToCreateReadableStreamFromResource(fopen($filePath, 'r')));
+            if ($verdict->Verdict == \VaasSdk\Message\Verdict::MALICIOUS) {
+                if (defined('WP_DEBUG_LOG')) {
+                    \file_put_contents(WP_DEBUG_LOG, "virus found: " . $filePath .  "\n", FILE_APPEND);
+                };
+                $scanFindings = \get_option('wp_vaas_plugin_scan_findings');
+                if ($scanFindings == null) {
+                    $scanFindings = [];
+                }
+                if (\in_array($filePath->getPathname(), $scanFindings)) {
+                    continue;
+                }
+                \array_push($scanFindings, $filePath->__toString());
+                \update_option("wp_vaas_plugin_scan_findings", $scanFindings);
             }
         }
 
