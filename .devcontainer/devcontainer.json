@@ -19,6 +19,7 @@
 	// Configure tool-specific properties.
 	// "customizations": {},
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"postStartCommand": ".devcontainer/postCreateCommands.sh",
 	"forwardPorts": [
 		8080
 	]
