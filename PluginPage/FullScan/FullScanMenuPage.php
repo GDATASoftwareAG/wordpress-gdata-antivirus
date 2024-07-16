@@ -319,6 +319,15 @@ if (!class_exists('FullScanMenuPage')) {
             $this->ScanClient->Connect();
             try {
                 foreach ($files as $file) {
+                    /**
+                     * the scans are scheduled in a different job
+                     * the actual scan of the batch is always delayed
+                     * therefore the files can already be deleted or moved
+                     * we need to check if the file still exists
+                     * */ 
+                    if (!\file_exists($file)) {
+                        continue;
+                    }
                     if ($this->ScanClient->scanFile($file) === \VaasSdk\Message\Verdict::MALICIOUS) {
                         WordpressGdataAntivirusPluginDebugLogger::Log("add to findings " . $file);
                         $this->FindingsMenuPage->AddFinding($file);
