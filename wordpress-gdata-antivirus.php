@@ -21,6 +21,8 @@
 
 namespace Gdatacyberdefenseag\WordpressGdataAntivirus;
 
+use Gdatacyberdefenseag\WordpressGdataAntivirus\WordpressGdataAntivirusPlugin;
+
 define('PLUGIN_WITH_CLASSES__FILE__', __FILE__);
 
 require_once __DIR__ . '/vendor/autoload.php';
