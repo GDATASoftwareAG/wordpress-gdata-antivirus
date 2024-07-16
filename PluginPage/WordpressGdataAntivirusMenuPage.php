@@ -169,7 +169,7 @@ if (!class_exists('WordpressGdataAntivirusMenuPage')) {
         {
             $options = $this->GetVaasOption();
             ?>
-                <input id='wordpress_gdata_antivirus_credentials_client_secret' name='wordpress_gdata_antivirus_options_credentials[client_secret]' type='text' value='<?php \esc_attr_e($options['client_secret']); ?>' />
+                <input id='wordpress_gdata_antivirus_credentials_client_secret' name='wordpress_gdata_antivirus_options_credentials[client_secret]' type='password' value='<?php \esc_attr_e($options['client_secret']); ?>' />
             <?php
         }
 
@@ -185,7 +185,7 @@ if (!class_exists('WordpressGdataAntivirusMenuPage')) {
         {
             $options = $this->GetVaasOption();
             ?>
-                <input id='wordpress_gdata_antivirus_credentials_password' name='wordpress_gdata_antivirus_options_credentials[password]' type='text' value='<?php \esc_attr_e($options['password']); ?>' />
+                <input id='wordpress_gdata_antivirus_credentials_password' name='wordpress_gdata_antivirus_options_credentials[password]' type='password' value='<?php \esc_attr_e($options['password']); ?>' />
             <?php
         }
 
