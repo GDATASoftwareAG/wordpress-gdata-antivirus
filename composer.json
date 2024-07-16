@@ -18,6 +18,12 @@
     "config": {
         "platform": {
             "php": "8.2"
+        },
+        "allow-plugins": {
+            "johnpbloch/wordpress-core-installer": true
         }
+    },
+    "require-dev": {
+        "johnpbloch/wordpress": "^6.5"
     }
 }
