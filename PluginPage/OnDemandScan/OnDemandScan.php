@@ -2,6 +2,8 @@
 
 namespace Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\OnDemandScan;
 
+use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\WordpressGdataAntivirusMenuPage;
+
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_ON_DEMAND_SCAN_SLUG', WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG . '-on-demand-scan');
 
 if (!class_exists('OnDemandScan')) {
@@ -9,11 +11,7 @@ if (!class_exists('OnDemandScan')) {
     {
         public function __construct()
         {
-            $options = \get_option('wordpress_gdata_antivirus_options_credentials', [
-                'client_id'     => '',
-                'client_secret' => '',
-            ]);
-            if (empty($options['client_id']) || empty($options['client_secret'])) {
+            if (!WordpressGdataAntivirusMenuPage::CredentialsConfigured()) {
                 return;
             }
             \add_action('init', [$this, 'SetupFields']);

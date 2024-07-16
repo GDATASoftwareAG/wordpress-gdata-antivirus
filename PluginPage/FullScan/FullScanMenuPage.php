@@ -6,6 +6,7 @@ use Gdatacyberdefenseag\WordpressGdataAntivirus\Vaas\ScanClient;
 use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\AdminNotices;
 use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\Findings\FindingsMenuPage;
 use Gdatacyberdefenseag\WordpressGdataAntivirus\Logging\WordpressGdataAntivirusPluginDebugLogger;
+use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\WordpressGdataAntivirusMenuPage;
 use WP;
 
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_SLUG', WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG . '-full-scan');
@@ -23,11 +24,7 @@ if (!class_exists('FullScanMenuPage')) {
             register_activation_hook(PLUGIN_WITH_CLASSES__FILE__, [$this, 'CreateFullScanOperationsTable']);
             register_deactivation_hook(PLUGIN_WITH_CLASSES__FILE__, [$this, 'RemoveFullScanOperationsTable']);
 
-            $options = \get_option('wordpress_gdata_antivirus_options_credentials', [
-                'client_id'     => '',
-                'client_secret' => '',
-            ]);
-            if (empty($options['client_id']) || empty($options['client_secret'])) {
+            if (!WordpressGdataAntivirusMenuPage::CredentialsConfigured()) {
                 return;
             }
             $this->ScanClient = new ScanClient();

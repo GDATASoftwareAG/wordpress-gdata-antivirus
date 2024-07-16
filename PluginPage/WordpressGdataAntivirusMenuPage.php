@@ -209,6 +209,15 @@ if (!class_exists('WordpressGdataAntivirusMenuPage')) {
             return \get_option('wordpress_gdata_antivirus_options_credentials', self::$vaasOptionDefaults);
         }
 
+        public static function CredentialsConfigured(): bool {
+            $options = \get_option('wordpress_gdata_antivirus_options_credentials', self::$vaasOptionDefaults);
+            if ($options['authentication_method'] == 'ResourceOwnerPasswordGrant') {
+                return !empty($options['username']) && !empty($options['password']);
+            } else {
+                return !empty($options['client_id']) && !empty($options['client_secret']);
+            }
+        }
+
         public function CredentialsMenuItem(): void
         {
 ?>
