@@ -316,6 +316,7 @@ if (!class_exists('FullScanMenuPage')) {
 
         public function scanBatch(array $files): void
         {
+            $this->ScanClient->Connect();
             try {
                 foreach ($files as $file) {
                     if ($this->ScanClient->scanFile($file) === \VaasSdk\Message\Verdict::MALICIOUS) {
@@ -360,7 +361,7 @@ if (!class_exists('FullScanMenuPage')) {
             <?php
             } else {
             ?>
-                <p><?php \esc_html_e('Full Scan is running. ', 'wordpress-gdata-antivirus') . $finishedScans . \esc_html_e(' of ', 'wordpress-gdata-antivirus') . $scheduledScans . \esc_html_e(' batches are finished', 'wordpress-gdata-antivirus'); ?></p>
+                <p><?php echo \esc_html('Full Scan is running. ', 'wordpress-gdata-antivirus') . $finishedScans . \esc_html(' of ', 'wordpress-gdata-antivirus') . $scheduledScans . \esc_html(' batches are finished', 'wordpress-gdata-antivirus'); ?></p>
 <?php
             }
         }
