@@ -27,18 +27,18 @@ jobs:
             echo "plugin_prerelease=false" | tee -a "$GITHUB_OUTPUT"
           elif [[ $GITHUB_REF == refs/head/main ]]; then
             echo "running main version extract from file" 
-            PLUGIN_VERSION=$(cat WordpressGdataAntivirusPlugin.php | sed -nE 's/^.*Version: ([0-9a-z\.\-])/\1/p')
+            PLUGIN_VERSION=$(cat wordpress-gdata-antivirus.php | sed -nE 's/^.*Version: ([0-9a-z\.\-])/\1/p')
             echo "plugin_version=v$PLUGIN_VERSION" | tee -a "$GITHUB_OUTPUT"
             echo "plugin_prerelease=false" | tee -a "$GITHUB_OUTPUT"
           elif [[ $GITHUB_REF == refs/pull/* ]]; then
             echo "running pull request version extract from file" 
-            PLUGIN_VERSION=$(cat WordpressGdataAntivirusPlugin.php | sed -nE 's/^.*Version: ([0-9a-z\.\-])/\1/p')
+            PLUGIN_VERSION=$(cat wordpress-gdata-antivirus.php | sed -nE 's/^.*Version: ([0-9a-z\.\-])/\1/p')
             PLUGIN_VERSION_SUFFIX=${GITHUB_HEAD_REF}-${{ github.run_id }}
             echo "plugin_version=v$PLUGIN_VERSION-$PLUGIN_VERSION_SUFFIX" | tee -a "$GITHUB_OUTPUT"
             echo "plugin_prerelease=true" | tee -a "$GITHUB_OUTPUT"
           else
             echo "running branch version extract from file" 
-            PLUGIN_VERSION=$(cat WordpressGdataAntivirusPlugin.php | sed -nE 's/^.*Version: ([0-9a-z\.\-])/\1/p')
+            PLUGIN_VERSION=$(cat wordpress-gdata-antivirus.php | sed -nE 's/^.*Version: ([0-9a-z\.\-])/\1/p')
             PLUGIN_VERSION_SUFFIX=${GITHUB_REF_NAME}-${{ github.run_id }}
             echo "plugin_version=v$PLUGIN_VERSION-$PLUGIN_VERSION_SUFFIX" | tee -a "$GITHUB_OUTPUT"
             echo "plugin_prerelease=true" | tee -a "$GITHUB_OUTPUT"
@@ -67,7 +67,7 @@ jobs:
       - name: composer install
         run: composer install --no-dev
       - name: zip it
-        run: zip wordpress-gdata-antivirus.zip * --exclude @.zipignore
+        run: zip wordpress-gdata-antivirus-${{needs.get-version.outputs.plugin_version}}.zip * --exclude @.zipignore
       - uses: actions/upload-artifact@master
         with:
           name: plugin-zip
