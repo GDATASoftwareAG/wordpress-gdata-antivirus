@@ -15,8 +15,8 @@ if (!class_exists('FindingsMenuPage')) {
 
         public function __construct()
         {
-            register_activation_hook(PLUGIN_WITH_CLASSES__FILE__, [$this, 'CreateFindingsTable']);
-            register_deactivation_hook(PLUGIN_WITH_CLASSES__FILE__, [$this, 'RemoveFindingsTable']);
+            register_activation_hook(WORDPRESS_GDATA_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__, [$this, 'CreateFindingsTable']);
+            register_deactivation_hook(WORDPRESS_GDATA_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__, [$this, 'RemoveFindingsTable']);
 
             if ($this->GetFindingsCount() === 0) {
                 return;
