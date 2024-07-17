@@ -23,7 +23,7 @@ jobs:
         run: |
           if [[ $GITHUB_REF == refs/tags/v* ]]; then
             echo "running tag version extract"
-            echo "plugin_version=${GITHUB_REF#refs/tags/}" | tee -a "$GITHUB_OUTPUT"
+            echo "plugin_version=${GITHUB_REF_NAME}" | tee -a "$GITHUB_OUTPUT"
             echo "plugin_prerelease=false" | tee -a "$GITHUB_OUTPUT"
           elif [[ $GITHUB_REF == refs/head/main ]]; then
             echo "running main version extract from file" 
@@ -33,7 +33,7 @@ jobs:
           else
             echo "running branch version extract from file" 
             PLUGIN_VERSION=$(cat WordpressGdataAntivirusPlugin.php | sed -nE 's/^.*Version: ([0-9a-z\.\-])/\1/p')
-            PLUGIN_VERSION_SUFFIX=${GITHUB_REF#refs/heads/}-${{ github.run_id }}
+            PLUGIN_VERSION_SUFFIX=${GITHUB_REF_NAME}-${{ github.run_id }}
             echo "plugin_version=v$PLUGIN_VERSION-$PLUGIN_VERSION_SUFFIX" | tee -a "$GITHUB_OUTPUT"
             echo "plugin_prerelease=true" | tee -a "$GITHUB_OUTPUT"
           fi
