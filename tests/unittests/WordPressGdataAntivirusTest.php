@@ -70,48 +70,50 @@ define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_OPERATIONS_TABLE_NAME', 'WORDPR
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_ON_DEMAND_SCAN_SLUG', WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG . '-on-demand-scan');
 
 class WordPressGdataAntivirusTest extends TestCase {
-    // public function testDependencyInjection() {
-    // wp_cache_init();
+    public function testDependencyInjection() {
+        $this->markTestSkipped('must be revisited.');
 
-    // $vaas_options = $this->getMockBuilder(VaasOptions::class)
-    // ->onlyMethods(array( 'get_options' ))
-    // ->disableOriginalConstructor()
-    // ->disableOriginalClone()
-    // ->getMock();
-    // $vaas_options
-    // ->method('get_options')
-    // ->willReturn(array(
-    // 'authentication_method' => 'ResourceOwnerPasswordGrant',
-    // 'username' => 'username',
-    // 'password' => 'password',
-    // 'token_endpoint' => 'https://token_endpoint',
-    // 'vaas_url' => 'wws://vaas_url',
-    // ));
+        wp_cache_init();
 
-    // $scan_client = $this->getMockBuilder(ScanClient::class)
-    // ->disableOriginalConstructor()
-    // ->getMock();
+        $vaas_options = $this->getMockBuilder(VaasOptions::class)
+        ->onlyMethods(array( 'get_options' ))
+        ->disableOriginalConstructor()
+        ->disableOriginalClone()
+        ->getMock();
+        $vaas_options
+        ->method('get_options')
+        ->willReturn(array(
+            'authentication_method' => 'ResourceOwnerPasswordGrant',
+            'username' => 'username',
+            'password' => 'password',
+            'token_endpoint' => 'https://token_endpoint',
+            'vaas_url' => 'wws://vaas_url',
+        ));
 
-    // $logger = new TestDebugLogger();
-    // $app = new WordpressGdataAntivirusPlugin($logger);
-    // $app->singleton(LoggerInterface::class, TestDebugLogger::class);
-    // $app->singleton(IGdataAntivirusFileSystem::class, PlainPhpFileSystem::class);
-    // $app->singleton(IGdataAntivirusDatabase::class, NoopDatabase::class);
-    // $app->singleton(VaasOptions::class, function () use ( $vaas_options ) {
-    // return $vaas_options;
-    // });
-    // $app->singleton(ScanClient::class, function () use ( $scan_client ) {
-    // return $scan_client;
-    // });
+        $scan_client = $this->getMockBuilder(ScanClient::class)
+        ->disableOriginalConstructor()
+        ->getMock();
 
-    // $logger->debug("get FindingsMenuPage");
-    // $findings_menu = $app->get(FindingsMenuPage::class);
-    // $logger->debug("get WordpressGdataAntivirusMenuPage");
-    // $gdata_menu_page = $app->get(WordpressGdataAntivirusMenuPage::class);
+        $logger = new TestDebugLogger();
+        $app = new WordpressGdataAntivirusPlugin($logger);
+        $app->singleton(LoggerInterface::class, TestDebugLogger::class);
+        $app->singleton(IGdataAntivirusFileSystem::class, PlainPhpFileSystem::class);
+        $app->singleton(IGdataAntivirusDatabase::class, NoopDatabase::class);
+        $app->singleton(VaasOptions::class, function () use ( $vaas_options ) {
+        return $vaas_options;
+        });
+        $app->singleton(ScanClient::class, function () use ( $scan_client ) {
+        return $scan_client;
+        });
 
-    // assert($findings_menu instanceof PluginPage\Findings\FindingsMenuPage);
-    // $findings_menu->validate_findings();
-    // echo "validate_findings()\n";
-    // $this->assertTrue(true);
-    // }
+        $logger->debug("get FindingsMenuPage");
+        $findings_menu = $app->get(FindingsMenuPage::class);
+        $logger->debug("get WordpressGdataAntivirusMenuPage");
+        $gdata_menu_page = $app->get(WordpressGdataAntivirusMenuPage::class);
+
+        assert($findings_menu instanceof PluginPage\Findings\FindingsMenuPage);
+        $findings_menu->validate_findings();
+        echo "validate_findings()\n";
+        $this->assertTrue(true);
+    }
 }
