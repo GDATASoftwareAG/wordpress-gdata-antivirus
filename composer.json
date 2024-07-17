@@ -20,10 +20,16 @@
             "php": "8.2"
         },
         "allow-plugins": {
-            "johnpbloch/wordpress-core-installer": true
+            "johnpbloch/wordpress-core-installer": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
+    "scripts": {
+        "cs:check": "vendor/bin/phpcs -s --ignore=wordpress/*,vendor/* . --standard=WordPress"
+    },
     "require-dev": {
-        "johnpbloch/wordpress": "^6.5"
+        "johnpbloch/wordpress": "^6.5",
+        "phpunit/phpunit": "^11.2",
+        "wp-coding-standards/wpcs": "^3.0"
     }
 }
