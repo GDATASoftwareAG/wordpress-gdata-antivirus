@@ -3,3 +3,5 @@
 .git/*
 compose*
 Dockerfile
+test.sh
+wordpress/*

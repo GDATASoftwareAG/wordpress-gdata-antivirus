@@ -1,0 +1,5 @@
+{
+    "phpSniffer.autoDetect": true,
+    "phpSniffer.run": "onSave",
+    "editor.formatOnPaste": false,
+}

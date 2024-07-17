@@ -1,167 +1,194 @@
 <?php
+/**
+ * VaaS
+ * Version: 0.0.1
+ * Requires PHP: 8.1
+ * Plugin URI: www.gdata.de
+ *
+ * @category Security
+ * @package  Gdatacyberdefenseag\WordpressGdataAntivirus\Vaas
+ * @author   G DATA CyberDefense AG <info@gdata.de>
+ * @license  none www.gdata.de
+ * @link     www.gdata.de
+ */
 
 namespace Gdatacyberdefenseag\WordpressGdataAntivirus\Vaas;
 
-use Gdatacyberdefenseag\WordpressGdataAntivirus\Logging\WordpressGdataAntivirusPluginDebugLogger;
-use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\WordpressGdataAntivirusMenuPage;
-use Psr\Log\NullLogger;
+use Psr\Log\LoggerInterface;
 use VaasSdk\Vaas;
 use VaasSdk\Authentication\ClientCredentialsGrantAuthenticator;
 use VaasSdk\Authentication\ResourceOwnerPasswordGrantAuthenticator;
 use VaasSdk\Message\Verdict;
-use VaasSdk\VaasOptions;
+use VaasSdk\VaasOptions as VaasParameters;
 
 use function Amp\ByteStream\Internal\tryToCreateReadableStreamFromResource;
 
-class ScanClient
-{
-    private Vaas $vaas;
+if (! class_exists('ScanClient')) {
+	class ScanClient {
+		private Vaas $vaas;
+		private LoggerInterface $logger;
+		private VaasOptions $vaas_options;
 
-    public function __construct()
-    {
-        $this->Connect();
-        $pluginUploadScanEnabled = (bool)\get_option('wordpress_gdata_antivirus_options_on_demand_scan_plugin_upload_scan_enabled', false);
-        $mediaUploadScanEnabled = (bool)\get_option('wordpress_gdata_antivirus_options_on_demand_scan_media_upload_scan_enabled', false);
-        // we don't need to add the filters if both plugin and media upload scan are disabled
-        if ($pluginUploadScanEnabled === true || $mediaUploadScanEnabled === true) {
-            \add_filter('wp_handle_upload_prefilter', [$this, 'scanSingleUpload']);
-            \add_filter('wp_handle_sideload_prefilter', [$this, 'scanSingleUpload']);
-        }
+		public function __construct( LoggerInterface $logger, VaasOptions $vaas_options ) {
+			$logger->info('ScanClient::__construct');
+			$this->logger = $logger;
+			$this->vaas_options = $vaas_options;
 
-        $commentScanEnabled = (bool)\get_option('wordpress_gdata_antivirus_options_on_demand_scan_comment_scan_enabled', false);
-        $pingbackScanEnabled = (bool)\get_option('wordpress_gdata_antivirus_options_on_demand_scan_pingback_scan_enabled', false);
-        // we don't need to add the filter if both comment and pingback scan are disabled
-        if ($commentScanEnabled === true || $pingbackScanEnabled === true) {
-            \add_filter('preprocess_comment', [$this, 'scanComment']);
-        }
+			$this->Connect();
+			$plugin_upload_scan_enabled = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_plugin_upload_scan_enabled', false);
+			$media_upload_scan_enabled  = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_media_upload_scan_enabled', false);
+			// We don't need to add the filters if both plugin and media upload scan are disabled.
+			if ($plugin_upload_scan_enabled === true || $media_upload_scan_enabled === true) {
+				\add_filter('wp_handle_upload_prefilter', array( $this, 'scan_single_upload' ));
+				\add_filter('wp_handle_sideload_prefilter', array( $this, 'scan_single_upload' ));
+			}
 
-        $postScanEnabled = (bool)\get_option('wordpress_gdata_antivirus_options_on_demand_scan_post_scan_enabled', false);
-        if ($postScanEnabled === true) {
-            \add_filter('wp_insert_post_data', [$this, 'scanPost']);
-        }
-    }
+			$comment_scan_enabled  = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_comment_scan_enabled', false);
+			$pingback_scan_enabled = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_pingback_scan_enabled', false);
+			// We don't need to add the filter if both comment and pingback scan are disabled.
+			if ($comment_scan_enabled === true || $pingback_scan_enabled === true) {
+				\add_filter('preprocess_comment', array( $this, 'scan_comment' ));
+			}
 
-    public function Connect() {
-        $options = WordpressGdataAntivirusMenuPage::GetVaasOption();
-        $this->vaas = new Vaas($options['vaas_url'], new NullLogger(), new VaasOptions(false, false));
+			$post_scan_enabled = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_post_scan_enabled', false);
+			if ($post_scan_enabled === true) {
+				\add_filter('wp_insert_post_data', array( $this, 'scan_post' ));
+			}
+		}
 
-        if ($options['authentication_method'] == 'ResourceOwnerPasswordGrant') {
-            $resourceOwnerPasswordGrantAuthenticator = new ResourceOwnerPasswordGrantAuthenticator(
-                "wordpress-customer",
-                $options['username'],
-                $options['password'],
-                $options['token_endpoint']
-            );
-            $this->vaas->connect($resourceOwnerPasswordGrantAuthenticator->getToken());
-        } else {
-            $clientCredentialsGrantAuthenticator = new ClientCredentialsGrantAuthenticator(
-                $options['client_id'],
-                $options['client_secret'],
-                $options['token_endpoint']
-            );
-            $this->vaas->connect($clientCredentialsGrantAuthenticator->getToken());
-        }
-    }
+		public function connect() {
+			$options    = $this->vaas_options->get_options();
+			$this->vaas = new Vaas($options['vaas_url'], $this->logger, new VaasParameters(false, false));
+			if (! $this->vaas_options->credentials_configured()) {
+				return;
+			}
+			if ($options['authentication_method'] == 'ResourceOwnerPasswordGrant') {
+				$resource_owner_password_grant_authenticator = new ResourceOwnerPasswordGrantAuthenticator(
+					'wordpress-customer',
+					$options['username'],
+					$options['password'],
+					$options['token_endpoint']
+				);
+				$this->vaas->connect($resource_owner_password_grant_authenticator->getToken());
+			} else {
+				$client_credentials_grant_authenticator = new ClientCredentialsGrantAuthenticator(
+					$options['client_id'],
+					$options['client_secret'],
+					$options['token_endpoint']
+				);
+				$this->vaas->connect($client_credentials_grant_authenticator->getToken());
+			}
+		}
 
-    public function scanPost($data, $postarr, $unsanitized_postarr)
-    {
-        $data = \wp_unslash($unsanitized_postarr);
-        if (empty($data['post_content'])) {
-            return $data;
-        }
+		public function scan_post( $data, $postarr, $unsanitized_postarr ) {
+			$data = \wp_unslash($unsanitized_postarr);
+			if (empty($data['post_content'])) {
+				return $data;
+			}
 
-        $postScanEnabled = (bool)\get_option('wordpress_gdata_antivirus_options_on_demand_scan_post_scan_enabled', false);
-        if ($postScanEnabled === false) {
-            return $data;
-        }
+			$post_scan_enabled = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_post_scan_enabled', false);
+			if ($post_scan_enabled === false) {
+				return $data;
+			}
 
-        if (empty($postdata['post_content'])) {
-            return $data;
-        }
+			if (empty($postdata['post_content'])) {
+				return $data;
+			}
 
-        $postContent = \wp_unslash($postdata['post_content']);
-        $stream = tryToCreateReadableStreamFromResource(fopen(sprintf('data://text/plain,%s', $postContent), 'r'));
+			$post_content = \wp_unslash($postdata['post_content']);
+			$stream      = tryToCreateReadableStreamFromResource(fopen(sprintf('data://text/plain,%s', $post_content), 'r'));
 
-        $verdict = $this->vaas->ForStream($stream);
-        WordpressGdataAntivirusPluginDebugLogger::Log(var_export($verdict, true));
-        if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict->Verdict) {
-            WordpressGdataAntivirusPluginDebugLogger::Log('wordpress-gdata-antivirus: virus found in post');
-            wp_die(__('virus found'));
-        }
-        return $postdata;
-    }
+			$verdict = $this->vaas->ForStream($stream);
+			$this->logger->debug(var_export($verdict, true));
+			 // phpcs:ignore
+			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict->Verdict) {
+				$this->logger->debug('wordpress-gdata-antivirus: virus found in post');
+				wp_die(esc_html__('virus found'));
+			}
+			return $postdata;
+		}
 
-    public function scanComment($commentdata)
-    {
-        $commentScanEnabled = (bool)\get_option('wordpress_gdata_antivirus_options_on_demand_scan_comment_scan_enabled', false);
-        $pingbackScanEnabled = (bool)\get_option('wordpress_gdata_antivirus_options_on_demand_scan_pingback_scan_enabled', false);
+		public function scan_comment( $commentdata ) {
+			$comment_scan_enabled  = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_comment_scan_enabled', false);
+			$pingback_scan_enabled = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_pingback_scan_enabled', false);
 
-        $commentScanEnabled = \get_option('wordpress_gdata_antivirus_options_on_demand_scan_comment_scan_enabled', false);
-        if ($commentScanEnabled === false) {
-            return $commentdata;
-        }
+			$comment_scan_enabled = \get_option('wordpress_gdata_antivirus_options_on_demand_scan_comment_scan_enabled', false);
+			if ($comment_scan_enabled === false) {
+				return $commentdata;
+			}
 
-        if (empty($commentdata['comment_content'])) {
-            return $commentdata;
-        }
+			if (empty($commentdata['comment_content'])) {
+				return $commentdata;
+			}
 
-        // if this is a comment and the comment scan is disabled, we don't need to scan the comment
-        // 'comment_type' - 'pingback', 'trackback', or empty for regular comments see: https://developer.wordpress.org/reference/hooks/preprocess_comment/
-        if (empty($commentdata['comment_type']) && $commentScanEnabled === false) {
-            return $commentdata;
-            // if this is a pingback and the pingback scan is disabled, we don't need to scan the comment
-        } elseif (!empty($commentdata['comment_type']) && $pingbackScanEnabled === false) {
-            return $commentdata;
-        }
+			/**
+			 * If this is a comment and the comment scan is disabled, we don't need to scan the comment.
+			 * 'comment_type' - 'pingback', 'trackback', or empty for regular comments see:
+			 * https:// developer.wordpress.org/reference/hooks/preprocess_comment/
+			 */
+			if (empty($commentdata['comment_type']) && $comment_scan_enabled === false) {
+				return $commentdata;
+				// If this is a pingback and the pingback scan is disabled, we don't need to scan the comment.
+			} elseif (! empty($commentdata['comment_type']) && $pingback_scan_enabled === false) {
+				return $commentdata;
+			}
 
-        $commendContent = \wp_unslash($commentdata['comment_content']);
-        $stream = tryToCreateReadableStreamFromResource(fopen(sprintf('data://text/plain,%s', $commendContent), 'r'));
+			$commend_content = \wp_unslash($commentdata['comment_content']);
+			$stream         = tryToCreateReadableStreamFromResource(fopen(sprintf('data://text/plain,%s', $commend_content), 'r'));
 
-        $verdict = $this->vaas->ForStream($stream);
-        WordpressGdataAntivirusPluginDebugLogger::Log(var_export($verdict, true));
-        if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict->Verdict) {
-            WordpressGdataAntivirusPluginDebugLogger::Log('wordpress-gdata-antivirus: virus found in comment');
-            wp_die(__('virus found'));
-        }
-        return $commentdata;
-    }
+			$verdict = $this->vaas->ForStream($stream);
+			$this->logger->debug(var_export($verdict, true));
+			 // phpcs:ignore
+			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict->Verdict) {
+				$this->logger->debug('wordpress-gdata-antivirus: virus found in comment');
+				wp_die(\esc_html__('virus found'));
+			}
+			return $commentdata;
+		}
 
-    public function scanSingleUpload($file)
-    {
-        $pluginUploadScanEnabled = \get_option('wordpress_gdata_antivirus_options_on_demand_scan_plugin_upload_scan_enabled', false);
-        $mediaUploadScanEnabled = \get_option('wordpress_gdata_antivirus_options_on_demand_scan_media_upload_scan_enabled', false);
+		public function scan_single_upload( $file ) {
+			$plugin_upload_scan_enabled = \get_option('wordpress_gdata_antivirus_options_on_demand_scan_plugin_upload_scan_enabled', false);
+			$media_upload_scan_enabled  = \get_option('wordpress_gdata_antivirus_options_on_demand_scan_media_upload_scan_enabled', false);
 
-        // when this is a plugin uplaod but the plugin upload scan is disabled, we don't need to scan the file
-        $isPluginUplad = false;
-        if (isset($_GET['action'])) {
-            if ($_GET['action'] === 'upload-plugin') {
-                $isPluginUplad = true;
-                if ($pluginUploadScanEnabled === false) {
-                    return $file;
-                }
-            }
-        }
+			// When this is a plugin uplaod but the plugin upload scan is disabled, we don't need to scan the file.
+			$is_plugin_uplad = false;
+			if (isset($_GET['action'])) {
+				if ($_GET['action'] === 'upload-plugin') {
+					$is_plugin_uplad = true;
+					if ($plugin_upload_scan_enabled === false) {
+						return $file;
+					}
+				}
+			}
 
-        // when this is a media upload (not a plugin upload) but the media upload scan is disabled, we don't need to scan the file
-        if ($isPluginUplad === false) {
-            if ($mediaUploadScanEnabled === false) {
-                return $file;
-            }
-        }
+			/**
+			 * When this is a media upload(not a plugin upload) but the media upload scan is disabled,
+			 * we don't need to scan the file.
+			 */
+			if ($is_plugin_uplad === false) {
+				if ($media_upload_scan_enabled === false) {
+					return $file;
+				}
+			}
 
-        $verdict = $this->scanFile($file['tmp_name']);
-        if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict) {
-            $file['error'] = __('virus found');
-        }
-        return $file;
-    }
+			$verdict = $this->scan_file($file['tmp_name']);
+			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict) {
+				$file['error'] = __('virus found');
+			}
+			return $file;
+		}
 
-    public function scanFile($filePath): Verdict
-    {
-        $verdict = $this->vaas->ForFile($filePath)->Verdict;
-        WordpressGdataAntivirusPluginDebugLogger::Log(
-            'wordpress-gdata-antivirus: verdict for file ' . $filePath . ': ' . var_export($verdict, true)
-        );
-        return $verdict;
-    }
+		public function scan_file( $file_path ): Verdict {
+			try {
+				$verdict = $this->vaas->ForFile($file_path)->Verdict;
+			} catch (\Exception $e) {
+				$this->logger->debug($e->getMessage());
+				return Verdict::UNKNOWN;
+			}
+			$this->logger->debug(
+				'wordpress-gdata-antivirus: verdict for file ' . $file_path . ': ' . var_export($verdict, true)
+			);
+			return $verdict;
+		}
+	}
 }
