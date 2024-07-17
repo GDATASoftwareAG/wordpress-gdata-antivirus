@@ -1,0 +1,86 @@
+name: github release
+
+on:
+  push:
+    branches: [
+      "main",
+      # this should be mainly branch releases for created issues
+      "[0-9]-*"
+    ]
+    tags: ["*"]
+  pull_request:
+    branches: ["*"]
+
+jobs:
+  get-version:
+    runs-on: ubuntu-latest
+    outputs:
+      plugin_version: ${{ steps.get-version.outputs.plugin_version }}
+      plugin_prerelease: ${{ steps.get-version.outputs.plugin_prerelease }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: get-version
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          if [[ $GITHUB_REF == refs/tags/v* ]]; then
+            echo "running tag version extract"
+            echo "plugin_version=${GITHUB_REF#refs/tags/}" | tee -a "$GITHUB_OUTPUT"
+            echo "plugin_prerelease=false" | tee -a "$GITHUB_OUTPUT"
+          elif [[ $GITHUB_REF == refs/head/main ]]; then
+            echo "running main version extract from file" 
+            PLUGIN_VERSION=$(cat WordpressGdataAntivirusPlugin.php | sed -nE 's/^.*Version: ([0-9a-z\.\-])/\1/p')
+            echo "plugin_version=v$PLUGIN_VERSION" | tee -a "$GITHUB_OUTPUT"
+            echo "plugin_prerelease=false" | tee -a "$GITHUB_OUTPUT"
+          else
+            echo "running branch version extract from file" 
+            PLUGIN_VERSION=$(cat WordpressGdataAntivirusPlugin.php | sed -nE 's/^.*Version: ([0-9a-z\.\-])/\1/p')
+            PLUGIN_VERSION_SUFFIX=${GITHUB_REF#refs/heads/}-${{ github.run_id }}
+            echo "plugin_version=v$PLUGIN_VERSION-$PLUGIN_VERSION_SUFFIX" | tee -a "$GITHUB_OUTPUT"
+            echo "plugin_prerelease=true" | tee -a "$GITHUB_OUTPUT"
+          fi
+
+  build:
+    runs-on: ubuntu-latest
+    needs: get-version
+    container:
+      image: mcr.microsoft.com/devcontainers/php:1-8.2-bullseye
+    steps:
+      - name: composer install
+        run: composer install
+      - name: zip it
+        run: zip wordpress-gdata-antivirus.zip * --exclude @.zipignore
+      - uses: actions/upload-artifact@master
+        with:
+          name: plugin-zip
+          path: wordpress-gdata-antivirus-${{needs.get-version.outputs.plugin_version}}.zip
+
+  release:
+    runs-on: ubuntu-latest
+    needs: get-version
+    steps:
+      - name: download artifact
+        uses: actions/download-artifact@master
+        with:
+          name: plugin-zip
+      - name: create release
+        uses: actions/github-script@7.0.1
+        with:
+          script: |
+            release = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: ${{needs.get-version.outputs.plugin_version}},
+              name: ${{needs.get-version.outputs.plugin_version}},
+              generate_release_notes: true,
+              prerelease: ${{needs.get-version.outputs.plugin_prerelease}},
+            });
+            await github.rest.repos.uploadReleaseAsset({
+              name: 'wordpress-gdata-antivirus-${{needs.get-version.outputs.plugin_version}}.zip',
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              release_id: release.id,
+              origin: release.upload_url,
+              data: await fs.readFile('./wordpress-gdata-antivirus-${{needs.get-version.outputs.plugin_version}}.zip'),
+            });
+
+        
