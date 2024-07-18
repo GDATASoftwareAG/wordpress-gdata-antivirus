@@ -67,7 +67,7 @@ jobs:
       - name: composer install
         run: composer install --no-dev
       - name: zip it
-        run: zip wordpress-gdata-antivirus-${{needs.get-version.outputs.plugin_version}}.zip * --exclude @.zipignore
+        run: zip -r wordpress-gdata-antivirus-${{needs.get-version.outputs.plugin_version}}.zip * --exclude @.zipignore
       - uses: actions/upload-artifact@master
         if: startsWith(github.ref, 'refs/tags/v')
         with:

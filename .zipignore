@@ -8,3 +8,4 @@ wordpress/*
 xdebug.ini
 xdebug.php
 info.php
+tests/*
