@@ -1,10 +1,16 @@
 services:
   app:
-    image: wordpress:6-php8.3
+    build:
+      context: .
+      dockerfile: Dockerfile.WordPress
     restart: always
     ports:
       - 8080:80
-    environment: 
+    networks:
+      static-network:
+        ipv4_address: 172.20.128.2
+      wordpress-gdata-antivirus:
+    environment:
       WORDPRESS_DB_HOST: db
       WORDPRESS_DB_NAME: wordpress
       WORDPRESS_DB_USER: wordpress
@@ -12,8 +18,6 @@ services:
       WORDPRESS_TEST_DB_NAME: wordpress_test
     volumes:
       - .:/var/www/html/wp-content/plugins/wordpress-gdata-antivirus:ro,cached
-    networks:
-      - wordpress-gdata-antivirus
 
   db:
     image: mariadb:latest
@@ -28,3 +32,8 @@ services:
 
 networks:
   wordpress-gdata-antivirus:
+  static-network:
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+          ip_range: 172.20.5.0/24

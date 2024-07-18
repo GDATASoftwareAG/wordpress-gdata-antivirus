@@ -2,6 +2,23 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Listen for XDebug remote",
+            "type": "php",
+            "request": "launch",
+            "port": 9080,
+            "pathMappings": {
+                "/var/www/html/wp-content/plugins/wordpress-gdata-antivirus": "${workspaceFolder}/",
+            },
+            "runtimeArgs": [
+                "-dxdebug.mode=debug",
+                "-dxdebug.start_with_request=yes",
+                "-dxdebug.client_host=172.20.128.2",
+                "-dxdebug.client_port=9080",
+                "-S",
+                "localhost:0"
+            ],
+        },
+        {
             "name": "Launch application",
             "type": "php",
             "request": "launch",
