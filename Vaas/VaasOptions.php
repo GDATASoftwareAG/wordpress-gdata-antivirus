@@ -6,7 +6,7 @@ class VaasOptions {
     public static array $option_defaults = array(
         'authentication_method' => 'ResourceOwnerPasswordGrant',
         'client_id'             => '',
-        'client_secret'         => ' ',
+        'client_secret'         => '',
         'username'              => '',
         'password'              => '',
         'vaas_url'              => 'wss://gateway.staging.vaas.gdatasecurity.de',
