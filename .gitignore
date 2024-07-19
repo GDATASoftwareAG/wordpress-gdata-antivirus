@@ -12,3 +12,5 @@
 !/local-env/wp-content/plugins/.gitkeep
 !/local-env/wp-content/plugins/wordpress-gdata-antivirus/
 !/local-env/wp-content/plugins/wordpress-gdata-antivirus/.gitkeep
+/wordpress/
+test.sh

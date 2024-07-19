@@ -1,44 +1,32 @@
-// For format details, https://containers.dev/implementors/json_reference/.
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/php
 {
-  "name": "WordPress Development Environment",
-  "dockerComposeFile": "../compose.yml",
-  "service": "app",
-  "workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-  "customizations": {
-    "vscode": {
-      // Set *default* container specific settings.json values on container create.
-      "settings": {},
-      // Add the IDs of extensions you want installed when the container is created.
-      "extensions": [
-        "ms-azuretools.vscode-docker"
-      ]
-    }
-  },
-  // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [
-    8080,
-    3306
-  ],
-  // Maps a port number, "host:port" value, range, or regular expression to a set of default options. See port attributes for available options
-  "portsAttributes": {
-    "8080": {
-      "label": "WordPress Development/Testing Site"
-    },
-    "3306": {
-      "label": "MariaDB"
-    }
-  },
-  "containerEnv": {
-    "SHELL": "/bin/bash"
-  },
-  // Use `onCreateCommand` to run commands as part of the container creation.
-  //"onCreateCommand": "chmod +x .devcontainer/install.sh && .devcontainer/install.sh",
-  // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "chmod +x .devcontainer/setup.sh && .devcontainer/setup.sh",
-  // Use 'postStartCommand' to run commands after the container has started.
-  "remoteUser": "www-data",
-  // A set of name-value pairs that sets or overrides environment variables for the devcontainer.json supporting service / tool (or sub-processes like terminals) but not the container as a whole.
-  "remoteEnv": {
-    "LOCAL_WORKSPACE_FOLDER": "${localWorkspaceFolder}"
-  }
+	"name": "PHP",
+	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
+	"image": "mcr.microsoft.com/devcontainers/php:1-8.2-bullseye",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"recca0120.vscode-phpunit",
+				"github.vscode-github-actions"
+			]
+		}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/docker-in-docker:2": {}
+	},
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+	// Configure tool-specific properties.
+	// "customizations": {},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"postStartCommand": ".devcontainer/postCreateCommands.sh",
+	"forwardPorts": [
+		8080,
+		9003
+	]
+	// Use 'postCreateCommand' to run commands after the container is created.
+	// "postCreateCommand": "sudo chmod a+x \"$(pwd)\" && sudo rm -rf /var/www/html && sudo ln -s \"$(pwd)\" /var/www/html"
+	// Uncomment to connect as root instead. More info: https://aka.ms/dev-containers-non-root.
+	// "remoteUser": "root"
 }

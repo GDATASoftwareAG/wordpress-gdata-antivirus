@@ -1,0 +1,10 @@
+.devcontainer/*
+.vscode/*
+.git/*
+compose*
+Dockerfile
+test.sh
+wordpress/*
+xdebug.ini
+xdebug.php
+info.php
