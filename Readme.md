@@ -1,4 +1,4 @@
-# WordPress Antivirus with G DATA VaaS Integration
+# Antivirus with G DATA VaaS Integration
 
 ## Licensing and Partnerships
 
