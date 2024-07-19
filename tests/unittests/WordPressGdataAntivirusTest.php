@@ -24,13 +24,13 @@ use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IGdataAntivirusDa
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\NoopDatabase;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\PlainPhpFileSystem;
-use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Logging\TestDebugLogger;
 use Gdatacyberdefenseag\GdataAntivirus\PluginPage\Findings\FindingsMenuPage;
 use Gdatacyberdefenseag\GdataAntivirus\PluginPage\GdataAntivirusMenuPage;
 use Gdatacyberdefenseag\GdataAntivirus\Vaas\ScanClient;
 use Gdatacyberdefenseag\GdataAntivirus\Vaas\VaasOptions;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
+use unittests\TestDebugLogger;
 
 global $_GET;
 $_GET['load'] = array( "foobar" );

@@ -1,6 +1,6 @@
 <?php
 
-namespace Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Logging;
+namespace unittests;
 
 use Psr\Log\LoggerInterface;
 
