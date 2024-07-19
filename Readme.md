@@ -38,7 +38,7 @@ For any issues, questions, or feedback, please contact oem@gdata.de. We apprecia
 
 ## License
 
-This WordPress Antivirus Plugin is released under the [MIT License](https://github.com/GDATASoftwareAG/wordpress-gdata-antivirus/blob/main/LICENSE). Feel free to contribute, share, and modify the plugin within the terms of the license.
+This WordPress Antivirus Plugin is released under the [GNU General Public License v3.0](https://github.com/GDATASoftwareAG/wordpress-gdata-antivirus/blob/main/LICENSE). Feel free to contribute, share, and modify the plugin within the terms of the license.
 
 ## Contribution
 

@@ -1,5 +1,5 @@
 # Copyright (C) 2024 
-# This file is distributed under the MIT License.
+# This file is distributed under the GNU GPLv3.
 msgid ""
 msgstr ""
 "Project-Id-Version: wordpress-gdata-antivirus 0.0.1\n"
