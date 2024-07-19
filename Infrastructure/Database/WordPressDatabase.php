@@ -1,6 +1,6 @@
 <?php
 
-namespace Gdatacyberdefenseag\WordpressGdataAntivirus\Infrastructure\Database;
+namespace Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database;
 
 use wpdb;
 

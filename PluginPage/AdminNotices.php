@@ -1,6 +1,6 @@
 <?php
 
-namespace Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage;
+namespace Gdatacyberdefenseag\GdataAntivirus\PluginPage;
 
 use Psr\Log\LoggerInterface;
 
@@ -19,11 +19,11 @@ if (! class_exists('AdminNotices')) {
 		}
 
 		public function save_notices() {
-			update_option('WordpressGdataAntivirusMenuNotices', self::$notices);
+			update_option('GdataAntivirusMenuNotices', self::$notices);
 		}
 
 		public function output_notices() {
-			$notices = maybe_unserialize(get_option('WordpressGdataAntivirusMenuNotices'));
+			$notices = maybe_unserialize(get_option('GdataAntivirusMenuNotices'));
 
 			if (! empty($notices)) {
 				echo '<div id="notice" class="notice notice-info is-dismissible">';
@@ -34,7 +34,7 @@ if (! class_exists('AdminNotices')) {
 
 				echo '</div>';
 
-				delete_option('WordpressGdataAntivirusMenuNotices');
+				delete_option('GdataAntivirusMenuNotices');
 			}
 		}
 	}

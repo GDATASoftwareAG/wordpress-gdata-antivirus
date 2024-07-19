@@ -12,23 +12,23 @@
  * Plugin Name: G DATA Antivirus
  * Version: 0.0.1
  * Requires PHP: 8.1
- * Plugin URI: https://github.com/GDATASoftwareAG/wordpress-gdata-antivirus
+ * Plugin URI: https://github.com/GDATASoftwareAG/gdata-antivirus
  * Description: Vaas is a virus scanner for your WordPress installation.
  * License: GNU General Public License v3.0
  * License URI: https://github.com/GDATASoftwareAG/vaas/blob/main/LICENSE
  */
 
-namespace Gdatacyberdefenseag\WordpressGdataAntivirus;
+namespace Gdatacyberdefenseag\GdataAntivirus;
 
-use Gdatacyberdefenseag\WordpressGdataAntivirus\Infrastructure\Database\IGdataAntivirusDatabase;
-use Gdatacyberdefenseag\WordpressGdataAntivirus\Infrastructure\Database\NoopDatabase;
-use Gdatacyberdefenseag\WordpressGdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;
-use Gdatacyberdefenseag\WordpressGdataAntivirus\Infrastructure\FileSystem\PlainPhpFileSystem;
-use Gdatacyberdefenseag\WordpressGdataAntivirus\Infrastructure\Logging\TestDebugLogger;
-use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\Findings\FindingsMenuPage;
-use Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\WordpressGdataAntivirusMenuPage;
-use Gdatacyberdefenseag\WordpressGdataAntivirus\Vaas\ScanClient;
-use Gdatacyberdefenseag\WordpressGdataAntivirus\Vaas\VaasOptions;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IGdataAntivirusDatabase;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\NoopDatabase;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\PlainPhpFileSystem;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Logging\TestDebugLogger;
+use Gdatacyberdefenseag\GdataAntivirus\PluginPage\Findings\FindingsMenuPage;
+use Gdatacyberdefenseag\GdataAntivirus\PluginPage\GdataAntivirusMenuPage;
+use Gdatacyberdefenseag\GdataAntivirus\Vaas\ScanClient;
+use Gdatacyberdefenseag\GdataAntivirus\Vaas\VaasOptions;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
@@ -62,14 +62,14 @@ require_once ABSPATH . WPINC . '/cache.php';
 // include __DIR__ . '/wordpress/wp-includes/formatting.php';.
 
 define('WORDPRESS_GDATA_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__', __FILE__);
-define('WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG', 'wordpress-gdata-antivirus-menu');
+define('WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG', 'gdata-antivirus-menu');
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FINDINGS_SLUG', WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG . '-findings');
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FINDINGS_TABLE_NAME', 'WORDPRESS_GDATA_ANTIVIRUS_MENU_FINDINGS_TABLE');
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_SLUG', WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG . '-full-scan');
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_OPERATIONS_TABLE_NAME', 'WORDPRESS_GDATA_ANTIVIRUS_MENU_FULL_SCAN_OPERATIONS');
 define('WORDPRESS_GDATA_ANTIVIRUS_MENU_ON_DEMAND_SCAN_SLUG', WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG . '-on-demand-scan');
 
-class WordPressGdataAntivirusTest extends TestCase {
+class GdataAntivirusTest extends TestCase {
     public function testDependencyInjection() {
         $this->markTestSkipped('must be revisited.');
 
@@ -95,7 +95,7 @@ class WordPressGdataAntivirusTest extends TestCase {
         ->getMock();
 
         $logger = new TestDebugLogger();
-        $app = new WordpressGdataAntivirusPlugin($logger);
+        $app = new GdataAntivirusPlugin($logger);
         $app->singleton(LoggerInterface::class, TestDebugLogger::class);
         $app->singleton(IGdataAntivirusFileSystem::class, PlainPhpFileSystem::class);
         $app->singleton(IGdataAntivirusDatabase::class, NoopDatabase::class);
@@ -108,8 +108,8 @@ class WordPressGdataAntivirusTest extends TestCase {
 
         $logger->debug("get FindingsMenuPage");
         $findings_menu = $app->get(FindingsMenuPage::class);
-        $logger->debug("get WordpressGdataAntivirusMenuPage");
-        $gdata_menu_page = $app->get(WordpressGdataAntivirusMenuPage::class);
+        $logger->debug("get GdataAntivirusMenuPage");
+        $gdata_menu_page = $app->get(GdataAntivirusMenuPage::class);
 
         assert($findings_menu instanceof PluginPage\Findings\FindingsMenuPage);
         $findings_menu->validate_findings();

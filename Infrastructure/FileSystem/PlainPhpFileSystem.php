@@ -1,6 +1,6 @@
 <?php
 
-namespace Gdatacyberdefenseag\WordpressGdataAntivirus\Infrastructure\FileSystem;
+namespace Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem;
 
 class PlainPhpFileSystem implements IGdataAntivirusFileSystem {
     public function read( $path ): string {

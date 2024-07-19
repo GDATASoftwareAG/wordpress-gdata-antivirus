@@ -1,6 +1,6 @@
 <?php
 
-namespace Gdatacyberdefenseag\WordpressGdataAntivirus\Vaas;
+namespace Gdatacyberdefenseag\GdataAntivirus\Vaas;
 
 use Psr\Log\LoggerInterface;
 use VaasSdk\Vaas;
@@ -90,7 +90,7 @@ if (! class_exists('ScanClient')) {
 			$this->logger->debug(var_export($verdict, true));
 			 // phpcs:ignore
 			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict->Verdict) {
-				$this->logger->debug('wordpress-gdata-antivirus: virus found in post');
+				$this->logger->debug('gdata-antivirus: virus found in post');
 				wp_die(esc_html__('virus found'));
 			}
 			return $postdata;
@@ -128,7 +128,7 @@ if (! class_exists('ScanClient')) {
 			$this->logger->debug(var_export($verdict, true));
 			 // phpcs:ignore
 			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict->Verdict) {
-				$this->logger->debug('wordpress-gdata-antivirus: virus found in comment');
+				$this->logger->debug('gdata-antivirus: virus found in comment');
 				wp_die(\esc_html__('virus found'));
 			}
 			return $commentdata;
@@ -174,7 +174,7 @@ if (! class_exists('ScanClient')) {
 				return Verdict::UNKNOWN;
 			}
 			$this->logger->debug(
-				'wordpress-gdata-antivirus: verdict for file ' . $file_path . ': ' . var_export($verdict, true)
+				'gdata-antivirus: verdict for file ' . $file_path . ': ' . var_export($verdict, true)
 			);
 			return $verdict;
 		}

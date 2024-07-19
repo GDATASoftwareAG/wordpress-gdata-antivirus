@@ -10,7 +10,7 @@
 !/local-env/wp-content/
 !/local-env/wp-content/.gitkeep
 !/local-env/wp-content/plugins/.gitkeep
-!/local-env/wp-content/plugins/wordpress-gdata-antivirus/
-!/local-env/wp-content/plugins/wordpress-gdata-antivirus/.gitkeep
+!/local-env/wp-content/plugins/gdata-antivirus/
+!/local-env/wp-content/plugins/gdata-antivirus/.gitkeep
 /wordpress/
 test.sh

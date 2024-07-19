@@ -1,6 +1,6 @@
 <?php
 
-namespace Gdatacyberdefenseag\WordpressGdataAntivirus\Infrastructure\FileSystem;
+namespace Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem;
 
 require_once ABSPATH . 'wp-admin/includes/file.php';
 

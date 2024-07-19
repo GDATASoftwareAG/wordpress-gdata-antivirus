@@ -1,18 +1,18 @@
 <?php
 
-namespace Gdatacyberdefenseag\WordpressGdataAntivirus\Infrastructure\Logging;
+namespace Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Logging;
 
-use Gdatacyberdefenseag\WordpressGdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;
 use Psr\Log\LoggerInterface;
 
-if (!class_exists('WordpressGdataAntivirusPluginDebugLogger')) {
-	class WordpressGdataAntivirusPluginDebugLogger implements LoggerInterface {
+if (!class_exists('GdataAntivirusPluginDebugLogger')) {
+	class GdataAntivirusPluginDebugLogger implements LoggerInterface {
         private IGdataAntivirusFileSystem $files_system;
 
 		public function __construct( IGdataAntivirusFileSystem $file_system ) {
 			$this->files_system = $file_system;
 
-			$this->info('WordpressGdataAntivirusPluginDebugLogger::__construct');
+			$this->info('GdataAntivirusPluginDebugLogger::__construct');
         }
 
 		public function emergency( string|\Stringable $message, array $context = array() ): void {

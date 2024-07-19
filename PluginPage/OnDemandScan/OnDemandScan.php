@@ -1,8 +1,8 @@
 <?php
 
-namespace Gdatacyberdefenseag\WordpressGdataAntivirus\PluginPage\OnDemandScan;
+namespace Gdatacyberdefenseag\GdataAntivirus\PluginPage\OnDemandScan;
 
-use Gdatacyberdefenseag\WordpressGdataAntivirus\Vaas\VaasOptions;
+use Gdatacyberdefenseag\GdataAntivirus\Vaas\VaasOptions;
 use Psr\Log\LoggerInterface;
 
 if (! class_exists('OnDemandScan')) {
@@ -65,14 +65,14 @@ if (! class_exists('OnDemandScan')) {
 		public function setup_menu(): void {
 			\add_settings_section(
 				'wordpress_gdata_antivirus_options_on_demand_scan',
-				esc_html__('OnDemand scans', 'wordpress-gdata-antivirus'),
+				esc_html__('OnDemand scans', 'gdata-antivirus'),
 				array( $this, 'wordpress_gdata_antivirus_options_on_demand_scans_text' ),
 				WORDPRESS_GDATA_ANTIVIRUS_MENU_ON_DEMAND_SCAN_SLUG
 			);
 
 			\add_settings_field(
 				'wordpress_gdata_antivirus_options_on_demand_scan_media_upload_scan_enabled',
-				esc_html__('Media upload scan enabled', 'wordpress-gdata-antivirus'),
+				esc_html__('Media upload scan enabled', 'gdata-antivirus'),
 				array( $this, 'wordpress_gdata_antivirus_options_media_upload_scan_enabled_text' ),
 				WORDPRESS_GDATA_ANTIVIRUS_MENU_ON_DEMAND_SCAN_SLUG,
 				'wordpress_gdata_antivirus_options_on_demand_scan'
@@ -80,7 +80,7 @@ if (! class_exists('OnDemandScan')) {
 
 			\add_settings_field(
 				'wordpress_gdata_antivirus_options_on_demand_scan_plugin_upload_scan_enabled',
-				esc_html__('Plugin upload scan enabled', 'wordpress-gdata-antivirus'),
+				esc_html__('Plugin upload scan enabled', 'gdata-antivirus'),
 				array( $this, 'wordpress_gdata_antivirus_options_plugin_upload_scan_enabled_text' ),
 				WORDPRESS_GDATA_ANTIVIRUS_MENU_ON_DEMAND_SCAN_SLUG,
 				'wordpress_gdata_antivirus_options_on_demand_scan'
@@ -88,7 +88,7 @@ if (! class_exists('OnDemandScan')) {
 
 			\add_settings_field(
 				'wordpress_gdata_antivirus_options_on_demand_scan_comment_scan_enabled',
-				esc_html__('Comment scan enabled', 'wordpress-gdata-antivirus'),
+				esc_html__('Comment scan enabled', 'gdata-antivirus'),
 				array( $this, 'wordpress_gdata_antivirus_options_comment_scan_enabled_text' ),
 				WORDPRESS_GDATA_ANTIVIRUS_MENU_ON_DEMAND_SCAN_SLUG,
 				'wordpress_gdata_antivirus_options_on_demand_scan'
@@ -96,7 +96,7 @@ if (! class_exists('OnDemandScan')) {
 
 			\add_settings_field(
 				'wordpress_gdata_antivirus_options_on_demand_scan_pingback_scan_enabled',
-				esc_html__('Pingback scan enabled', 'wordpress-gdata-antivirus'),
+				esc_html__('Pingback scan enabled', 'gdata-antivirus'),
 				array( $this, 'wordpress_gdata_antivirus_options_pingback_scan_enabled_text' ),
 				WORDPRESS_GDATA_ANTIVIRUS_MENU_ON_DEMAND_SCAN_SLUG,
 				'wordpress_gdata_antivirus_options_on_demand_scan'
@@ -104,7 +104,7 @@ if (! class_exists('OnDemandScan')) {
 
 			\add_settings_field(
 				'wordpress_gdata_antivirus_options_on_demand_scan_post_scan_enabled',
-				esc_html__('Post scan enabled', 'wordpress-gdata-antivirus'),
+				esc_html__('Post scan enabled', 'gdata-antivirus'),
 				array( $this, 'wordpress_gdata_antivirus_options_post_scan_enabled_text' ),
 				WORDPRESS_GDATA_ANTIVIRUS_MENU_ON_DEMAND_SCAN_SLUG,
 				'wordpress_gdata_antivirus_options_on_demand_scan'
@@ -121,7 +121,7 @@ if (! class_exists('OnDemandScan')) {
 		}
 
 		public function wordpress_gdata_antivirus_options_on_demand_scans_text() {
-			echo '<p>' . esc_html__('Here you can set options for the on demand scans', 'wordpress-gdata-antivirus') . '</p>';
+			echo '<p>' . esc_html__('Here you can set options for the on demand scans', 'gdata-antivirus') . '</p>';
 		}
 
 		public function wordpress_gdata_antivirus_options_media_upload_scan_enabled_text() {
@@ -157,7 +157,7 @@ if (! class_exists('OnDemandScan')) {
 				settings_fields('wordpress_gdata_antivirus_options_on_demand_scan');
 				do_settings_sections(WORDPRESS_GDATA_ANTIVIRUS_MENU_ON_DEMAND_SCAN_SLUG);
 				?>
-				<input name="submit" class="button button-primary" type="submit" value="<?php \esc_attr_e('Save', 'wordpress-gdata-antivirus'); ?>" />
+				<input name="submit" class="button button-primary" type="submit" value="<?php \esc_attr_e('Save', 'gdata-antivirus'); ?>" />
 			</form>
 			<?php
 		}

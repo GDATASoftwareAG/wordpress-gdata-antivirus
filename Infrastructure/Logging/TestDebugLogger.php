@@ -1,13 +1,13 @@
 <?php
 
-namespace Gdatacyberdefenseag\WordpressGdataAntivirus\Infrastructure\Logging;
+namespace Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Logging;
 
 use Psr\Log\LoggerInterface;
 
 if (!class_exists("TestDebugLogger")) {
 	class TestDebugLogger implements LoggerInterface {
 		public function __construct() {
-			$this->debug("WordpressGdataAntivirusPluginDebugLogger::__construct");
+			$this->debug("GdataAntivirusPluginDebugLogger::__construct");
         }
 
 		public function get_caller() {
