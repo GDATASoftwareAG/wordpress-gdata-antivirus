@@ -10,3 +10,4 @@ xdebug.php
 info.php
 Dockerfile.WordPress
 renovate.json
+local-build.sh
