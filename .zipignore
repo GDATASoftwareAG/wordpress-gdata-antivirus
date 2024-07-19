@@ -8,3 +8,5 @@ wordpress/*
 xdebug.ini
 xdebug.php
 info.php
+Dockerfile.WordPress
+renovate.json
