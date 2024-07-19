@@ -66,6 +66,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: composer install
         run: composer install --no-dev
+      - name: replace version
+        run: bash set-version.sh "${{needs.get-version.outputs.plugin_version}}"
       - name: zip it
         run: zip -r gdata-antivirus-${{needs.get-version.outputs.plugin_version}}.zip * --exclude @.zipignore
       - uses: actions/upload-artifact@master
