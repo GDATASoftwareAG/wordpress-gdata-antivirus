@@ -28,19 +28,19 @@ jobs:
           elif [[ $GITHUB_REF == refs/head/main ]]; then
             echo "running main version extract from file" 
             PLUGIN_VERSION=$(cat gdata-antivirus.php | sed -nE 's/^.*Version: ([0-9a-z\.\-])/\1/p')
-            echo "plugin_version=v$PLUGIN_VERSION" | tee -a "$GITHUB_OUTPUT"
+            echo "plugin_version=$PLUGIN_VERSION" | tee -a "$GITHUB_OUTPUT"
             echo "plugin_prerelease=false" | tee -a "$GITHUB_OUTPUT"
           elif [[ $GITHUB_REF == refs/pull/* ]]; then
             echo "running pull request version extract from file" 
             PLUGIN_VERSION=$(cat gdata-antivirus.php | sed -nE 's/^.*Version: ([0-9a-z\.\-])/\1/p')
             PLUGIN_VERSION_SUFFIX=${GITHUB_HEAD_REF}-${{ github.run_id }}
-            echo "plugin_version=v$PLUGIN_VERSION-$PLUGIN_VERSION_SUFFIX" | tee -a "$GITHUB_OUTPUT"
+            echo "plugin_version=$PLUGIN_VERSION-$PLUGIN_VERSION_SUFFIX" | tee -a "$GITHUB_OUTPUT"
             echo "plugin_prerelease=true" | tee -a "$GITHUB_OUTPUT"
           else
             echo "running branch version extract from file" 
             PLUGIN_VERSION=$(cat gdata-antivirus.php | sed -nE 's/^.*Version: ([0-9a-z\.\-])/\1/p')
             PLUGIN_VERSION_SUFFIX=${GITHUB_REF_NAME}-${{ github.run_id }}
-            echo "plugin_version=v$PLUGIN_VERSION-$PLUGIN_VERSION_SUFFIX" | tee -a "$GITHUB_OUTPUT"
+            echo "plugin_version=$PLUGIN_VERSION-$PLUGIN_VERSION_SUFFIX" | tee -a "$GITHUB_OUTPUT"
             echo "plugin_prerelease=true" | tee -a "$GITHUB_OUTPUT"
           fi
 
