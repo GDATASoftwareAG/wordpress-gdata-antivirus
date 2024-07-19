@@ -1,5 +1,6 @@
 {
     "name": "gdatacyberdefenseag/gdata-antivirus",
+    "version": "1.2.3",
     "autoload": {
         "psr-4": {
             "Gdatacyberdefenseag\\GdataAntivirus\\": "."

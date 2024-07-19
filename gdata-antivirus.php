@@ -10,7 +10,7 @@
  *
  * @wordpress-plugin
  * Plugin Name: G DATA Antivirus
- * Version: 0.0.1
+ * Version: 1.2.3
  * Requires at least: 6.2
  * Tested up to: 6.6
  * Requires PHP: 8.1
