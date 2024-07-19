@@ -1,6 +1,8 @@
 <?php
 
-namespace Gdatacyberdefenseag\WordpressGdataAntivirus\Infrastructure\Database;
+namespace unittests\Infrastructure;
+
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IGdataAntivirusDatabase;
 
 class NoopDatabase implements IGdataAntivirusDatabase {
     public function query( $query, ...$args ): int|bool {

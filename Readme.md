@@ -1,4 +1,4 @@
-# WordPress Antivirus Plugin with G DATA VaaS Integration
+# Antivirus with G DATA VaaS Integration
 
 ## Licensing and Partnerships
 
@@ -8,7 +8,7 @@ For commercial entities, we offer the opportunity to secure your customers' site
 
 ## Overview
 
-Welcome to the WordPress Antivirus Plugin (wordpress-gdata-antivirus) with G DATA VaaS integration! This plugin adds an additional layer of security to your WordPress installation by utilizing the powerful antivirus service from G DATA CyberDefense AG, known as VaaS (Verdict as a Service). This integration ensures that your WordPress website remains protected from potential threats and malware.
+Welcome to the WordPress Antivirus Plugin (gdata-antivirus) with G DATA VaaS integration! This plugin adds an additional layer of security to your WordPress installation by utilizing the powerful antivirus service from G DATA CyberDefense AG, known as VaaS (Verdict as a Service). This integration ensures that your WordPress website remains protected from potential threats and malware.
 
 ## Features
 
@@ -41,11 +41,11 @@ The scheduled scan feature of the WordPress Antivirus Plugin with G DATA VaaS In
 
 ## Support and Feedback
 
-For any issues, questions, or feedback we have two channels [our vaas e-mail contact](oem@gdata.de) or leave us an issue on our [gitub-repository](https://github.com/GDATASoftwareAG/wordpress-gdata-antivirus/issues). We appreciate your input and are committed to continually improving the plugin to meet your security needs.
+For any issues, questions, or feedback we have two channels [our vaas e-mail contact](oem@gdata.de) or leave us an issue on our [gitub-repository](https://github.com/GDATASoftwareAG/gdata-antivirus/issues). We appreciate your input and are committed to continually improving the plugin to meet your security needs.
 
 ## License
 
-This WordPress Antivirus Plugin is released under the [GNU General Public License v3.0](https://github.com/GDATASoftwareAG/wordpress-gdata-antivirus/blob/main/LICENSE). Feel free to contribute, share, and modify the plugin within the terms of the license.
+This WordPress Antivirus Plugin is released under the [GNU General Public License v3.0](https://github.com/GDATASoftwareAG/gdata-antivirus/blob/main/LICENSE). Feel free to contribute, share, and modify the plugin within the terms of the license.
 
 ## Contribution
 
@@ -61,4 +61,4 @@ Within the devcontainer it starts a wordpress-environment with `docker composer`
 
 While this plugin enhances the security of your WordPress installation, no security measure is foolproof. Regular backups and other security best practices are still recommended to ensure the safety of your website.
 
-Thank you for choosing the wordpress-gdata-antivirus. Stay secure!
+Thank you for choosing the gdata-antivirus. Stay secure!

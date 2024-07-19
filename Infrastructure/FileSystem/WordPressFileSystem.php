@@ -1,12 +1,14 @@
 <?php
 
-namespace Gdatacyberdefenseag\WordpressGdataAntivirus\Infrastructure\FileSystem;
+namespace Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem;
 
 require_once ABSPATH . 'wp-admin/includes/file.php';
 
 use WP_Filesystem_Base;
 
 class WordPressFileSystem implements IGdataAntivirusFileSystem {
+    use FileSystemBase;
+
     private WP_Filesystem_Base $files_system;
 
     public function __construct() {
@@ -19,11 +21,11 @@ class WordPressFileSystem implements IGdataAntivirusFileSystem {
         return $this->files_system->get_contents($path);
     }
 
-    public function write( $path, $content ) {
+    public function write( $path, $content ): bool {
         return $this->files_system->put_contents($path, $content);
     }
 
-    public function delete( $path ) {
+    public function delete( $path ): bool {
         return $this->files_system->delete($path);
     }
 

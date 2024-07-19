@@ -1,7 +1,9 @@
 <?php
 
-namespace Gdatacyberdefenseag\WordpressGdataAntivirus\Vaas;
+namespace Gdatacyberdefenseag\GdataAntivirus\Vaas;
 
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IGdataAntivirusDatabase;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;
 use Psr\Log\LoggerInterface;
 use VaasSdk\Vaas;
 use VaasSdk\Authentication\ClientCredentialsGrantAuthenticator;
@@ -16,11 +18,13 @@ if (! class_exists('ScanClient')) {
 		private Vaas $vaas;
 		private LoggerInterface $logger;
 		private VaasOptions $vaas_options;
+		private IGdataAntivirusFileSystem $file_system;
 
-		public function __construct( LoggerInterface $logger, VaasOptions $vaas_options ) {
+		public function __construct( LoggerInterface $logger, VaasOptions $vaas_options, IGdataAntivirusFileSystem $file_system ) {
 			$logger->info('ScanClient::__construct');
 			$this->logger = $logger;
 			$this->vaas_options = $vaas_options;
+			$this->file_system = $file_system;
 
 			$this->Connect();
 			$plugin_upload_scan_enabled = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_plugin_upload_scan_enabled', false);
@@ -84,13 +88,13 @@ if (! class_exists('ScanClient')) {
 			}
 
 			$post_content = \wp_unslash($postdata['post_content']);
-			$stream      = tryToCreateReadableStreamFromResource(fopen(sprintf('data://text/plain,%s', $post_content), 'r'));
+			$stream       = $this->file_system->get_resource_stream_from_string($post_content);
 
 			$verdict = $this->vaas->ForStream($stream);
 			$this->logger->debug(var_export($verdict, true));
 			 // phpcs:ignore
 			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict->Verdict) {
-				$this->logger->debug('wordpress-gdata-antivirus: virus found in post');
+				$this->logger->debug('gdata-antivirus: virus found in post');
 				wp_die(esc_html__('virus found'));
 			}
 			return $postdata;
@@ -122,13 +126,13 @@ if (! class_exists('ScanClient')) {
 			}
 
 			$commend_content = \wp_unslash($commentdata['comment_content']);
-			$stream         = tryToCreateReadableStreamFromResource(fopen(sprintf('data://text/plain,%s', $commend_content), 'r'));
+			$stream          = $this->file_system->get_resource_stream_from_string($commend_content);
 
 			$verdict = $this->vaas->ForStream($stream);
 			$this->logger->debug(var_export($verdict, true));
 			 // phpcs:ignore
 			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict->Verdict) {
-				$this->logger->debug('wordpress-gdata-antivirus: virus found in comment');
+				$this->logger->debug('gdata-antivirus: virus found in comment');
 				wp_die(\esc_html__('virus found'));
 			}
 			return $commentdata;
@@ -138,14 +142,24 @@ if (! class_exists('ScanClient')) {
 			$plugin_upload_scan_enabled = \get_option('wordpress_gdata_antivirus_options_on_demand_scan_plugin_upload_scan_enabled', false);
 			$media_upload_scan_enabled  = \get_option('wordpress_gdata_antivirus_options_on_demand_scan_media_upload_scan_enabled', false);
 
-			// When this is a plugin uplaod but the plugin upload scan is disabled, we don't need to scan the file.
+			/**
+			 *	When this is a plugin uplaod but the plugin upload scan is disabled,
+			 * 	we don't need to scan the file.
+			 */
 			$is_plugin_uplad = false;
-			if (isset($_GET['action'])) {
-				if ($_GET['action'] === 'upload-plugin') {
-					$is_plugin_uplad = true;
-					if ($plugin_upload_scan_enabled === false) {
-						return $file;
-					}
+
+			/**
+			 * here should be some kind of nonce check, but I could not get it to work
+			 * in case of the media upload, you get the action 'upload-attachment' into this
+			 * filter but when you call wp_verify_nonce($_POST['nonce'], $action) it
+			 * will return false. In case of the media upload it expects 'media-form' as action
+			 * as you can see in the wordpress core
+			 */
+			$action = $_GET['action'] ?? $_POST['action'] ?? '';
+			if ($action === 'upload-plugin') {
+				$is_plugin_uplad = true;
+				if ($plugin_upload_scan_enabled === false) {
+					return $file;
 				}
 			}
 
@@ -174,7 +188,7 @@ if (! class_exists('ScanClient')) {
 				return Verdict::UNKNOWN;
 			}
 			$this->logger->debug(
-				'wordpress-gdata-antivirus: verdict for file ' . $file_path . ': ' . var_export($verdict, true)
+				'gdata-antivirus: verdict for file ' . $file_path . ': ' . var_export($verdict, true)
 			);
 			return $verdict;
 		}

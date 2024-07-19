@@ -1,6 +1,6 @@
 <?php
 
-namespace Gdatacyberdefenseag\WordpressGdataAntivirus\Vaas;
+namespace Gdatacyberdefenseag\GdataAntivirus\Vaas;
 
 class VaasOptions {
     public static array $option_defaults = array(

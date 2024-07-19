@@ -1,12 +1,14 @@
 .devcontainer/*
 .vscode/*
 .git/*
+wordpress/*
+tests/*
 compose*
 Dockerfile
 test.sh
-wordpress/*
 xdebug.ini
 xdebug.php
 info.php
 Dockerfile.WordPress
 renovate.json
+local-build.sh

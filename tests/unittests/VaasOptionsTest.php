@@ -2,7 +2,7 @@
 
 namespace unittests;
 
-use Gdatacyberdefenseag\WordpressGdataAntivirus\Vaas\VaasOptions;
+use Gdatacyberdefenseag\GdataAntivirus\Vaas\VaasOptions;
 use PHPUnit\Framework\TestCase;
 
 class VaasOptionsTest extends TestCase {
