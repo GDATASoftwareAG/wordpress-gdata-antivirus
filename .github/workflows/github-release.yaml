@@ -23,7 +23,7 @@ jobs:
         run: |
           if [[ $GITHUB_REF == refs/tags/v* ]]; then
             echo "running tag version extract"
-            echo "plugin_version=${GITHUB_REF_NAME#refs/tags/v}" | tee -a "$GITHUB_OUTPUT"
+            echo "plugin_version=${GITHUB_REF_NAME#v}" | tee -a "$GITHUB_OUTPUT"
             echo "plugin_prerelease=false" | tee -a "$GITHUB_OUTPUT"
           elif [[ $GITHUB_REF == refs/head/main ]]; then
             echo "running main version extract from file" 
