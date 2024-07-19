@@ -2,20 +2,22 @@
 
 namespace Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem;
 
-class PlainPhpFileSystem implements IGdataAntivirusFileSystem {
-    public function read( $path ): string {
+class PlainPhpFileSystem  implements IGdataAntivirusFileSystem {
+    use FileSystemBase;
+
+    public function read(string $path ): string {
         return file_get_contents($path);
     }
 
-    public function write( $path, $content ) {
+    public function write(string $path, string $content ): bool {
         return \file_put_contents($path, $content, \FILE_APPEND);
     }
 
-    public function delete( $path ) {
+    public function delete(string $path ): bool {
         return unlink($path);
     }
 
-    public function is_writable( $path ): bool {
+    public function is_writable(string $path ): bool {
         return is_writable($path);
     }
 }

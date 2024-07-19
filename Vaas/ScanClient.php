@@ -2,6 +2,8 @@
 
 namespace Gdatacyberdefenseag\GdataAntivirus\Vaas;
 
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IGdataAntivirusDatabase;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;
 use Psr\Log\LoggerInterface;
 use VaasSdk\Vaas;
 use VaasSdk\Authentication\ClientCredentialsGrantAuthenticator;
@@ -16,11 +18,13 @@ if (! class_exists('ScanClient')) {
 		private Vaas $vaas;
 		private LoggerInterface $logger;
 		private VaasOptions $vaas_options;
+		private IGdataAntivirusFileSystem $file_system;
 
-		public function __construct( LoggerInterface $logger, VaasOptions $vaas_options ) {
+		public function __construct( LoggerInterface $logger, VaasOptions $vaas_options, IGdataAntivirusFileSystem $file_system ) {
 			$logger->info('ScanClient::__construct');
 			$this->logger = $logger;
 			$this->vaas_options = $vaas_options;
+			$this->file_system = $file_system;
 
 			$this->Connect();
 			$plugin_upload_scan_enabled = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_plugin_upload_scan_enabled', false);
@@ -84,7 +88,7 @@ if (! class_exists('ScanClient')) {
 			}
 
 			$post_content = \wp_unslash($postdata['post_content']);
-			$stream      = tryToCreateReadableStreamFromResource(fopen(sprintf('data://text/plain,%s', $post_content), 'r'));
+			$stream       = $this->file_system->get_resource_stream_from_string($post_content);
 
 			$verdict = $this->vaas->ForStream($stream);
 			$this->logger->debug(var_export($verdict, true));
@@ -122,7 +126,7 @@ if (! class_exists('ScanClient')) {
 			}
 
 			$commend_content = \wp_unslash($commentdata['comment_content']);
-			$stream         = tryToCreateReadableStreamFromResource(fopen(sprintf('data://text/plain,%s', $commend_content), 'r'));
+			$stream          = $this->file_system->get_resource_stream_from_string($commend_content);
 
 			$verdict = $this->vaas->ForStream($stream);
 			$this->logger->debug(var_export($verdict, true));
