@@ -1,6 +1,6 @@
 <?php
 
-namespace unittests;
+namespace unittests\Infrastructure;
 
 use Psr\Log\LoggerInterface;
 

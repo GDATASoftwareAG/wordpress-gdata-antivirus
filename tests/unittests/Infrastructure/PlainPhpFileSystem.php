@@ -1,6 +1,9 @@
 <?php
 
-namespace Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem;
+namespace unittests\Infrastructure;
+
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\FileSystemBase;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;
 
 class PlainPhpFileSystem  implements IGdataAntivirusFileSystem {
     use FileSystemBase;
