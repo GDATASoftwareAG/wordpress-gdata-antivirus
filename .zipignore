@@ -1,10 +1,11 @@
 .devcontainer/*
 .vscode/*
 .git/*
+wordpress/*
+tests/*
 compose*
 Dockerfile
 test.sh
-wordpress/*
 xdebug.ini
 xdebug.php
 info.php

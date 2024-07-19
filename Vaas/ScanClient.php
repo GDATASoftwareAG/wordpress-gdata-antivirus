@@ -142,14 +142,24 @@ if (! class_exists('ScanClient')) {
 			$plugin_upload_scan_enabled = \get_option('wordpress_gdata_antivirus_options_on_demand_scan_plugin_upload_scan_enabled', false);
 			$media_upload_scan_enabled  = \get_option('wordpress_gdata_antivirus_options_on_demand_scan_media_upload_scan_enabled', false);
 
-			// When this is a plugin uplaod but the plugin upload scan is disabled, we don't need to scan the file.
+			/**
+			 *	When this is a plugin uplaod but the plugin upload scan is disabled,
+			 * 	we don't need to scan the file.
+			 */
 			$is_plugin_uplad = false;
-			if (isset($_GET['action'])) {
-				if ($_GET['action'] === 'upload-plugin') {
-					$is_plugin_uplad = true;
-					if ($plugin_upload_scan_enabled === false) {
-						return $file;
-					}
+
+			/**
+			 * here should be some kind of nonce check, but I could not get it to work
+			 * in case of the media upload, you get the action 'upload-attachment' into this
+			 * filter but when you call wp_verify_nonce($_POST['nonce'], $action) it
+			 * will return false. In case of the media upload it expects 'media-form' as action
+			 * as you can see in the wordpress core
+			 */
+			$action = $_GET['action'] ?? $_POST['action'] ?? '';
+			if ($action === 'upload-plugin') {
+				$is_plugin_uplad = true;
+				if ($plugin_upload_scan_enabled === false) {
+					return $file;
 				}
 			}
 

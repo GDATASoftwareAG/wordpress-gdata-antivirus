@@ -1,3 +1,4 @@
+name: gdata-antivirus
 services:
   app:
     build:
