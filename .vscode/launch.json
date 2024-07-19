@@ -7,6 +7,7 @@
             "request": "launch",
             "port": 9080,
             "pathMappings": {
+                "/var/www/html/": "${workspaceFolder}/wordpress",
                 "/var/www/html/wp-content/plugins/wordpress-gdata-antivirus": "${workspaceFolder}/",
             },
             "runtimeArgs": [
