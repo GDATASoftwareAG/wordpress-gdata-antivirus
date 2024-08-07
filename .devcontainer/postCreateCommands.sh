@@ -9,4 +9,4 @@ sudo bash -c "composer completion bash > /usr/share/bash-completion/completions/
 
 echo ". /usr/share/bash-completion/bash_completion" >> /home/vscode/.bashrcsource
 
-source ./configureWordPress.sh
+source .devcontainer/configureWordPress.sh
