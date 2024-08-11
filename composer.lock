@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "87be094ca6f8aa7b2f91dfd167691280",
+    "content-hash": "f89545344d989908c62b9dde982d0e69",
     "packages": [
         {
             "name": "amphp/amp",
@@ -889,16 +889,16 @@
         },
         {
             "name": "amphp/sync",
-            "version": "v2.2.0",
+            "version": "v2.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/sync.git",
-                "reference": "375ef5b54a0d12c38e12728dde05a55e30f2fbec"
+                "reference": "217097b785130d77cfcc58ff583cf26cd1770bf1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/sync/zipball/375ef5b54a0d12c38e12728dde05a55e30f2fbec",
-                "reference": "375ef5b54a0d12c38e12728dde05a55e30f2fbec",
+                "url": "https://api.github.com/repos/amphp/sync/zipball/217097b785130d77cfcc58ff583cf26cd1770bf1",
+                "reference": "217097b785130d77cfcc58ff583cf26cd1770bf1",
                 "shasum": ""
             },
             "require": {
@@ -952,7 +952,7 @@
             ],
             "support": {
                 "issues": "https://github.com/amphp/sync/issues",
-                "source": "https://github.com/amphp/sync/tree/v2.2.0"
+                "source": "https://github.com/amphp/sync/tree/v2.3.0"
             },
             "funding": [
                 {
@@ -960,7 +960,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2024-03-12T01:00:01+00:00"
+            "time": "2024-08-03T19:31:26+00:00"
         },
         {
             "name": "amphp/windows-registry",
@@ -1120,16 +1120,16 @@
         },
         {
             "name": "gdata/vaas",
-            "version": "9.0.1",
+            "version": "9.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GDATASoftwareAG/vaas-php.git",
-                "reference": "4e94c9d108c683cefbc3a3a930485cd80318bd92"
+                "reference": "c0e9788f20c84e2e999dfe64167de049fdc3b86d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GDATASoftwareAG/vaas-php/zipball/4e94c9d108c683cefbc3a3a930485cd80318bd92",
-                "reference": "4e94c9d108c683cefbc3a3a930485cd80318bd92",
+                "url": "https://api.github.com/repos/GDATASoftwareAG/vaas-php/zipball/c0e9788f20c84e2e999dfe64167de049fdc3b86d",
+                "reference": "c0e9788f20c84e2e999dfe64167de049fdc3b86d",
                 "shasum": ""
             },
             "require": {
@@ -1160,22 +1160,22 @@
             ],
             "support": {
                 "issues": "https://github.com/GDATASoftwareAG/vaas-php/issues",
-                "source": "https://github.com/GDATASoftwareAG/vaas-php/tree/v9.0.1"
+                "source": "https://github.com/GDATASoftwareAG/vaas-php/tree/v9.0.3"
             },
-            "time": "2024-07-12T11:41:36+00:00"
+            "time": "2024-08-02T11:27:36+00:00"
         },
         {
             "name": "illuminate/container",
-            "version": "v11.17.0",
+            "version": "v11.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
-                "reference": "c3c2713c66d120bf42865e831cfcef6ed9e10db2"
+                "reference": "f47be671981a4438257c4fbfc3ad257f4e3e929a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/container/zipball/c3c2713c66d120bf42865e831cfcef6ed9e10db2",
-                "reference": "c3c2713c66d120bf42865e831cfcef6ed9e10db2",
+                "url": "https://api.github.com/repos/illuminate/container/zipball/f47be671981a4438257c4fbfc3ad257f4e3e929a",
+                "reference": "f47be671981a4438257c4fbfc3ad257f4e3e929a",
                 "shasum": ""
             },
             "require": {
@@ -1213,20 +1213,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-07-18T15:50:24+00:00"
+            "time": "2024-08-05T15:04:01+00:00"
         },
         {
             "name": "illuminate/contracts",
-            "version": "v11.17.0",
+            "version": "v11.20.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
-                "reference": "be935e9d9115a57be74d20176f43fa8a207029f3"
+                "reference": "34ead9385e0eab7e947807d77da66faf9bdf95ff"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/be935e9d9115a57be74d20176f43fa8a207029f3",
-                "reference": "be935e9d9115a57be74d20176f43fa8a207029f3",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/34ead9385e0eab7e947807d77da66faf9bdf95ff",
+                "reference": "34ead9385e0eab7e947807d77da66faf9bdf95ff",
                 "shasum": ""
             },
             "require": {
@@ -1261,7 +1261,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-07-09T13:57:38+00:00"
+            "time": "2024-08-01T19:08:33+00:00"
         },
         {
             "name": "kelunik/certificate",
@@ -3255,16 +3255,16 @@
         },
         {
             "name": "phpunit/phpunit",
-            "version": "11.2.8",
+            "version": "11.3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/sebastianbergmann/phpunit.git",
-                "reference": "a7a29e8d3113806f18f99d670f580a30e8ffff39"
+                "reference": "a8dce73a8938dfec7ac0daa91bdbcaae7d7188a3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a7a29e8d3113806f18f99d670f580a30e8ffff39",
-                "reference": "a7a29e8d3113806f18f99d670f580a30e8ffff39",
+                "url": "https://api.github.com/repos/sebastianbergmann/phpunit/zipball/a8dce73a8938dfec7ac0daa91bdbcaae7d7188a3",
+                "reference": "a8dce73a8938dfec7ac0daa91bdbcaae7d7188a3",
                 "shasum": ""
             },
             "require": {
@@ -3303,7 +3303,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-main": "11.2-dev"
+                    "dev-main": "11.3-dev"
                 }
             },
             "autoload": {
@@ -3335,7 +3335,7 @@
             "support": {
                 "issues": "https://github.com/sebastianbergmann/phpunit/issues",
                 "security": "https://github.com/sebastianbergmann/phpunit/security/policy",
-                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.2.8"
+                "source": "https://github.com/sebastianbergmann/phpunit/tree/11.3.0"
             },
             "funding": [
                 {
@@ -3351,7 +3351,7 @@
                     "type": "tidelift"
                 }
             ],
-            "time": "2024-07-18T14:56:37+00:00"
+            "time": "2024-08-02T03:56:43+00:00"
         },
         {
             "name": "sebastian/cli-parser",
