@@ -25,7 +25,7 @@ if (! class_exists('OnDemandScan')) {
 				'gdatacyberdefenseag_antivirus_options_on_demand_scan_media_upload_scan_enabled',
 				array(
 					'type'    => 'boolean',
-					'default' => false,
+					'default' => true,
 				)
 			);
 			\register_setting(
@@ -33,7 +33,7 @@ if (! class_exists('OnDemandScan')) {
 				'gdatacyberdefenseag_antivirus_options_on_demand_scan_plugin_upload_scan_enabled',
 				array(
 					'type'    => 'boolean',
-					'default' => false,
+					'default' => true,
 				)
 			);
 			\register_setting(
@@ -41,7 +41,7 @@ if (! class_exists('OnDemandScan')) {
 				'gdatacyberdefenseag_antivirus_options_on_demand_scan_comment_scan_enabled',
 				array(
 					'type'    => 'boolean',
-					'default' => false,
+					'default' => true,
 				)
 			);
 			\register_setting(
@@ -49,7 +49,7 @@ if (! class_exists('OnDemandScan')) {
 				'gdatacyberdefenseag_antivirus_options_on_demand_scan_pingback_scan_enabled',
 				array(
 					'type'    => 'boolean',
-					'default' => false,
+					'default' => true,
 				)
 			);
 			\register_setting(
@@ -57,7 +57,7 @@ if (! class_exists('OnDemandScan')) {
 				'gdatacyberdefenseag_antivirus_options_on_demand_scan_post_scan_enabled',
 				array(
 					'type'    => 'boolean',
-					'default' => false,
+					'default' => true,
 				)
 			);
 		}
