@@ -1,11 +1,11 @@
 document.addEventListener(
     'DOMContentLoaded',
     function () {
-        const authMethodSelect                   = document.getElementById('wordpress_gdata_antivirus_credentials_authentication_method');
-        const clientCredentialsClientIdField     = document.getElementById('wordpress_gdata_antivirus_credentials_client_id').parentElement.parentElement;
-        const clientCredentialsClientSecretField = document.getElementById('wordpress_gdata_antivirus_credentials_client_secret').parentElement.parentElement;
-        const resourceOwnerUsernameField         = document.getElementById('wordpress_gdata_antivirus_credentials_username').parentElement.parentElement;
-        const resourceOwnerPasswordField         = document.getElementById('wordpress_gdata_antivirus_credentials_password').parentElement.parentElement;
+        const authMethodSelect                   = document.getElementById('gdatacyberdefenseag_antivirus_credentials_authentication_method');
+        const clientCredentialsClientIdField     = document.getElementById('gdatacyberdefenseag_antivirus_credentials_client_id').parentElement.parentElement;
+        const clientCredentialsClientSecretField = document.getElementById('gdatacyberdefenseag_antivirus_credentials_client_secret').parentElement.parentElement;
+        const resourceOwnerUsernameField         = document.getElementById('gdatacyberdefenseag_antivirus_credentials_username').parentElement.parentElement;
+        const resourceOwnerPasswordField         = document.getElementById('gdatacyberdefenseag_antivirus_credentials_password').parentElement.parentElement;
 
         function toggleAuthFields() {
             console.log(authMethodSelect.value);

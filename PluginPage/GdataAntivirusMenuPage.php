@@ -27,59 +27,59 @@ if (! class_exists('GdataAntivirusMenuPage')) {
 
 		public function setup_menu(): void {
 			\add_settings_section(
-				'wordpress_gdata_antivirus_options_credentials',
+				'gdatacyberdefenseag_antivirus_options_credentials',
 				esc_html__('Credentials', 'gdata-antivirus'),
-				array( $this, 'wordpress_gdata_antivirus_credentials_text' ),
-				WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG
+				array( $this, 'gdatacyberdefenseag_antivirus_credentials_text' ),
+				GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG
 			);
 			\add_settings_field(
-				'wordpress_gdata_antivirus_credentials_authentication_method',
+				'gdatacyberdefenseag_antivirus_credentials_authentication_method',
 				esc_html__('Authentication Method', 'gdata-antivirus'),
-				array( $this, 'wordpress_gdata_antivirus_credentials_authentication_method_text' ),
-				WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG,
-				'wordpress_gdata_antivirus_options_credentials'
+				array( $this, 'gdatacyberdefenseag_antivirus_credentials_authentication_method_text' ),
+				GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
+				'gdatacyberdefenseag_antivirus_options_credentials'
 			);
 			\add_settings_field(
-				'wordpress_gdata_antivirus_credentials_client_id',
+				'gdatacyberdefenseag_antivirus_credentials_client_id',
 				esc_html__('Client ID', 'gdata-antivirus'),
-				array( $this, 'wordpress_gdata_antivirus_credentials_client_id_text' ),
-				WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG,
-				'wordpress_gdata_antivirus_options_credentials'
+				array( $this, 'gdatacyberdefenseag_antivirus_credentials_client_id_text' ),
+				GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
+				'gdatacyberdefenseag_antivirus_options_credentials'
 			);
 			\add_settings_field(
-				'wordpress_gdata_antivirus_credentials_client_secret',
+				'gdatacyberdefenseag_antivirus_credentials_client_secret',
 				esc_html__('Client Secret', 'gdata-antivirus'),
-				array( $this, 'wordpress_gdata_antivirus_credentials_client_secret_text' ),
-				WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG,
-				'wordpress_gdata_antivirus_options_credentials'
+				array( $this, 'gdatacyberdefenseag_antivirus_credentials_client_secret_text' ),
+				GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
+				'gdatacyberdefenseag_antivirus_options_credentials'
 			);
 			\add_settings_field(
-				'wordpress_gdata_antivirus_credentials_username',
+				'gdatacyberdefenseag_antivirus_credentials_username',
 				esc_html__('Username', 'gdata-antivirus'),
-				array( $this, 'wordpress_gdata_antivirus_credentials_username_text' ),
-				WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG,
-				'wordpress_gdata_antivirus_options_credentials'
+				array( $this, 'gdatacyberdefenseag_antivirus_credentials_username_text' ),
+				GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
+				'gdatacyberdefenseag_antivirus_options_credentials'
 			);
 			\add_settings_field(
-				'wordpress_gdata_antivirus_credentials_password',
+				'gdatacyberdefenseag_antivirus_credentials_password',
 				esc_html__('Password', 'gdata-antivirus'),
-				array( $this, 'wordpress_gdata_antivirus_credentials_password_text' ),
-				WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG,
-				'wordpress_gdata_antivirus_options_credentials'
+				array( $this, 'gdatacyberdefenseag_antivirus_credentials_password_text' ),
+				GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
+				'gdatacyberdefenseag_antivirus_options_credentials'
 			);
 			\add_settings_field(
-				'wordpress_gdata_antivirus_credentials_vaas_url',
+				'gdatacyberdefenseag_antivirus_credentials_vaas_url',
 				esc_html__('VaaS-Url', 'gdata-antivirus'),
-				array( $this, 'wordpress_gdata_antivirus_credentials_vaas_url_text' ),
-				WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG,
-				'wordpress_gdata_antivirus_options_credentials'
+				array( $this, 'gdatacyberdefenseag_antivirus_credentials_vaas_url_text' ),
+				GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
+				'gdatacyberdefenseag_antivirus_options_credentials'
 			);
 			\add_settings_field(
-				'wordpress_gdata_antivirus_credentials_token_endpoint',
+				'gdatacyberdefenseag_antivirus_credentials_token_endpoint',
 				esc_html__('Token-Endpoint', 'gdata-antivirus'),
-				array( $this, 'wordpress_gdata_antivirus_credentials_token_endpoint_text' ),
-				WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG,
-				'wordpress_gdata_antivirus_options_credentials'
+				array( $this, 'gdatacyberdefenseag_antivirus_credentials_token_endpoint_text' ),
+				GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
+				'gdatacyberdefenseag_antivirus_options_credentials'
 			);
 
 			$count = $this->findings_menu_page->get_findings_count();
@@ -89,16 +89,16 @@ if (! class_exists('GdataAntivirusMenuPage')) {
 					'G DATA VaaS',
 					$menu_title,
 					'manage_options',
-					WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG,
+					GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
 					array( $this, 'credentials_menu_item' ),
 					\plugin_dir_url(__FILE__) . '../PluginPage/assets/gdata16.png'
 				);
 				\add_submenu_page(
-					WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG,
+					GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
 					$menu_title,
 					'Credentials',
 					'manage_options',
-					WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG,
+					GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
 					array( $this, 'credentials_menu_item' )
 				);
 			} else {
@@ -106,16 +106,16 @@ if (! class_exists('GdataAntivirusMenuPage')) {
 					'G DATA VaaS',
                     'VaaS',
                     'manage_options',
-					WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG,
+					GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
 					array( $this, 'credentials_menu_item' ),
                     \plugin_dir_url(__FILE__) . '../PluginPage/assets/gdata16.png'
                 );
 				\add_submenu_page(
-					WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG,
+					GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
 					'VaaS',
 					'Credentials',
 					'manage_options',
-					WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG,
+					GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
 					array( $this, 'credentials_menu_item' )
 				);
 			}
@@ -123,7 +123,7 @@ if (! class_exists('GdataAntivirusMenuPage')) {
 
 		public function enqueue_scripts( $hook_suffix ): void {
 			\wp_enqueue_script(
-				'wordpress_gdata_antivirus_options_credentials_authentication_method_toggle',
+				'gdatacyberdefenseag_antivirus_options_credentials_authentication_method_toggle',
 				\plugin_dir_url(__FILE__) . '/js/authentication-method-toggle.js',
 				array(),
 				"1.0.0",
@@ -131,60 +131,60 @@ if (! class_exists('GdataAntivirusMenuPage')) {
 			);
 		}
 
-		public function wordpress_gdata_antivirus_credentials_text() {
+		public function gdatacyberdefenseag_antivirus_credentials_text() {
 			?><p><?php \esc_html_e('Here you can set all the options for using the API', 'gdata-antivirus'); ?></p>
 			<?php
 		}
 
-		public function wordpress_gdata_antivirus_credentials_authentication_method_text() {
+		public function gdatacyberdefenseag_antivirus_credentials_authentication_method_text() {
 			$options = $this->vaas_options->get_options();
 			?>
-			<select id='wordpress_gdata_antivirus_credentials_authentication_method' name='wordpress_gdata_antivirus_options_credentials[authentication_method]'>";
+			<select id='gdatacyberdefenseag_antivirus_credentials_authentication_method' name='gdatacyberdefenseag_antivirus_options_credentials[authentication_method]'>";
 				<option value='ResourceOwnerPasswordGrant'<?php echo ( $options['authentication_method'] === 'ResourceOwnerPasswordGrant' ) ? ' selected' : ''; ?>>ResourceOwnerPasswordGrant</option>";
 				<option value='ClientCredentialsGrant'<?php echo ( $options['authentication_method'] === 'ClientCredentialsGrant' ) ? ' selected' : ''; ?>>ClientCredentialsGrant</option>";
 			</select>
 			<?php
 		}
 
-		public function wordpress_gdata_antivirus_credentials_client_id_text() {
+		public function gdatacyberdefenseag_antivirus_credentials_client_id_text() {
 			$options = $this->vaas_options->get_options();
 			?>
-				<input id='wordpress_gdata_antivirus_credentials_client_id' name='wordpress_gdata_antivirus_options_credentials[client_id]' type='text' value='<?php echo \esc_attr($options['client_id']); ?>' />
+				<input id='gdatacyberdefenseag_antivirus_credentials_client_id' name='gdatacyberdefenseag_antivirus_options_credentials[client_id]' type='text' value='<?php echo \esc_attr($options['client_id']); ?>' />
 			<?php
 		}
 
-		public function wordpress_gdata_antivirus_credentials_client_secret_text() {
+		public function gdatacyberdefenseag_antivirus_credentials_client_secret_text() {
 			$options = $this->vaas_options->get_options();
 			?>
-				<input id='wordpress_gdata_antivirus_credentials_client_secret' name='wordpress_gdata_antivirus_options_credentials[client_secret]' type='password' value='<?php echo \esc_attr($options['client_secret']); ?>' />
+				<input id='gdatacyberdefenseag_antivirus_credentials_client_secret' name='gdatacyberdefenseag_antivirus_options_credentials[client_secret]' type='password' value='<?php echo \esc_attr($options['client_secret']); ?>' />
 			<?php
 		}
 
-		public function wordpress_gdata_antivirus_credentials_username_text() {
+		public function gdatacyberdefenseag_antivirus_credentials_username_text() {
 			$options = $this->vaas_options->get_options();
 			?>
-				<input id='wordpress_gdata_antivirus_credentials_username' name='wordpress_gdata_antivirus_options_credentials[username]' type='text' value='<?php echo \esc_attr($options['username']); ?>' />
+				<input id='gdatacyberdefenseag_antivirus_credentials_username' name='gdatacyberdefenseag_antivirus_options_credentials[username]' type='text' value='<?php echo \esc_attr($options['username']); ?>' />
 			<?php
 		}
 
-		public function wordpress_gdata_antivirus_credentials_password_text() {
+		public function gdatacyberdefenseag_antivirus_credentials_password_text() {
 			$options = $this->vaas_options->get_options();
 			?>
-				<input id='wordpress_gdata_antivirus_credentials_password' name='wordpress_gdata_antivirus_options_credentials[password]' type='password' value='<?php echo \esc_attr($options['password']); ?>' />
+				<input id='gdatacyberdefenseag_antivirus_credentials_password' name='gdatacyberdefenseag_antivirus_options_credentials[password]' type='password' value='<?php echo \esc_attr($options['password']); ?>' />
 			<?php
 		}
 
-		public function wordpress_gdata_antivirus_credentials_vaas_url_text() {
+		public function gdatacyberdefenseag_antivirus_credentials_vaas_url_text() {
 			$options = $this->vaas_options->get_options();
 			?>
-				<input id='wordpress_gdata_antivirus_credentials_vaas_url' name='wordpress_gdata_antivirus_options_credentials[vaas_url]' type='text' value='<?php echo \esc_attr($options['vaas_url']); ?>' />
+				<input id='gdatacyberdefenseag_antivirus_credentials_vaas_url' name='gdatacyberdefenseag_antivirus_options_credentials[vaas_url]' type='text' value='<?php echo \esc_attr($options['vaas_url']); ?>' />
 			<?php
 		}
 
-		public function wordpress_gdata_antivirus_credentials_token_endpoint_text() {
+		public function gdatacyberdefenseag_antivirus_credentials_token_endpoint_text() {
 			$options = $this->vaas_options->get_options();
 			?>
-				<input id='wordpress_gdata_antivirus_credentials_token_endpoint' name='wordpress_gdata_antivirus_options_credentials[token_endpoint]' type='text' value='<?php echo \esc_attr($options['token_endpoint']); ?>' />
+				<input id='gdatacyberdefenseag_antivirus_credentials_token_endpoint' name='gdatacyberdefenseag_antivirus_options_credentials[token_endpoint]' type='text' value='<?php echo \esc_attr($options['token_endpoint']); ?>' />
 			<?php
 		}
 
@@ -193,8 +193,8 @@ if (! class_exists('GdataAntivirusMenuPage')) {
 			<h2>VaaS Settings</h2>
 			<form action="options.php" method="post">
 				<?php
-				\settings_fields('wordpress_gdata_antivirus_options_credentials');
-				\do_settings_sections(WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG);
+				\settings_fields('gdatacyberdefenseag_antivirus_options_credentials');
+				\do_settings_sections(GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG);
 				?>
 				<input name="submit" class="button button-primary" type="submit" value="<?php \esc_attr_e('Save', 'gdata-antivirus'); ?>" />
 			</form>
