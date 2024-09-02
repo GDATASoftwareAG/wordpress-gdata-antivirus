@@ -19,11 +19,11 @@ if (! class_exists('AdminNotices')) {
 		}
 
 		public function save_notices() {
-			update_option('GdataAntivirusMenuNotices', self::$notices);
+			update_option('gdatacyberdefenseag_antivirus_notices', self::$notices);
 		}
 
 		public function output_notices() {
-			$notices = maybe_unserialize(get_option('GdataAntivirusMenuNotices'));
+			$notices = maybe_unserialize(get_option('gdatacyberdefenseag_antivirus_notices'));
 
 			if (! empty($notices)) {
 				echo '<div id="notice" class="notice notice-info is-dismissible">';
@@ -34,7 +34,7 @@ if (! class_exists('AdminNotices')) {
 
 				echo '</div>';
 
-				delete_option('GdataAntivirusMenuNotices');
+				delete_option('gdatacyberdefenseag_antivirus_notices');
 			}
 		}
 	}

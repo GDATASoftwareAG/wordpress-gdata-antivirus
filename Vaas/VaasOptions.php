@@ -19,8 +19,8 @@ class VaasOptions {
 
     public function setup_fields(): void {
         \register_setting(
-            'wordpress_gdata_antivirus_options_credentials',
-            'wordpress_gdata_antivirus_options_credentials ',
+            'gdatacyberdefenseag_antivirus_options_credentials',
+            'gdatacyberdefenseag_antivirus_options_credentials ',
             array(
                 'type'     => 'array',
                 'default ' => self::$option_defaults,
@@ -29,7 +29,7 @@ class VaasOptions {
     }
 
     public function get_options(): array {
-        $options = \get_option('wordpress_gdata_antivirus_options_credentials', self::$option_defaults);
+        $options = \get_option('gdatacyberdefenseag_antivirus_options_credentials', self::$option_defaults);
         $options = array_merge(self::$option_defaults, $options);
         return $options;
     }

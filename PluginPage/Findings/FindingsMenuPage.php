@@ -28,8 +28,8 @@ if (! class_exists('FindingsMenuPage')) {
 			$this->logger = $logger;
 			$this->admin_notices = $admin_notices;
 
-			register_activation_hook(WORDPRESS_GDATA_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__, array( $this, 'create_findings_table' ));
-			register_deactivation_hook(WORDPRESS_GDATA_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__, array( $this, 'remove_findings_table' ));
+			register_activation_hook(GDATACYBERDEFENCEAG_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__, array( $this, 'create_findings_table' ));
+			register_deactivation_hook(GDATACYBERDEFENCEAG_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__, array( $this, 'remove_findings_table' ));
 
 			if ($this->get_findings_count() === 0) {
 				return;
@@ -41,7 +41,7 @@ if (! class_exists('FindingsMenuPage')) {
 
 		private function get_table_name(): string {
 			$this->logger->debug('FindingsMenuPage::get_table_name');
-			return $this->database->get_prefix(). WORDPRESS_GDATA_ANTIVIRUS_MENU_FINDINGS_TABLE_NAME;
+			return $this->database->get_prefix(). GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FINDINGS_TABLE_NAME;
 		}
 
 		public function create_findings_table() {
@@ -134,11 +134,11 @@ if (! class_exists('FindingsMenuPage')) {
 
 		public function setup_menu(): void {
 			\add_submenu_page(
-				WORDPRESS_GDATA_ANTIVIRUS_MENU_SLUG,
+				GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
 				'Scan Findings',
 				'Scan Findings <span class="awaiting-mod">' . $this->get_findings_count() . '</span>',
 				'manage_options',
-				WORDPRESS_GDATA_ANTIVIRUS_MENU_FINDINGS_SLUG,
+				GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FINDINGS_SLUG,
 				array( $this, 'findings_list' )
 			);
 		}

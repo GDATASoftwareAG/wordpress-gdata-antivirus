@@ -2,8 +2,8 @@
 
 namespace Gdatacyberdefenseag\GdataAntivirus\Vaas;
 
-use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IGdataAntivirusDatabase;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;
+use Gdatacyberdefenseag\GdataAntivirus\PluginPage\AdminNotices;
 use Psr\Log\LoggerInterface;
 use VaasSdk\Vaas;
 use VaasSdk\Authentication\ClientCredentialsGrantAuthenticator;
@@ -11,38 +11,49 @@ use VaasSdk\Authentication\ResourceOwnerPasswordGrantAuthenticator;
 use VaasSdk\Message\Verdict;
 use VaasSdk\VaasOptions as VaasParameters;
 
-use function Amp\ByteStream\Internal\tryToCreateReadableStreamFromResource;
-
 if (! class_exists('ScanClient')) {
 	class ScanClient {
 		private Vaas $vaas;
 		private LoggerInterface $logger;
 		private VaasOptions $vaas_options;
 		private IGdataAntivirusFileSystem $file_system;
+		private AdminNotices $admin_notices;
 
-		public function __construct( LoggerInterface $logger, VaasOptions $vaas_options, IGdataAntivirusFileSystem $file_system ) {
+		public function __construct(
+			LoggerInterface $logger,
+			VaasOptions $vaas_options,
+			IGdataAntivirusFileSystem $file_system,
+			AdminNotices $admin_notices
+			) {
 			$logger->info('ScanClient::__construct');
 			$this->logger = $logger;
 			$this->vaas_options = $vaas_options;
 			$this->file_system = $file_system;
+			$this->admin_notices = $admin_notices;
 
-			$this->Connect();
-			$plugin_upload_scan_enabled = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_plugin_upload_scan_enabled', false);
-			$media_upload_scan_enabled  = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_media_upload_scan_enabled', false);
+			try {
+				$this->Connect();
+			} catch (\Exception $e) {
+				$this->admin_notices->add_notice($e->getMessage());
+				$this->logger->error("VaaS connection failed. Please verify if the VaaS-Url is correct.");
+				return;
+			}
+			$plugin_upload_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_plugin_upload_scan_enabled', false);
+			$media_upload_scan_enabled  = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_media_upload_scan_enabled', false);
 			// We don't need to add the filters if both plugin and media upload scan are disabled.
 			if ($plugin_upload_scan_enabled === true || $media_upload_scan_enabled === true) {
 				\add_filter('wp_handle_upload_prefilter', array( $this, 'scan_single_upload' ));
 				\add_filter('wp_handle_sideload_prefilter', array( $this, 'scan_single_upload' ));
 			}
 
-			$comment_scan_enabled  = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_comment_scan_enabled', false);
-			$pingback_scan_enabled = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_pingback_scan_enabled', false);
+			$comment_scan_enabled  = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_comment_scan_enabled', false);
+			$pingback_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_pingback_scan_enabled', false);
 			// We don't need to add the filter if both comment and pingback scan are disabled.
 			if ($comment_scan_enabled === true || $pingback_scan_enabled === true) {
 				\add_filter('preprocess_comment', array( $this, 'scan_comment' ));
 			}
 
-			$post_scan_enabled = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_post_scan_enabled', false);
+			$post_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_post_scan_enabled', false);
 			if ($post_scan_enabled === true) {
 				\add_filter('wp_insert_post_data', array( $this, 'scan_post' ));
 			}
@@ -78,7 +89,7 @@ if (! class_exists('ScanClient')) {
 				return $data;
 			}
 
-			$post_scan_enabled = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_post_scan_enabled', false);
+			$post_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_post_scan_enabled', false);
 			if ($post_scan_enabled === false) {
 				return $data;
 			}
@@ -95,16 +106,16 @@ if (! class_exists('ScanClient')) {
 			 // phpcs:ignore
 			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict->Verdict) {
 				$this->logger->debug('gdata-antivirus: virus found in post');
-				wp_die(esc_html__('virus found'));
+				wp_die(esc_html__('virus found', 'gdata-antivirus'));
 			}
 			return $postdata;
 		}
 
 		public function scan_comment( $commentdata ) {
-			$comment_scan_enabled  = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_comment_scan_enabled', false);
-			$pingback_scan_enabled = (bool) \get_option('wordpress_gdata_antivirus_options_on_demand_scan_pingback_scan_enabled', false);
+			$comment_scan_enabled  = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_comment_scan_enabled', false);
+			$pingback_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_pingback_scan_enabled', false);
 
-			$comment_scan_enabled = \get_option('wordpress_gdata_antivirus_options_on_demand_scan_comment_scan_enabled', false);
+			$comment_scan_enabled = \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_comment_scan_enabled', false);
 			if ($comment_scan_enabled === false) {
 				return $commentdata;
 			}
@@ -133,14 +144,14 @@ if (! class_exists('ScanClient')) {
 			 // phpcs:ignore
 			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict->Verdict) {
 				$this->logger->debug('gdata-antivirus: virus found in comment');
-				wp_die(\esc_html__('virus found'));
+				wp_die(\esc_html__('virus found', 'gdata-antivirus'));
 			}
 			return $commentdata;
 		}
 
 		public function scan_single_upload( $file ) {
-			$plugin_upload_scan_enabled = \get_option('wordpress_gdata_antivirus_options_on_demand_scan_plugin_upload_scan_enabled', false);
-			$media_upload_scan_enabled  = \get_option('wordpress_gdata_antivirus_options_on_demand_scan_media_upload_scan_enabled', false);
+			$plugin_upload_scan_enabled = \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_plugin_upload_scan_enabled', false);
+			$media_upload_scan_enabled  = \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_media_upload_scan_enabled', false);
 
 			/**
 			 *	When this is a plugin uplaod but the plugin upload scan is disabled,
@@ -175,7 +186,7 @@ if (! class_exists('ScanClient')) {
 
 			$verdict = $this->scan_file($file['tmp_name']);
 			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict) {
-				$file['error'] = __('virus found');
+				$file['error'] = __('virus found', 'gdata-antivirus');
 			}
 			return $file;
 		}
