@@ -95,7 +95,7 @@ if (! class_exists('ScanClient')) {
 			 // phpcs:ignore
 			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict->Verdict) {
 				$this->logger->debug('gdata-antivirus: virus found in post');
-				wp_die(esc_html__('virus found'));
+				wp_die(esc_html__('virus found', 'gdata-antivirus'));
 			}
 			return $postdata;
 		}
@@ -133,7 +133,7 @@ if (! class_exists('ScanClient')) {
 			 // phpcs:ignore
 			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict->Verdict) {
 				$this->logger->debug('gdata-antivirus: virus found in comment');
-				wp_die(\esc_html__('virus found'));
+				wp_die(\esc_html__('virus found', 'gdata-antivirus'));
 			}
 			return $commentdata;
 		}
@@ -175,7 +175,7 @@ if (! class_exists('ScanClient')) {
 
 			$verdict = $this->scan_file($file['tmp_name']);
 			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict) {
-				$file['error'] = __('virus found');
+				$file['error'] = __('virus found', 'gdata-antivirus');
 			}
 			return $file;
 		}

@@ -204,7 +204,7 @@ if (! class_exists('FullScanMenuPage')) {
 				add_settings_error(
 					'wordpress_gdata_antivirus_options_full_scan_batch_size',
 					'wordpress_gdata_antivirus_options_full',
-					__('batch_size cannot be 0')
+					__('batch_size cannot be 0', 'gdata-antivirus')
 				);
 			}
 			if ($value < 100) {
@@ -212,7 +212,7 @@ if (! class_exists('FullScanMenuPage')) {
 				add_settings_error(
 					'wordpress_gdata_antivirus_options_full_scan_batch_size',
 					'wordpress_gdata_antivirus_options_full',
-					__('batch_size should be at least 100')
+					__('batch_size should be at least 100', 'gdata-antivirus')
 				);
 			}
 			return $value;
@@ -230,7 +230,7 @@ if (! class_exists('FullScanMenuPage')) {
 				add_settings_error(
 					'wordpress_gdata_antivirus_options_full_scan_schedule_start',
 					'wordpress_gdata_antivirus_options_full_scan',
-					__('schedule start must be of format H:i')
+					__('schedule start must be of format H:i', 'gdata-antivirus')
 				);
 			}
 			return $value;
