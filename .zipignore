@@ -3,7 +3,7 @@
 .git/*
 wordpress/*
 tests/*
-compose*
+compose.yml
 Dockerfile
 test.sh
 xdebug.ini
