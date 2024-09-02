@@ -3,6 +3,7 @@
 namespace Gdatacyberdefenseag\GdataAntivirus\Vaas;
 
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;
+use Gdatacyberdefenseag\GdataAntivirus\PluginPage\AdminNotices;
 use Psr\Log\LoggerInterface;
 use VaasSdk\Vaas;
 use VaasSdk\Authentication\ClientCredentialsGrantAuthenticator;
@@ -16,14 +17,27 @@ if (! class_exists('ScanClient')) {
 		private LoggerInterface $logger;
 		private VaasOptions $vaas_options;
 		private IGdataAntivirusFileSystem $file_system;
+		private AdminNotices $admin_notices;
 
-		public function __construct( LoggerInterface $logger, VaasOptions $vaas_options, IGdataAntivirusFileSystem $file_system ) {
+		public function __construct(
+			LoggerInterface $logger,
+			VaasOptions $vaas_options,
+			IGdataAntivirusFileSystem $file_system,
+			AdminNotices $admin_notices
+			) {
 			$logger->info('ScanClient::__construct');
 			$this->logger = $logger;
 			$this->vaas_options = $vaas_options;
 			$this->file_system = $file_system;
+			$this->admin_notices = $admin_notices;
 
-			$this->Connect();
+			try {
+				$this->Connect();
+			} catch (\Exception $e) {
+				$this->admin_notices->add_notice($e->getMessage());
+				$this->logger->error("VaaS connection failed. Please verify if the VaaS-Url is correct.");
+				return;
+			}
 			$plugin_upload_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_plugin_upload_scan_enabled', false);
 			$media_upload_scan_enabled  = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_media_upload_scan_enabled', false);
 			// We don't need to add the filters if both plugin and media upload scan are disabled.
