@@ -12,3 +12,5 @@ info.php
 Dockerfile.WordPress
 renovate.json
 *.sh
+*.exe
+*.h
