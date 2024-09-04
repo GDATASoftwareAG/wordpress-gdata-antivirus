@@ -125,27 +125,27 @@ if (! class_exists('OnDemandScan')) {
 		}
 
 		public function gdatacyberdefenseag_antivirus_options_media_upload_scan_enabled_text() {
-			$media_upload_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_media_upload_scan_enabled', false);
+			$media_upload_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_media_upload_scan_enabled', true);
 			echo '<input type="checkbox" id="gdatacyberdefenseag_antivirus_options_on_demand_scan_media_upload_scan_enabled" name="gdatacyberdefenseag_antivirus_options_on_demand_scan_media_upload_scan_enabled" ' . \checked(true, $media_upload_scan_enabled, false) . '>';
 		}
 
 		public function gdatacyberdefenseag_antivirus_options_plugin_upload_scan_enabled_text() {
-			$plugin_upload_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_plugin_upload_scan_enabled', false);
+			$plugin_upload_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_plugin_upload_scan_enabled', true);
 			echo '<input type="checkbox" id="gdatacyberdefenseag_antivirus_options_on_demand_scan_plugin_upload_scan_enabled" name="gdatacyberdefenseag_antivirus_options_on_demand_scan_plugin_upload_scan_enabled" ' . \checked(true, $plugin_upload_scan_enabled, false) . '>';
 		}
 
 		public function gdatacyberdefenseag_antivirus_options_comment_scan_enabled_text() {
-			$comment_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_comment_scan_enabled', false);
+			$comment_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_comment_scan_enabled', true);
 			echo '<input type="checkbox" id="gdatacyberdefenseag_antivirus_options_on_demand_scan_comment_scan_enabled" name="gdatacyberdefenseag_antivirus_options_on_demand_scan_comment_scan_enabled" ' . \checked(true, $comment_scan_enabled, false) . '>';
 		}
 
 		public function gdatacyberdefenseag_antivirus_options_pingback_scan_enabled_text() {
-			$pingback_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_pingback_scan_enabled', false);
+			$pingback_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_pingback_scan_enabled', true);
 			echo '<input type="checkbox" id="gdatacyberdefenseag_antivirus_options_on_demand_scan_pingback_scan_enabled" name="gdatacyberdefenseag_antivirus_options_on_demand_scan_pingback_scan_enabled" ' . \checked(true, $pingback_scan_enabled, false) . '>';
 		}
 
 		public function gdatacyberdefenseag_antivirus_options_post_scan_enabled_text() {
-			$post_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_post_scan_enabled', false);
+			$post_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_post_scan_enabled', true);
 			echo '<input type="checkbox" id="gdatacyberdefenseag_antivirus_options_on_demand_scan_post_scan_enabled" name="gdatacyberdefenseag_antivirus_options_on_demand_scan_post_scan_enabled" ' . \checked(true, $post_scan_enabled, false) . '>';
 		}
 
