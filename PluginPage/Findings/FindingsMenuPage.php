@@ -187,7 +187,7 @@ if (! class_exists('FindingsMenuPage')) {
 
 		public function findings_list(): void {
 			?>
-			<h1><?php esc_html_e('We found Malware'); ?></h1>
+			<h1><?php esc_html_e('We found Malware', 'gdata-antivirus'); ?></h1>
 			<form action="admin-post.php" method="post">
 
 				<table class="wp-list-table widefat fixed striped table-view-list pages">
