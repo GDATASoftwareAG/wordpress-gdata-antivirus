@@ -1,8 +1,9 @@
-.devcontainer/*
-.vscode/*
-.git/*
+**/.*
 wordpress/*
 tests/*
+**/tests/*
+**/test/*
+examples/*
 compose.yml
 Dockerfile
 test.sh
@@ -14,3 +15,5 @@ renovate.json
 *.sh
 *.exe
 *.h
+*.dist
+**/Makefile
