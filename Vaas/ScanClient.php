@@ -168,9 +168,18 @@ if (! class_exists('ScanClient')) {
 			 */
 			$action = $_GET['action'] ?? $_POST['action'] ?? '';
 			$sanitized_action = \sanitize_key($action);
+			$nonce = $_POST['nonce'] ?? $_POST['_wpnonce'];
+			$sanitized_nonce = \sanitize_key($nonce);
 			if ($sanitized_action === 'upload-plugin') {
+				if (wp_verify_nonce($sanitized_nonce, $sanitized_action) === false) {
+					return $file;
+				}
 				$is_plugin_uplad = true;
 				if ($plugin_upload_scan_enabled === false) {
+					return $file;
+				}
+			} else {
+				if (wp_verify_nonce($sanitized_nonce, 'media-form') === false) {
 					return $file;
 				}
 			}
