@@ -112,5 +112,4 @@ class FindingsQuery implements IFindingsQuery {
             }
         }
     }
-
 }

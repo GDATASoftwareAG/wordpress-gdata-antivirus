@@ -6,7 +6,7 @@ use Amp\ByteStream\ReadableResourceStream;
 use function Amp\ByteStream\Internal\tryToCreateReadableStreamFromResource;
 
 /**
- * this implements the functions that some filesystems have in common
+ * This implements the functions that some filesystems have in common
  * for example, there is no proper replacement for fopen (where you get a stream from)
  * in the WP_Filesystem_Base class, so we need to implement it here
  */

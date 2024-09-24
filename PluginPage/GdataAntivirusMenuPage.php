@@ -21,7 +21,7 @@ if (! class_exists('GdataAntivirusMenuPage')) {
 			\add_action('admin_menu', array( $this, 'setup_menu' ));
 			\add_action('admin_enqueue_scripts', array( $this, 'enqueue_scripts' ));
 
-			$this->findings  	= $findings;
+			$this->findings     = $findings;
 			$this->vaas_options = $vaas_options;
 		}
 

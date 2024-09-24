@@ -5,11 +5,9 @@ namespace Gdatacyberdefenseag\GdataAntivirus\tests\unittests\Infrastructure;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IFindingsQuery;
 
 class NoopFindingsQuery implements IFindingsQuery {
-    public function add(string $file): void {
-    }
+    public function add(string $file): void {}
 
-    public function delete(string $file): void {
-    }
+    public function delete(string $file): void {}
 
     public function get_all(): array {
         return [];
@@ -23,12 +21,9 @@ class NoopFindingsQuery implements IFindingsQuery {
         return 0;
     }
 
-    public function validate(): void {
-    }
+    public function validate(): void {}
 
-    public function create(): void {
-    }
+    public function create(): void {}
 
-    public function remove(): void {
-    }
+    public function remove(): void {}
 }
