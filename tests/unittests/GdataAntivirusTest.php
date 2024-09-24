@@ -18,19 +18,20 @@
  * License URI: https://github.com/GDATASoftwareAG/vaas/blob/main/LICENSE
  */
 
-namespace Gdatacyberdefenseag\GdataAntivirus;
+namespace Gdatacyberdefenseag\GdataAntivirus\tests\unittests;
 
-use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IGdataAntivirusDatabase;
+use Gdatacyberdefenseag\GdataAntivirus\GdataAntivirusPlugin;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IFindingsQuery;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;
 use Gdatacyberdefenseag\GdataAntivirus\PluginPage\Findings\FindingsMenuPage;
 use Gdatacyberdefenseag\GdataAntivirus\PluginPage\GdataAntivirusMenuPage;
+use Gdatacyberdefenseag\GdataAntivirus\tests\unittests\Infrastructure\NoopFindingsQuery;
+use Gdatacyberdefenseag\GdataAntivirus\tests\unittests\Infrastructure\PlainPhpFileSystem;
+use Gdatacyberdefenseag\GdataAntivirus\tests\unittests\Infrastructure\TestDebugLogger;
 use Gdatacyberdefenseag\GdataAntivirus\Vaas\ScanClient;
 use Gdatacyberdefenseag\GdataAntivirus\Vaas\VaasOptions;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
-use unittests\Infrastructure\TestDebugLogger;
-use unittests\Infrastructure\NoopDatabase;
-use unittests\Infrastructure\PlainPhpFileSystem;
 
 global $_GET;
 $_GET['load'] = array( "foobar" );
@@ -98,7 +99,7 @@ class GdataAntivirusTest extends TestCase {
         $app = new GdataAntivirusPlugin($logger);
         $app->singleton(LoggerInterface::class, TestDebugLogger::class);
         $app->singleton(IGdataAntivirusFileSystem::class, PlainPhpFileSystem::class);
-        $app->singleton(IGdataAntivirusDatabase::class, NoopDatabase::class);
+        $app->singleton(IFindingsQuery::class, NoopFindingsQuery::class);
         $app->singleton(VaasOptions::class, function () use ( $vaas_options ) {
         return $vaas_options;
         });
@@ -111,7 +112,8 @@ class GdataAntivirusTest extends TestCase {
         $logger->debug("get GdataAntivirusMenuPage");
         $gdata_menu_page = $app->get(GdataAntivirusMenuPage::class);
 
-        assert($findings_menu instanceof PluginPage\Findings\FindingsMenuPage);
+        assert($findings_menu instanceof FindingsMenuPage);
+        assert($gdata_menu_page instanceof GdataAntivirusMenuPage);
         $findings_menu->validate_findings();
         echo "validate_findings()\n";
         $this->assertTrue(true);

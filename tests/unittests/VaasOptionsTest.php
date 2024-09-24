@@ -1,6 +1,6 @@
 <?php
 
-namespace unittests;
+namespace Gdatacyberdefenseag\GdataAntivirus\tests\unittests;
 
 use Gdatacyberdefenseag\GdataAntivirus\Vaas\VaasOptions;
 use PHPUnit\Framework\TestCase;

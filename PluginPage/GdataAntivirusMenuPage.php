@@ -2,17 +2,17 @@
 
 namespace Gdatacyberdefenseag\GdataAntivirus\PluginPage;
 
-use Gdatacyberdefenseag\GdataAntivirus\PluginPage\Findings\FindingsMenuPage;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IFindingsQuery;
 use Gdatacyberdefenseag\GdataAntivirus\Vaas\VaasOptions;
 use Psr\Log\LoggerInterface;
 
 if (! class_exists('GdataAntivirusMenuPage')) {
     class GdataAntivirusMenuPage {
-		public FindingsMenuPage $findings_menu_page;
 		public VaasOptions $vaas_options;
+		public IFindingsQuery $findings;
 
 		public function __construct(
-			FindingsMenuPage $findings_menu_page,
+			IFindingsQuery $findings,
 			LoggerInterface $logger,
 			VaasOptions $vaas_options,
 		) {
@@ -21,8 +21,8 @@ if (! class_exists('GdataAntivirusMenuPage')) {
 			\add_action('admin_menu', array( $this, 'setup_menu' ));
 			\add_action('admin_enqueue_scripts', array( $this, 'enqueue_scripts' ));
 
-			$this->findings_menu_page  = $findings_menu_page;
-			$this->vaas_options        = $vaas_options;
+			$this->findings     = $findings;
+			$this->vaas_options = $vaas_options;
 		}
 
 		public function setup_menu(): void {
@@ -82,7 +82,7 @@ if (! class_exists('GdataAntivirusMenuPage')) {
 				'gdatacyberdefenseag_antivirus_options_credentials'
 			);
 
-			$count = $this->findings_menu_page->get_findings_count();
+			$count = $this->findings->count();
 			if ($count > 0) {
 				$menu_title = 'VaaS <span class="awaiting-mod">' . $count . '</span>';
 				\add_menu_page(

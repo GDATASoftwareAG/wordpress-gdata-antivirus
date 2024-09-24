@@ -2,7 +2,7 @@
 
 namespace Gdatacyberdefenseag\GdataAntivirus\PluginPage\Findings;
 
-use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IGdataAntivirusDatabase;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IFindingsQuery;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;
 use Gdatacyberdefenseag\GdataAntivirus\PluginPage\AdminNotices;
 use Psr\Log\LoggerInterface;
@@ -12,26 +12,26 @@ if (! class_exists('FindingsMenuPage')) {
 		private LoggerInterface $logger;
 		private AdminNotices $admin_notices;
 		private IGdataAntivirusFileSystem $files_system;
-		private IGdataAntivirusDatabase $database;
+		private IFindingsQuery $findings;
 
 		public function __construct(
 			LoggerInterface $logger,
 			AdminNotices $admin_notices,
 			IGdataAntivirusFileSystem $file_system,
-			IGdataAntivirusDatabase $database
+			IFindingsQuery $findings
 		) {
 			$logger->debug('FindingsMenuPage::__construct');
 
 			$this->files_system = $file_system;
-			$this->database = $database;
+			$this->findings = $findings;
 
 			$this->logger = $logger;
 			$this->admin_notices = $admin_notices;
 
-			register_activation_hook(GDATACYBERDEFENCEAG_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__, array( $this, 'create_findings_table' ));
-			register_deactivation_hook(GDATACYBERDEFENCEAG_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__, array( $this, 'remove_findings_table' ));
+			register_activation_hook(GDATACYBERDEFENCEAG_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__, array( $this->findings, 'create' ));
+			register_deactivation_hook(GDATACYBERDEFENCEAG_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__, array( $this->findings, 'remove' ));
 
-			if ($this->get_findings_count() === 0) {
+			if ($this->findings->count() === 0) {
 				return;
 			}
 
@@ -39,111 +39,24 @@ if (! class_exists('FindingsMenuPage')) {
 			\add_action('admin_post_delete_findings', array( $this, 'delete_findings' ));
 		}
 
-		private function get_table_name(): string {
-			$this->logger->debug('FindingsMenuPage::get_table_name');
-			return $this->database->get_prefix(). GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FINDINGS_TABLE_NAME;
-		}
-
-		public function create_findings_table() {
-			$charset_collate = $this->database->get_charset_collate();
-			$sql             = 'CREATE TABLE ' . $this->get_table_name() . ' (
-                file_path VARCHAR(512) NOT NULL,
-                UNIQUE KEY file_path (file_path)
-            )' . $charset_collate . ';';
-
-			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-			$this->database->db_delta($sql);
-			\wp_cache_set($this->get_table_name(), 'true', 'GdataAntivirus');
-		}
-
-		public function findings_table_exist(): bool {
-			$tables_exists = \wp_cache_get($this->get_table_name(), 'GdataAntivirus');
-			$this->logger->debug('Exists in cache: ' . ($tables_exists ? 'true' : 'false'));
-			if (false === $tables_exists) {
-				$exists = $this->database->get_var('SHOW TABLES LIKE %s', $this->get_table_name()) === $this->get_table_name();
-				$this->logger->debug('Exists in database: ' . ($exists ? 'true' : 'false'));
-				\wp_cache_set($this->get_table_name(), \wp_json_encode($exists), 'GdataAntivirus');
-				return $exists;
-			}
-			if ('true' === $tables_exists) {
-				return true;
-			}
-			return false;
-		}
-
-		public function remove_findings_table() {
-			if (! $this->findings_table_exist()) {
-				return;
-			}
-			$this->database->query('DROP TABLE IF EXISTS %i', $this->get_table_name());
-			\wp_cache_set($this->get_table_name(), 'false', 'GdataAntivirus');
-		}
-
-		public function add_finding( string $file ): void {
-			if (! $this->findings_table_exist()) {
-				return;
-			}
-
-			try {
-				$this->database->insert(
-					$this->get_table_name(),
-					array( 'file_path' => $file )
-				);
-			} catch (\Exception $e) {
-				$this->logger->debug($e->getMessage());
-			}
-		}
-
-		public function delete_finding( string $file ): void {
-			if (! $this->findings_table_exist()) {
-				return;
-			}
-			$this->database->delete(
-				$this->get_table_name(),
-				array( 'file_path' => $file )
-			);
-		}
-
-		public function validate_findings(): void {
-			if (! $this->findings_table_exist()) {
-				return;
-			}
-			$findings = $this->get_all_findings();
-
-			foreach ($findings as $finding) {
-				if (! file_exists($finding['file_path'])) {
-					$this->delete_finding($finding['file_path']);
-				}
-			}
-		}
-
-		public function get_all_findings(): array {
-			if (! $this->findings_table_exist()) {
-				return array();
-			}
-			return $this->database->get_results('SELECT file_path FROM %i', ARRAY_A, $this->get_table_name());
-		}
-
-		public function get_findings_count(): int {
-			$this->logger->debug('FindingsMenuPage::get_findings_count');
-			if (! $this->findings_table_exist()) {
-				return 0;
-			}
-			return (int) $this->database->get_var('SELECT COUNT(*) FROM %i', $this->get_table_name());
-		}
-
 		public function setup_menu(): void {
 			\add_submenu_page(
 				GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
 				'Scan Findings',
-				'Scan Findings <span class="awaiting-mod">' . $this->get_findings_count() . '</span>',
+				'Scan Findings <span class="awaiting-mod">' . $this->findings->count() . '</span>',
 				'manage_options',
 				GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FINDINGS_SLUG,
 				array( $this, 'findings_list' )
 			);
 		}
 
+		public function validate_findings(): void {
+			$this->logger->debug('FindingsMenuPage::validate_findings');
+			$this->findings->validate();
+		}
+
 		public function delete_findings(): void {
+			$this->logger->debug('FindingsMenuPage::delete_findings');
 			if (! isset($_POST['gdata-antivirus-delete-findings-nonce'])) {
 				wp_die(
 					\esc_html__('Invalid nonce specified', 'gdata-antivirus'),
@@ -178,7 +91,7 @@ if (! class_exists('FindingsMenuPage')) {
 					$this->admin_notices->add_notice(\esc_html__('Cannot delete file: ', 'gdata-antivirus') . $file);
 				} else {
 					\wp_delete_file($file);
-					$this->delete_finding($file);
+					$this->findings->delete($file);
 				}
 			}
 
@@ -202,7 +115,7 @@ if (! class_exists('FindingsMenuPage')) {
 
 					<tbody id="the-list">
 						<?php
-						$findings = $this->get_all_findings();
+						$findings = $this->findings->get_all();
 						if (count($findings) > 0) {
 							foreach ($findings as $finding) {
 								?>
