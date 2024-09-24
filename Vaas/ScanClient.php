@@ -160,7 +160,11 @@ if (! class_exists('ScanClient')) {
 			$is_plugin_uplad = false;
 
 			$action =  \sanitize_key($_GET['action'] ?? $_POST['action'] ?? '');
-			$nonce = \sanitize_key($_POST['nonce'] ?? $_POST['_wpnonce']);
+			if (isset($_POST['_wpnonce'])) {
+				$nonce = \sanitize_key($_POST['nonce'] ?? $_POST['_wpnonce']);
+			} else {
+				$nonce = \sanitize_key($_GET['nonce'] ?? '');
+			}
 			if ($action === 'upload-plugin') {
 				if (wp_verify_nonce($nonce, $action) === false) {
 					return $file;

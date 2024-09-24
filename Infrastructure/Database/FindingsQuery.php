@@ -6,23 +6,24 @@ use Psr\Log\LoggerInterface;
 use wpdb;
 
 class FindingsQuery implements IFindingsQuery {
-    private wpdb $wpdb;
     private LoggerInterface $logger;
 
     public function __construct(
         LoggerInterface $logger,
     ) {
-        global $wpdb;
-        $this->wpdb = $wpdb;
         $this->logger = $logger;
     }
 
     private function get_table_name(): string {
-        return $this->wpdb->prefix.GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FINDINGS_TABLE_NAME;
+        global $wpdb;
+
+        return $wpdb->prefix.GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FINDINGS_TABLE_NAME;
     }
 
     public function create(): void {
-        $charset_collate = $this->wpdb->get_charset_collate();
+        global $wpdb;
+
+        $charset_collate = $wpdb->get_charset_collate();
         $sql             = 'CREATE TABLE ' . $this->get_table_name() . ' (
             file_path VARCHAR(512) NOT NULL,
             UNIQUE KEY file_path (file_path)
@@ -34,21 +35,25 @@ class FindingsQuery implements IFindingsQuery {
     }
 
     public function remove(): void {
+        global $wpdb;
+
         if (! $this->table_exists()) {
             return;
         }
-        $this->wpdb->query(
-            $this->wpdb->prepare('DROP TABLE IF EXISTS %i', $this->get_table_name())
+        $wpdb->query(
+            $wpdb->prepare('DROP TABLE IF EXISTS %i', $this->get_table_name())
         );
         \wp_cache_set($this->get_table_name(), 'false', 'GdataAntivirus');
     }
 
     public function table_exists(): bool {
+        global $wpdb;
+
         $tables_exists = \wp_cache_get($this->get_table_name(), 'GdataAntivirus');
         $this->logger->debug('Exists in cache: ' . ($tables_exists ? 'true' : 'false'));
         if (false === $tables_exists) {
-            $exists = $this->wpdb->get_var(
-                $this->wpdb->prepare('SHOW TABLES LIKE %s', $this->get_table_name())
+            $exists = $wpdb->get_var(
+                $wpdb->prepare('SHOW TABLES LIKE %s', $this->get_table_name())
             ) === $this->get_table_name();
             $this->logger->debug('Exists in database: ' . ($exists ? 'true' : 'false'));
             \wp_cache_set($this->get_table_name(), \wp_json_encode($exists), 'GdataAntivirus');
@@ -61,12 +66,14 @@ class FindingsQuery implements IFindingsQuery {
     }
 
     public function add( string $file ): void {
+        global $wpdb;
+
         if (! $this->table_exists()) {
             return;
         }
 
         try {
-            $this->wpdb->insert(
+            $wpdb->insert(
                 $this->get_table_name(),
                 array( 'file_path' => $file )
             );
@@ -76,32 +83,38 @@ class FindingsQuery implements IFindingsQuery {
     }
 
     public function delete( string $file ): void {
+        global $wpdb;
+
         if (! $this->table_exists()) {
             return;
         }
-        $this->wpdb->delete(
+        $wpdb->delete(
             $this->get_table_name(),
             array( 'file_path' => $file )
         );
     }
 
     public function get_all(): array {
+        global $wpdb;
+
         if (! $this->table_exists()) {
             return array();
         }
-        return $this->wpdb->get_results(
-            $this->wpdb->prepare('SELECT file_path FROM %i', $this->get_table_name()),
+        return $wpdb->get_results(
+            $wpdb->prepare('SELECT file_path FROM %i', $this->get_table_name()),
             ARRAY_A
         );
     }
 
     public function count(): int {
+        global $wpdb;
+
         $this->logger->debug('FindingsMenuPage::get_findings_count');
         if (! $this->table_exists()) {
             return 0;
         }
-        return (int) $this->wpdb->get_var(
-            $this->wpdb->prepare('SELECT COUNT(*) FROM %i', $this->get_table_name())
+        return (int) $wpdb->get_var(
+            $wpdb->prepare('SELECT COUNT(*) FROM %i', $this->get_table_name())
         );
     }
 

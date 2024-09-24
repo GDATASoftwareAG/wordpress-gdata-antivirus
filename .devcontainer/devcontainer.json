@@ -8,7 +8,8 @@
 		"vscode": {
 			"extensions": [
 				"recca0120.vscode-phpunit",
-				"github.vscode-github-actions"
+				"github.vscode-github-actions",
+				"slevesque.vscode-zipexplorer"
 			]
 		}
 	},
