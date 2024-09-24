@@ -2,45 +2,44 @@
 
 namespace Gdatacyberdefenseag\GdataAntivirus\PluginPage\FullScan;
 
-use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IGdataAntivirusDatabase;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IFindingsQuery;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IScansQuery;
 use Gdatacyberdefenseag\GdataAntivirus\PluginPage\AdminNotices;
 use Gdatacyberdefenseag\GdataAntivirus\PluginPage\Findings\FindingsMenuPage;
 use Gdatacyberdefenseag\GdataAntivirus\Vaas\ScanClient;
 use Gdatacyberdefenseag\GdataAntivirus\Vaas\VaasOptions;
 use Psr\Log\LoggerInterface;
 
-use function Amp\async;
-use function Amp\Future\awaitAll;
 
 if (! class_exists('FullScanMenuPage')) {
     class FullScanMenuPage {
 		private ScanClient $scan_client;
 		private AdminNotices $admin_notices;
-		private FindingsMenuPage $findings_menu_page;
 		private LoggerInterface $logger;
-		private IGdataAntivirusDatabase $database;
+		private IFindingsQuery $findings;
+		private IScansQuery $scans;
 
 		public function __construct(
-			FindingsMenuPage $findings_menu_page,
 			LoggerInterface $logger,
 			ScanClient $scan_client,
 			AdminNotices $admin_notices,
-			IGdataAntivirusDatabase $database,
+			IFindingsQuery $findings,
+			IScansQuery $scans,
 			VaasOptions $vaas_options,
 		) {
 			$logger->info('FullScanMenuPage::__construct');
 			$this->logger = $logger;
-			$this->database = $database;
+			$this->findings = $findings;
+			$this->scans = $scans;
 
-			register_activation_hook(GDATACYBERDEFENCEAG_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__, array( $this, 'create_full_scan_operations_table' ));
-			register_deactivation_hook(GDATACYBERDEFENCEAG_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__, array( $this, 'remove_full_scan_operations_table' ));
+			register_activation_hook(GDATACYBERDEFENCEAG_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__, array( $this->scans, 'create' ));
+			register_deactivation_hook(GDATACYBERDEFENCEAG_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__, array( $this->scans, 'remove' ));
 
 			if (! $vaas_options->credentials_configured()) {
 				return;
 			}
 			$this->scan_client        = $scan_client;
 			$this->admin_notices      = $admin_notices;
-			$this->findings_menu_page = $findings_menu_page;
 			\add_action('init', array( $this, 'setup_fields' ));
 			\add_action('admin_menu', array( $this, 'setup_menu' ));
 			\add_action('admin_post_full_scan', array( $this, 'full_scan_interactive' ));
@@ -75,55 +74,6 @@ if (! class_exists('FullScanMenuPage')) {
 				$timestamp = strtotime($schedule_start);
 				\wp_schedule_event($timestamp, 'daily', 'gdatacyberdefenseag_antivirus_scheduled_full_scan');
 			}
-		}
-
-		public function create_full_scan_operations_table() {
-			$charset_collate = $this->database->get_charset_collate();
-			$sql             = 'CREATE TABLE ' . $this->get_table_name() . ' (
-                scheduled_scans TINYINT NOT NULL DEFAULT 0,
-                finished_scans TINYINT NOT NULL DEFAULT 0
-            )' . $charset_collate . ';';
-
-			require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-			dbDelta($sql);
-
-			$this->database->query('INSERT INTO %i (scheduled_scans, finished_scans) VALUES (0, 0)', $this->get_table_name());
-		}
-
-		private function get_table_name(): string {
-			return $this->database->get_prefix() . GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FULL_SCAN_OPERATIONS_TABLE_NAME;
-		}
-
-		public function lock_scan_operations_table() {
-			$this->database->query('LOCK TABLES %i WRITE', $this->get_table_name());
-		}
-
-		public function unlock_scan_operations_table() {
-			$this->database->query('UNLOCK TABLES %i WRITE', $this->get_table_name());
-		}
-
-		public function remove_full_scan_operations_table() {
-			$this->database->query('DROP TABLE IF EXISTS %i', $this->get_table_name());
-		}
-
-		public function get_scheduled_scans(): int {
-			return $this->database->get_var('SELECT scheduled_scans FROM %i', $this->get_table_name());
-		}
-
-		public function increase_scheduled_scans(): void {
-			$this->database->query('UPDATE %i SET scheduled_scans = scheduled_scans + 1', $this->get_table_name());
-		}
-
-		public function get_finished_scans(): int {
-			return $this->database->get_var('SELECT finished_scans FROM %i', $this->get_table_name());
-		}
-
-		public function increase_finished_scans(): void {
-			$this->database->query('UPDATE %i SET finished_scans = finished_scans + 1', $this->get_table_name());
-		}
-
-		public function reset_scan_operations(): void {
-			$this->database->query('UPDATE %i SET scheduled_scans = 0, finished_scans = 0', $this->get_table_name());
 		}
 
 		public function setup_fields(): void {
@@ -298,14 +248,14 @@ if (! class_exists('FullScanMenuPage')) {
 				$this->logger->debug($file_path->getPathname());
 				\array_push($files, $file_path->getPathname());
 				if (count($files) >= $batch_size) {
-					$this->increase_scheduled_scans();
+					$this->scans->increase_scheduled();
 
 					\wp_schedule_single_event(time(), 'gdatacyberdefenseag_antivirus_scan_batch', array( 'files' => $files ));
 					$files = array();
 				}
 			}
 			if (count($files) > 0) {
-				$this->increase_scheduled_scans();
+				$this->scans->increase_scheduled();
 				\wp_schedule_single_event(time(), 'gdatacyberdefenseag_antivirus_scan_batch', array( 'files' => $files ));
 			}
 		}
@@ -326,14 +276,14 @@ if (! class_exists('FullScanMenuPage')) {
 					$scan_client = $this->scan_client;
 					if ($scan_client->scan_file($file) === \VaasSdk\Message\Verdict::MALICIOUS) {
 						$this->logger->debug('add to findings ' . $file);
-						$this->findings_menu_page->add_finding($file);
+						$this->findings->add($file);
 					}
 				}
             } finally {
-				$this->increase_finished_scans();
-				if ($this->get_scheduled_scans() <= $this->get_finished_scans()) {
+				$this->scans->increase_finished();
+				if ($this->scans->scheduled_count() <= $this->scans->finished_count()) {
 					$this->admin_notices->add_notice(__('Full Scan finished', 'gdata-antivirus'));
-					$this->reset_scan_operations();
+					$this->scans->reset();
 				}
             }
 		}
@@ -351,8 +301,8 @@ if (! class_exists('FullScanMenuPage')) {
 				<input name="submit" class="button button-primary" type="submit" value="<?php \esc_attr_e('Save', 'gdata-antivirus'); ?>" />
 			</form>
 			<?php
-			$scheduled_scans = $this->get_scheduled_scans();
-			$finished_scans  = $this->get_finished_scans();
+			$scheduled_scans = $this->scans->scheduled_count();
+			$finished_scans  = $this->scans->finished_count();
 			if ($scheduled_scans <= $finished_scans) {
 				?>
 				<form action="admin-post.php" method="post">

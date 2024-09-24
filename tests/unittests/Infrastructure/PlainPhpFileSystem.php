@@ -1,6 +1,6 @@
 <?php
 
-namespace unittests\Infrastructure;
+namespace Gdatacyberdefenseag\GdataAntivirus\tests\unittests\Infrastructure;
 
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\FileSystemBase;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;

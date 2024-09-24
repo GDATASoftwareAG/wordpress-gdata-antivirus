@@ -2,7 +2,11 @@
 
 namespace Gdatacyberdefenseag\GdataAntivirus;
 
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\FindingsQuery;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IFindingsQuery;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IGdataAntivirusDatabase;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IScansQuery;
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\ScansQuery;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\WordPressDatabase;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\WordPressFileSystem;
@@ -24,7 +28,8 @@ if (! class_exists('GdataAntivirusPlugin')) {
 			$this->singleton(FullScanMenuPage::class, FullScanMenuPage::class);
 			$this->singleton(OnDemandScan::class, OnDemandScan::class);
 			$this->singleton(IGdataAntivirusFileSystem::class, WordPressFileSystem::class);
-			$this->singleton(IGdataAntivirusDatabase::class, WordPressDatabase::class);
+			$this->singleton(IFindingsQuery::class, FindingsQuery::class);
+			$this->singleton(IScansQuery::class, ScansQuery::class);
 			$this->singleton(GdataAntivirusMenuPage::class, GdataAntivirusMenuPage::class);
 			$this->singleton(ScanClient::class, ScanClient::class);
 			$this->singleton(AdminNotices::class, AdminNotices::class);
