@@ -38,7 +38,8 @@ class FindingsQuery implements IFindingsQuery {
             return;
         }
         $this->wpdb->query(
-            $this->wpdb->prepare('DROP TABLE IF EXISTS %i', $this->get_table_name()));
+            $this->wpdb->prepare('DROP TABLE IF EXISTS %i', $this->get_table_name())
+        );
         \wp_cache_set($this->get_table_name(), 'false', 'GdataAntivirus');
     }
 
@@ -47,7 +48,8 @@ class FindingsQuery implements IFindingsQuery {
         $this->logger->debug('Exists in cache: ' . ($tables_exists ? 'true' : 'false'));
         if (false === $tables_exists) {
             $exists = $this->wpdb->get_var(
-                $this->wpdb->prepare('SHOW TABLES LIKE %s', $this->get_table_name())) === $this->get_table_name();
+                $this->wpdb->prepare('SHOW TABLES LIKE %s', $this->get_table_name())
+            ) === $this->get_table_name();
             $this->logger->debug('Exists in database: ' . ($exists ? 'true' : 'false'));
             \wp_cache_set($this->get_table_name(), \wp_json_encode($exists), 'GdataAntivirus');
             return $exists;
@@ -88,7 +90,9 @@ class FindingsQuery implements IFindingsQuery {
             return array();
         }
         return $this->wpdb->get_results(
-            $this->wpdb->prepare('SELECT file_path FROM %i', $this->get_table_name()), ARRAY_A);
+            $this->wpdb->prepare('SELECT file_path FROM %i', $this->get_table_name()),
+            ARRAY_A
+        );
     }
 
     public function count(): int {
@@ -97,7 +101,8 @@ class FindingsQuery implements IFindingsQuery {
             return 0;
         }
         return (int) $this->wpdb->get_var(
-            $this->wpdb->prepare('SELECT COUNT(*) FROM %i', $this->get_table_name()));
+            $this->wpdb->prepare('SELECT COUNT(*) FROM %i', $this->get_table_name())
+        );
     }
 
     public function validate(): void {
