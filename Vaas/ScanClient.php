@@ -166,12 +166,10 @@ if (! class_exists('ScanClient')) {
 			 * will return false. In case of the media upload it expects 'media-form' as action
 			 * as you can see in the wordpress core
 			 */
-			$action = $_GET['action'] ?? $_POST['action'] ?? '';
-			$sanitized_action = \sanitize_key($action);
-			$nonce = $_POST['nonce'] ?? $_POST['_wpnonce'];
-			$sanitized_nonce = \sanitize_key($nonce);
-			if ($sanitized_action === 'upload-plugin') {
-				if (wp_verify_nonce($sanitized_nonce, $sanitized_action) === false) {
+			$action =  \sanitize_key($_GET['action'] ?? $_POST['action'] ?? '');
+			$nonce = \sanitize_key($_POST['nonce'] ?? $_POST['_wpnonce']);
+			if ($action === 'upload-plugin') {
+				if (wp_verify_nonce($nonce, $action) === false) {
 					return $file;
 				}
 				$is_plugin_uplad = true;
@@ -179,7 +177,7 @@ if (! class_exists('ScanClient')) {
 					return $file;
 				}
 			} else {
-				if (wp_verify_nonce($sanitized_nonce, 'media-form') === false) {
+				if (wp_verify_nonce($nonce, 'media-form') === false) {
 					return $file;
 				}
 			}
