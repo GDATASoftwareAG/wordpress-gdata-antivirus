@@ -23,12 +23,9 @@ class NoopFindingsQuery implements IFindingsQuery {
         return 0;
     }
 
-    public function validate(): void {
-    }
+    public function validate(): void {}
 
-    public function create(): void {
-    }
+    public function create(): void {}
 
-    public function remove(): void {
-    }
+    public function remove(): void {}
 }
