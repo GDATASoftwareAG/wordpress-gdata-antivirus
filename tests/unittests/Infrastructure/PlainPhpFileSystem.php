@@ -13,7 +13,7 @@ class PlainPhpFileSystem implements IGdataAntivirusFileSystem {
     }
 
     public function write( string $path, string $content ): bool {
-        return \file_put_contents($path, $content, \FILE_APPEND);
+        return file_put_contents($path, $content, \FILE_APPEND);
     }
 
     public function delete( string $path ): bool {

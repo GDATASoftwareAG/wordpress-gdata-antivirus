@@ -35,12 +35,12 @@ if (! class_exists('FindingsMenuPage')) {
 				return;
 			}
 
-			\add_action('admin_menu', array( $this, 'setup_menu' ));
-			\add_action('admin_post_delete_findings', array( $this, 'delete_findings' ));
+			add_action('admin_menu', array( $this, 'setup_menu' ));
+			add_action('admin_post_delete_findings', array( $this, 'delete_findings' ));
 		}
 
 		public function setup_menu(): void {
-			\add_submenu_page(
+			add_submenu_page(
 				GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
 				'Scan Findings',
 				'Scan Findings <span class="awaiting-mod">' . $this->findings->count() . '</span>',
@@ -59,43 +59,43 @@ if (! class_exists('FindingsMenuPage')) {
 			$this->logger->debug('FindingsMenuPage::delete_findings');
 			if (! isset($_POST['gdata-antivirus-delete-findings-nonce'])) {
 				wp_die(
-					\esc_html__('Invalid nonce specified', 'gdata-antivirus'),
-					\esc_html__('Error', 'gdata-antivirus'),
+					esc_html__('Invalid nonce specified', 'gdata-antivirus'),
+					esc_html__('Error', 'gdata-antivirus'),
 					array(
-						'response' => \intval(403),
+						'response' => intval(403),
 					)
 				);
 			}
 			if (! wp_verify_nonce(sanitize_key($_POST['gdata-antivirus-delete-findings-nonce']), 'gdata-antivirus-delete-findings')) {
 				wp_die(
-					\esc_html__('Invalid nonce specified', 'gdata-antivirus'),
-					\esc_html__('Error', 'gdata-antivirus'),
+					esc_html__('Invalid nonce specified', 'gdata-antivirus'),
+					esc_html__('Error', 'gdata-antivirus'),
 					array(
-						'response' => \intval(403),
+						'response' => intval(403),
 					)
 				);
 			}
 
 			if (! isset($_POST['files'])) {
-				$this->admin_notices->add_notice(\esc_html__('No files to delete given.', 'gdata-antivirus'));
-				\wp_safe_redirect(\wp_unslash(\wp_get_referer()));
+				$this->admin_notices->add_notice(esc_html__('No files to delete given.', 'gdata-antivirus'));
+				wp_safe_redirect(wp_unslash(wp_get_referer()));
 			}
-			if (! \is_array($_POST['files'])) {
-				$this->admin_notices->add_notice(\esc_html__('No files to delete given.', 'gdata-antivirus'));
-				\wp_safe_redirect(\wp_unslash(\wp_get_referer()));
+			if (! is_array($_POST['files'])) {
+				$this->admin_notices->add_notice(esc_html__('No files to delete given.', 'gdata-antivirus'));
+				wp_safe_redirect(wp_unslash(wp_get_referer()));
 			}
 
-			$files = \array_map('sanitize_text_field', \wp_unslash($_POST['files']));
+			$files = array_map('sanitize_text_field', wp_unslash($_POST['files']));
 			foreach ($files as $file) {
 				if (!$this->files_system->is_writable($file)) {
-					$this->admin_notices->add_notice(\esc_html__('Cannot delete file: ', 'gdata-antivirus') . $file);
+					$this->admin_notices->add_notice(esc_html__('Cannot delete file: ', 'gdata-antivirus') . $file);
 				} else {
-					\wp_delete_file($file);
+					wp_delete_file($file);
 					$this->findings->delete($file);
 				}
 			}
 
-			\wp_safe_redirect(\wp_unslash(\wp_get_referer()));
+			wp_safe_redirect(wp_unslash(wp_get_referer()));
 		}
 
 		public function findings_list(): void {
@@ -122,7 +122,7 @@ if (! class_exists('FindingsMenuPage')) {
 								<tr>
 									<th scope="row" class="check-column"> <label class="screen-reader-text" for="cb-select-3">
 											Delete File</label>
-										<input id="cb-select-3" type="checkbox" name="files[]" value="<?php echo \esc_html($finding['file_path']); ?>">
+										<input id="cb-select-3" type="checkbox" name="files[]" value="<?php echo esc_html($finding['file_path']); ?>">
 										<div class="locked-indicator">
 											<span class="locked-indicator-icon" aria-hidden="true"></span>
 											<span class="screen-reader-text">
@@ -131,7 +131,7 @@ if (! class_exists('FindingsMenuPage')) {
 									</th>
 									<td>
 										<?php
-										echo \esc_html($finding['file_path']);
+										echo esc_html($finding['file_path']);
 										?>
 									</td>
 								</tr>
