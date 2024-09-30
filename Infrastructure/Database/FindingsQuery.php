@@ -30,8 +30,8 @@ class FindingsQuery implements IFindingsQuery {
         )' . $charset_collate . ';';
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-        \dbDelta($sql);
-        \wp_cache_set($this->get_table_name(), 'true', 'GdataAntivirus');
+        dbDelta($sql);
+        wp_cache_set($this->get_table_name(), 'true', 'GdataAntivirus');
     }
 
     public function remove(): void {
@@ -43,20 +43,20 @@ class FindingsQuery implements IFindingsQuery {
         $wpdb->query(
             $wpdb->prepare('DROP TABLE IF EXISTS %i', $this->get_table_name())
         );
-        \wp_cache_set($this->get_table_name(), 'false', 'GdataAntivirus');
+        wp_cache_set($this->get_table_name(), 'false', 'GdataAntivirus');
     }
 
     public function table_exists(): bool {
         global $wpdb;
 
-        $tables_exists = \wp_cache_get($this->get_table_name(), 'GdataAntivirus');
+        $tables_exists = wp_cache_get($this->get_table_name(), 'GdataAntivirus');
         $this->logger->debug('Exists in cache: ' . ($tables_exists ? 'true' : 'false'));
         if (false === $tables_exists) {
             $exists = $wpdb->get_var(
                 $wpdb->prepare('SHOW TABLES LIKE %s', $this->get_table_name())
             ) === $this->get_table_name();
             $this->logger->debug('Exists in database: ' . ($exists ? 'true' : 'false'));
-            \wp_cache_set($this->get_table_name(), \wp_json_encode($exists), 'GdataAntivirus');
+            wp_cache_set($this->get_table_name(), wp_json_encode($exists), 'GdataAntivirus');
             return $exists;
         }
         if ('true' === $tables_exists) {
