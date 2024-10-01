@@ -7,7 +7,7 @@ examples/*
 compose.yml
 Dockerfile
 test.sh
-xdebug.ini
+*.ini
 xdebug.php
 info.php
 Dockerfile.WordPress
