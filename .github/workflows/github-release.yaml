@@ -74,7 +74,7 @@ jobs:
           composer global require humbug/php-scoper
           echo $(composer config home --global) >> $GITHUB_PATH
       - name: run scoper
-        run: bash scoper.sh
+        run: soruce scoper.sh
 
       - name: zip it
         run: |
