@@ -3,7 +3,6 @@
 namespace Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database;
 
 use Psr\Log\LoggerInterface;
-use wpdb;
 
 class FindingsQuery implements IFindingsQuery {
     private LoggerInterface $logger;

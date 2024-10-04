@@ -5,7 +5,6 @@ namespace Gdatacyberdefenseag\GdataAntivirus\PluginPage\FullScan;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IFindingsQuery;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IScansQuery;
 use Gdatacyberdefenseag\GdataAntivirus\PluginPage\AdminNotices;
-use Gdatacyberdefenseag\GdataAntivirus\PluginPage\Findings\FindingsMenuPage;
 use Gdatacyberdefenseag\GdataAntivirus\Vaas\ScanClient;
 use Gdatacyberdefenseag\GdataAntivirus\Vaas\VaasOptions;
 use Psr\Log\LoggerInterface;

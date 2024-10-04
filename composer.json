@@ -33,6 +33,7 @@
     "require-dev": {
         "johnpbloch/wordpress": "6.6.2",
         "phpunit/phpunit": "^11.2",
-        "wp-coding-standards/wpcs": "^3.0"
+        "wp-coding-standards/wpcs": "^3.0",
+        "symfony/finder": "^7.1"
     }
 }
