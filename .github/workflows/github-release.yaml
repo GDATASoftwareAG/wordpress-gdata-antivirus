@@ -68,8 +68,20 @@ jobs:
         run: composer install --no-dev
       - name: replace version
         run: bash set-version.sh "${{needs.get-version.outputs.plugin_version}}"
+      
+      - name: install php-scoper
+        run: |
+          composer global require humbug/php-scoper
+          echo $(composer config home --global) >> $GITHUB_PATH
+      - name: run scoper
+        run: bash scoper.sh
+
       - name: zip it
-        run: zip -r gdata-antivirus-${{needs.get-version.outputs.plugin_version}}.zip * --exclude @.zipignore
+        run: |
+          pushd scoped-code/
+          zip -r gdata-antivirus-${{needs.get-version.outputs.plugin_version}}.zip * --exclude @.zipignore
+          mv gdata-antivirus-${{needs.get-version.outputs.plugin_version}}.zip ../
+          popd
       - uses: actions/upload-artifact@master
         if: startsWith(github.ref, 'refs/tags/v')
         with:
