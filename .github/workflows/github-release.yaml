@@ -69,9 +69,9 @@ jobs:
       - name: replace version
         run: bash set-version.sh "${{needs.get-version.outputs.plugin_version}}"
       
-      - name: install php-scoper
+      - name: postCreateCommand
         run: |
-          composer global require humbug/php-scoper
+          source .devcontainer/postCreateCommand.sh
           echo $(composer config home --global)/vendor/bin >> $GITHUB_PATH
 
       - name: run scoper
