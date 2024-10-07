@@ -76,6 +76,7 @@ jobs:
         run: |
           composer global require humbug/php-scoper
           echo "$(composer config home)/vendor/bin/" >> $GITHUB_PATH
+          cp memory.ini /usr/local/etc/php/conf.d/memory.ini
 
       - name: run scoper
         run: |
