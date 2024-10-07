@@ -57,6 +57,9 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     needs: 
       - get-version
       - test
@@ -66,10 +69,26 @@ jobs:
       - uses: actions/checkout@v4
       - name: composer install
         run: composer install --no-dev
+      
+      - name: install scoper
+        run: |
+          composer global require humbug/php-scoper
+          echo "$(composer config home)/vendor/bin/" >> $GITHUB_PATH
+          cp memory.ini /usr/local/etc/php/conf.d/memory.ini
+
+      - name: run scoper
+        run: |
+          source scoper.sh
+
       - name: replace version
         run: bash set-version.sh "${{needs.get-version.outputs.plugin_version}}"
+  
       - name: zip it
-        run: zip -r gdata-antivirus-${{needs.get-version.outputs.plugin_version}}.zip * --exclude @.zipignore
+        run: |
+          pushd scoped-code/
+          zip -r gdata-antivirus-${{needs.get-version.outputs.plugin_version}}.zip * --exclude @.zipignore
+          mv gdata-antivirus-${{needs.get-version.outputs.plugin_version}}.zip ../
+          popd
       - uses: actions/upload-artifact@master
         if: startsWith(github.ref, 'refs/tags/v')
         with:

@@ -8,7 +8,7 @@
             "port": 9080,
             "pathMappings": {
                 "/var/www/html/": "${workspaceFolder}/wordpress",
-                "/var/www/html/wp-content/plugins/gdata-antivirus": "${workspaceFolder}/",
+                "/var/www/html/wp-content/plugins/gdata-antivirus": "${workspaceFolder}/scoped-code",
             },
             "runtimeArgs": [
                 "-dxdebug.mode=debug",

@@ -5,7 +5,6 @@ namespace Gdatacyberdefenseag\GdataAntivirus\PluginPage\FullScan;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IFindingsQuery;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IScansQuery;
 use Gdatacyberdefenseag\GdataAntivirus\PluginPage\AdminNotices;
-use Gdatacyberdefenseag\GdataAntivirus\PluginPage\Findings\FindingsMenuPage;
 use Gdatacyberdefenseag\GdataAntivirus\Vaas\ScanClient;
 use Gdatacyberdefenseag\GdataAntivirus\Vaas\VaasOptions;
 use Psr\Log\LoggerInterface;
@@ -40,11 +39,11 @@ if (! class_exists('FullScanMenuPage')) {
 			}
 			$this->scan_client        = $scan_client;
 			$this->admin_notices      = $admin_notices;
-			\add_action('init', array( $this, 'setup_fields' ));
-			\add_action('admin_menu', array( $this, 'setup_menu' ));
-			\add_action('admin_post_full_scan', array( $this, 'full_scan_interactive' ));
-			\add_action('gdatacyberdefenseag_antivirus_scheduled_full_scan', array( $this, 'full_scan' ));
-			\add_action(
+			add_action('init', array( $this, 'setup_fields' ));
+			add_action('admin_menu', array( $this, 'setup_menu' ));
+			add_action('admin_post_full_scan', array( $this, 'full_scan_interactive' ));
+			add_action('gdatacyberdefenseag_antivirus_scheduled_full_scan', array( $this, 'full_scan' ));
+			add_action(
 				'gdatacyberdefenseag_antivirus_scan_batch',
 				array( $this, 'scan_batch' ),
 			);
@@ -53,31 +52,31 @@ if (! class_exists('FullScanMenuPage')) {
 		}
 
 		private function setup_scheduled_scan() {
-			$full_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_full_scan_schedule_enabled', false);
-			$schedule_start    = \get_option('gdatacyberdefenseag_antivirus_options_full_scan_schedule_start', '01:00');
+			$full_scan_enabled = (bool) get_option('gdatacyberdefenseag_antivirus_options_full_scan_schedule_enabled', false);
+			$schedule_start    = get_option('gdatacyberdefenseag_antivirus_options_full_scan_schedule_start', '01:00');
 			$next              = wp_next_scheduled('gdatacyberdefenseag_antivirus_scheduled_full_scan');
 
 			if (! $full_scan_enabled && $next) {
-				\wp_unschedule_event($next, 'gdatacyberdefenseag_antivirus_scheduled_full_scan');
+				wp_unschedule_event($next, 'gdatacyberdefenseag_antivirus_scheduled_full_scan');
 				return;
 			}
 
 			if ($full_scan_enabled && ! $next) {
 				$timestamp = strtotime($schedule_start);
 				$this->logger->debug('schedule start timestamp: ' . $timestamp);
-				\wp_schedule_event($timestamp, 'daily', 'gdatacyberdefenseag_antivirus_scheduled_full_scan');
+				wp_schedule_event($timestamp, 'daily', 'gdatacyberdefenseag_antivirus_scheduled_full_scan');
 				return;
 			}
 			$nextschedule_start = gmdate('H:i', $next);
 			if ($nextschedule_start !== $schedule_start) {
-				\wp_unschedule_event($next, 'gdatacyberdefenseag_antivirus_scheduled_full_scan');
+				wp_unschedule_event($next, 'gdatacyberdefenseag_antivirus_scheduled_full_scan');
 				$timestamp = strtotime($schedule_start);
-				\wp_schedule_event($timestamp, 'daily', 'gdatacyberdefenseag_antivirus_scheduled_full_scan');
+				wp_schedule_event($timestamp, 'daily', 'gdatacyberdefenseag_antivirus_scheduled_full_scan');
 			}
 		}
 
 		public function setup_fields(): void {
-			\register_setting(
+			register_setting(
 				'gdatacyberdefenseag_antivirus_options_full_scan_run',
 				'gdatacyberdefenseag_antivirus_options_full_scan_batch_size',
 				array(
@@ -86,7 +85,7 @@ if (! class_exists('FullScanMenuPage')) {
 					'sanitize_callback' => array( $this, 'gdatacyberdefenseag_antivirus_options_full_scan_batch_size_validation' ),
 				)
 			);
-			\register_setting(
+			register_setting(
 				'gdatacyberdefenseag_antivirus_options_full_scan_run',
 				'gdatacyberdefenseag_antivirus_options_full_scan_schedule_start',
 				array(
@@ -95,7 +94,7 @@ if (! class_exists('FullScanMenuPage')) {
 					'sanitize_callback' => array( $this, 'gdatacyberdefenseag_antivirus_options_full_scan_schedule_start_validation' ),
 				)
 			);
-			\register_setting(
+			register_setting(
 				'gdatacyberdefenseag_antivirus_options_full_scan_run',
 				'gdatacyberdefenseag_antivirus_options_full_scan_schedule_enabled',
 				array(
@@ -106,14 +105,14 @@ if (! class_exists('FullScanMenuPage')) {
 		}
 
 		public function setup_menu(): void {
-			\add_settings_section(
+			add_settings_section(
 				'gdatacyberdefenseag_antivirus_options_full_scan',
 				esc_html__('Full Scan', 'gdata-antivirus'),
 				array( $this, 'gdatacyberdefenseag_antivirus_options_full_scan_text' ),
 				GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FULL_SCAN_SLUG
 			);
 
-			\add_settings_field(
+			add_settings_field(
 				'gdatacyberdefenseag_antivirus_options_full_scan_batch_size',
 				esc_html__('Batch Size', 'gdata-antivirus'),
 				array( $this, 'gdatacyberdefenseag_antivirus_options_full_scan_batch_size_text' ),
@@ -121,7 +120,7 @@ if (! class_exists('FullScanMenuPage')) {
 				'gdatacyberdefenseag_antivirus_options_full_scan'
 			);
 
-			\add_settings_field(
+			add_settings_field(
 				'gdatacyberdefenseag_antivirus_options_full_scan_schedule_enabled',
 				esc_html__('Scheduled Scan enabled', 'gdata-antivirus'),
 				array( $this, 'gdatacyberdefenseag_antivirus_options_full_scan_schedule_enabled_text' ),
@@ -129,7 +128,7 @@ if (! class_exists('FullScanMenuPage')) {
 				'gdatacyberdefenseag_antivirus_options_full_scan'
 			);
 
-			\add_settings_field(
+			add_settings_field(
 				'gdatacyberdefenseag_antivirus_options_full_scan_schedule_start',
 				esc_html__('Scheduled Scan starting Hour', 'gdata-antivirus'),
 				array( $this, 'gdatacyberdefenseag_antivirus_options_full_scan_schedule_start_text' ),
@@ -137,7 +136,7 @@ if (! class_exists('FullScanMenuPage')) {
 				'gdatacyberdefenseag_antivirus_options_full_scan'
 			);
 
-			\add_submenu_page(
+			add_submenu_page(
 				GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG,
 				'Full scan',
 				'Full scan',
@@ -191,52 +190,52 @@ if (! class_exists('FullScanMenuPage')) {
 		}
 
 		public function gdatacyberdefenseag_antivirus_options_full_scan_schedule_enabled_text() {
-			$full_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_full_scan_schedule_enabled', false);
-			echo "<input id='gdatacyberdefenseag_antivirus_options_full_scan_schedule_enabled' name='gdatacyberdefenseag_antivirus_options_full_scan_schedule_enabled' type='checkbox' value='true' " . \checked(true, $full_scan_enabled, false) . "' />";
+			$full_scan_enabled = (bool) get_option('gdatacyberdefenseag_antivirus_options_full_scan_schedule_enabled', false);
+			echo "<input id='gdatacyberdefenseag_antivirus_options_full_scan_schedule_enabled' name='gdatacyberdefenseag_antivirus_options_full_scan_schedule_enabled' type='checkbox' value='true' " . checked(true, $full_scan_enabled, false) . "' />";
 		}
 
 		public function gdatacyberdefenseag_antivirus_options_full_scan_batch_size_text() {
-			$batch_size = \get_option('gdatacyberdefenseag_antivirus_options_full_scan_batch_size', 100);
-			echo "<input id='gdatacyberdefenseag_antivirus_options_full_scan_batch_size' name='gdatacyberdefenseag_antivirus_options_full_scan_batch_size' type='text' value='" . \esc_attr($batch_size) . "' />";
+			$batch_size = get_option('gdatacyberdefenseag_antivirus_options_full_scan_batch_size', 100);
+			echo "<input id='gdatacyberdefenseag_antivirus_options_full_scan_batch_size' name='gdatacyberdefenseag_antivirus_options_full_scan_batch_size' type='text' value='" . esc_attr($batch_size) . "' />";
 		}
 
 		public function gdatacyberdefenseag_antivirus_options_full_scan_schedule_start_text() {
-			$schedule_start    = \get_option('gdatacyberdefenseag_antivirus_options_full_scan_schedule_start', '01:00');
+			$schedule_start    = get_option('gdatacyberdefenseag_antivirus_options_full_scan_schedule_start', '01:00');
 			$full_scan_enabled =
-				(bool) \get_option('gdatacyberdefenseag_antivirus_options_full_scan_schedule_enabled', false);
+				(bool) get_option('gdatacyberdefenseag_antivirus_options_full_scan_schedule_enabled', false);
 			$this->logger->debug('schedule_start: ' . $schedule_start);
 
-			echo "<input id='gdatacyberdefenseag_antivirus_options_full_scan_schedule_start' name='gdatacyberdefenseag_antivirus_options_full_scan_schedule_start' type='text' value='" . \esc_attr($schedule_start) . "' " . ( $full_scan_enabled ? '' : 'disabled' ) . '/>';
+			echo "<input id='gdatacyberdefenseag_antivirus_options_full_scan_schedule_start' name='gdatacyberdefenseag_antivirus_options_full_scan_schedule_start' type='text' value='" . esc_attr($schedule_start) . "' " . ( $full_scan_enabled ? '' : 'disabled' ) . '/>';
 		}
 
 		public function full_scan_interactive(): void {
 			if (! isset($_POST['gdata-antivirus-full-scan-nonce'])) {
 				wp_die(
-					\esc_html__('Invalid nonce specified', 'gdata-antivirus'),
-					\esc_html__('Error', 'gdata-antivirus'),
+					esc_html__('Invalid nonce specified', 'gdata-antivirus'),
+					esc_html__('Error', 'gdata-antivirus'),
 					array(
 						'response' => 403,
 					)
 				);
 			}
-			if (! wp_verify_nonce(\sanitize_key($_POST['gdata-antivirus-full-scan-nonce']), 'gdata-antivirus-full-scan')) {
+			if (! wp_verify_nonce(sanitize_key($_POST['gdata-antivirus-full-scan-nonce']), 'gdata-antivirus-full-scan')) {
 				wp_die(
-					\esc_html__('Invalid nonce specified', 'gdata-antivirus'),
-					\esc_html__('Error', 'gdata-antivirus'),
+					esc_html__('Invalid nonce specified', 'gdata-antivirus'),
+					esc_html__('Error', 'gdata-antivirus'),
 					array(
 						'response' => 403,
 					)
 				);
 			}
 			$this->full_scan();
-			\wp_safe_redirect(\wp_get_referer());
+			wp_safe_redirect(wp_get_referer());
 		}
 
 		public function full_scan(): void {
 			$this->admin_notices->add_notice(__('Full Scan started', 'gdata-antivirus'));
 
-			$batch_size = \get_option('gdatacyberdefenseag_antivirus_options_full_scan_batch_size', 100);
-			$it         = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(ABSPATH, \FilesystemIterator::SKIP_DOTS));
+			$batch_size = get_option('gdatacyberdefenseag_antivirus_options_full_scan_batch_size', 100);
+			$it         = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(ABSPATH, \FilesystemIterator::SKIP_DOTS));
 			$files      = array();
 			foreach ($it as $file_path) {
 				if (! ( $file_path instanceof \SplFileInfo )) {
@@ -246,17 +245,17 @@ if (! class_exists('FullScanMenuPage')) {
 					continue;
 				}
 				$this->logger->debug($file_path->getPathname());
-				\array_push($files, $file_path->getPathname());
+				array_push($files, $file_path->getPathname());
 				if (count($files) >= $batch_size) {
 					$this->scans->increase_scheduled();
 
-					\wp_schedule_single_event(time(), 'gdatacyberdefenseag_antivirus_scan_batch', array( 'files' => $files ));
+					wp_schedule_single_event(time(), 'gdatacyberdefenseag_antivirus_scan_batch', array( 'files' => $files ));
 					$files = array();
 				}
 			}
 			if (count($files) > 0) {
 				$this->scans->increase_scheduled();
-				\wp_schedule_single_event(time(), 'gdatacyberdefenseag_antivirus_scan_batch', array( 'files' => $files ));
+				wp_schedule_single_event(time(), 'gdatacyberdefenseag_antivirus_scan_batch', array( 'files' => $files ));
 			}
 		}
 
@@ -270,7 +269,7 @@ if (! class_exists('FullScanMenuPage')) {
 					 * therefore the files can already be deleted or moved
 					 * we need to check if the file still exists
 					 * */
-					if (! \file_exists($file)) {
+					if (! file_exists($file)) {
 						continue;
 					}
 					$scan_client = $this->scan_client;
@@ -295,10 +294,10 @@ if (! class_exists('FullScanMenuPage')) {
 			<h2>Full Scan Settings</h2>
 			<form action="options.php" method="post">
 				<?php
-				\settings_fields('gdatacyberdefenseag_antivirus_options_full_scan_run');
-				\do_settings_sections(GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FULL_SCAN_SLUG);
+				settings_fields('gdatacyberdefenseag_antivirus_options_full_scan_run');
+				do_settings_sections(GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FULL_SCAN_SLUG);
 				?>
-				<input name="submit" class="button button-primary" type="submit" value="<?php \esc_attr_e('Save', 'gdata-antivirus'); ?>" />
+				<input name="submit" class="button button-primary" type="submit" value="<?php esc_attr_e('Save', 'gdata-antivirus'); ?>" />
 			</form>
 			<?php
 			$scheduled_scans = $this->scans->scheduled_count();
@@ -315,7 +314,7 @@ if (! class_exists('FullScanMenuPage')) {
 				?>
 				<p>
                 <?php
-                echo \esc_html__('Full Scan is running. ', 'gdata-antivirus') . \esc_html($finished_scans) . \esc_html(' of ', 'gdata-antivirus') . \esc_html($scheduled_scans) . \esc_html__(' batches are finished', 'gdata-antivirus');
+                echo esc_html__('Full Scan is running. ', 'gdata-antivirus') . esc_html($finished_scans) . esc_html(' of ', 'gdata-antivirus') . esc_html($scheduled_scans) . esc_html__(' batches are finished', 'gdata-antivirus');
 ?>
 </p>
 				<?php

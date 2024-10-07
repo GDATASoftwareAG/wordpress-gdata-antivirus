@@ -14,11 +14,11 @@ class VaasOptions {
     );
 
     public function __construct() {
-        \add_action('init', array( $this, 'setup_fields' ));
+        add_action('init', array( $this, 'setup_fields' ));
     }
 
     public function setup_fields(): void {
-        \register_setting(
+        register_setting(
             'gdatacyberdefenseag_antivirus_options_credentials',
             'gdatacyberdefenseag_antivirus_options_credentials ',
             array(
@@ -29,7 +29,7 @@ class VaasOptions {
     }
 
     public function get_options(): array {
-        $options = \get_option('gdatacyberdefenseag_antivirus_options_credentials', self::$option_defaults);
+        $options = get_option('gdatacyberdefenseag_antivirus_options_credentials', self::$option_defaults);
         $options = array_merge(self::$option_defaults, $options);
         return $options;
     }
