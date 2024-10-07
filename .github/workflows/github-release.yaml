@@ -74,7 +74,7 @@ jobs:
       
       - name: postCreateCommand
         run: |
-          source .devcontainer/postCreateCommand.sh
+          source .devcontainer/postCreateCommands.sh
           echo $(composer config home --global)/vendor/bin >> $GITHUB_PATH
 
       - name: run scoper
