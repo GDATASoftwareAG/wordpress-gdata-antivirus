@@ -72,12 +72,10 @@ jobs:
       - name: replace version
         run: bash set-version.sh "${{needs.get-version.outputs.plugin_version}}"
       
-      - name: postCreateCommand
+      - name: install scoper
         run: |
-          echo "/home/vscode/bin/" >> $GITHUB_PATH
-          export PATH=$PATH:/home/vscode/bin/ 
-          source .devcontainer/postCreateCommands.sh
-          echo $(composer config home --global)/vendor/bin >> $GITHUB_PATH
+          composer global require humbug/php-scoper
+          echo "$(composer config home)/vendor/bin/" >> $GITHUB_PATH
 
       - name: run scoper
         run: |
