@@ -74,6 +74,8 @@ jobs:
       
       - name: postCreateCommand
         run: |
+          echo "/home/vscode/bin/" >> $GITHUB_PATH
+          export PATH=$PATH:/home/vscode/bin/ 
           source .devcontainer/postCreateCommands.sh
           echo $(composer config home --global)/vendor/bin >> $GITHUB_PATH
 
