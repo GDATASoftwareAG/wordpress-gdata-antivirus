@@ -57,6 +57,9 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     needs: 
       - get-version
       - test
@@ -76,7 +79,7 @@ jobs:
 
       - name: run scoper
         run: |
-          bash scoper.sh
+          source scoper.sh
 
       - name: zip it
         run: |
