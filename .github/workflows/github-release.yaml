@@ -77,7 +77,7 @@ jobs:
       - name: run scoper
         run: |
           export PATH=$PATH:$(composer config home --global)
-          bash scoper.sh
+          source scoper.sh
 
       - name: zip it
         run: |
