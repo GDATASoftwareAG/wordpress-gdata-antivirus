@@ -1,4 +1,6 @@
 #!/bin/bash
+set -e
+
 rm -rf scoped-code/
 php-scoper add-prefix
 mv scoped-code/vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php scoped-code/vendor/netresearch/jsonmapper/src/JsonMapper/JsonMapper_Exception.php
