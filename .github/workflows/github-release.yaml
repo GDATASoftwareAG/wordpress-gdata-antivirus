@@ -72,12 +72,11 @@ jobs:
       - name: install php-scoper
         run: |
           composer global require humbug/php-scoper
-          echo $(composer config home --global) >> $GITHUB_PATH
+          echo $(composer config home --global)/vendor/bin >> $GITHUB_PATH
 
       - name: run scoper
         run: |
-          export PATH=$PATH:$(composer config home --global)
-          source scoper.sh
+          bash scoper.sh
 
       - name: zip it
         run: |
