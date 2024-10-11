@@ -4,7 +4,7 @@ Tags: antivirus, security, vaas, malware, malicious
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 8.1
-Stable tag: 1.2.3
+Stable tag: 1.0.0
 License: GNU General Public License v3.0
 License URI: https://github.com/GDATASoftwareAG/vaas/blob/main/LICENSE
 
@@ -46,5 +46,8 @@ Commercial entities are encouraged to contact us via vaas@gdata.de for more deta
 
 == Changelog ==
 
+= 1.0.0 =
+* Initial release
+
 = 0.1.3 =
-* Initial release.
+* Initial upload for review.

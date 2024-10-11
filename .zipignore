@@ -17,3 +17,4 @@ renovate.json
 *.h
 *.dist
 **/Makefile
+Readme.md
