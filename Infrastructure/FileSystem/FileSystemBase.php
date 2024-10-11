@@ -14,7 +14,6 @@ trait FileSystemBase {
     public function get_resource_stream_from_string( string $content ): ReadableResourceStream {
         $stream = fopen('php://temp', 'r+');
         fwrite($stream, $content);
-        rewind($stream);
         return tryToCreateReadableStreamFromResource($stream);
     }
 

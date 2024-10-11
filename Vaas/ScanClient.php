@@ -55,7 +55,7 @@ if (! class_exists('ScanClient')) {
 
 			$post_scan_enabled = (bool) \get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_post_scan_enabled', true);
 			if ($post_scan_enabled === true) {
-				\add_filter('wp_insert_post_data', array( $this, 'scan_post' ));
+				\add_filter('wp_insert_post_data', array( $this, 'scan_post' ), 10, 3);
 			}
 		}
 
@@ -159,12 +159,8 @@ if (! class_exists('ScanClient')) {
 			 */
 			$is_plugin_uplad = false;
 
-			$action =  \sanitize_key($_GET['action'] ?? $_POST['action'] ?? '');
-			if (isset($_POST['_wpnonce'])) {
-				$nonce = \sanitize_key($_POST['nonce'] ?? $_POST['_wpnonce']);
-			} else {
-				$nonce = \sanitize_key($_GET['nonce'] ?? '');
-			}
+			$action =  sanitize_key($_REQUEST['action'] ?? '');
+			$nonce = wp_unslash($_REQUEST['_wpnonce'] ?? $_REQUEST['nonce']);
 			if ($action === 'upload-plugin') {
 				if (wp_verify_nonce($nonce, $action) === false) {
 					return $file;
