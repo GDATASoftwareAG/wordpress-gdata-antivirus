@@ -44,6 +44,12 @@ Yes, this plugin is freely available for individual and small business users.
 
 Commercial entities are encouraged to contact us via vaas@gdata.de for more details on partnership opportunities.
 
+== Screenshots ==  
+1. Enter your credentials.
+2. Shows the image upload scan.
+3. Full OnDemand Scan.
+4. Scan on Upload.
+
 == Changelog ==
 
 = 1.0.0 =
