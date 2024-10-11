@@ -1,5 +1,5 @@
 === Antivirus with G DATA VaaS Integration ===
-Contributors: @gdatavaas, 
+Contributors: @gdatavaas
 Tags: antivirus, security, vaas, malware, malicious
 Requires at least: 6.2
 Tested up to: 6.6
