@@ -44,6 +44,10 @@ Yes, this plugin is freely available for individual and small business users.
 
 Commercial entities are encouraged to contact us via vaas@gdata.de for more details on partnership opportunities.
 
+= Want to contribute? =
+
+While the released code is hosted on the WordPress svn, we develop the plugin on github. [Here you can find the repository for the plugin development](https://github.com/GDATASoftwareAG/wordpress-gdata-antivirus).
+
 == Screenshots ==  
 1. Enter your credentials.
 2. Shows the image upload scan.
@@ -51,6 +55,10 @@ Commercial entities are encouraged to contact us via vaas@gdata.de for more deta
 4. Scan on Upload.
 
 == Changelog ==
+
+= 1.0.1 =
+* add the link to the VaaS onboarding page to the admin menu
+* add a link to the github repository to the readme.txt
 
 = 1.0.0 =
 * Initial release
