@@ -2,8 +2,9 @@
 set -ex
 
 composer global require humbug/php-scoper
-$(composer config home)/bin/php-scoper completion bash >> /home/vscode/.bash_completion
+$(composer config home)/vendor/bin/php-scoper completion bash >> /home/vscode/.bash_completion
 echo "export PATH=$(composer config home)/vendor/bin/:$PATH" >> ~/.bashrc
+export PATH=$(composer config home)/vendor/bin/:$PATH
 
 sudo cp memory.ini /usr/local/etc/php/conf.d/memory.ini
 

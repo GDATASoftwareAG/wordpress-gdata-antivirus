@@ -1,3 +1,5 @@
+source scoper.sh
+
 docker compose kill
 docker compose rm --force --stop --volumes
 docker compose up --build --quiet-pull --wait -d --force-recreate --renew-anon-volumes --remove-orphans

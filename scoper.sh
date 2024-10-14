@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+composer install --no-dev
 rm -rf scoped-code/
 php-scoper add-prefix
 mv scoped-code/vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php scoped-code/vendor/netresearch/jsonmapper/src/JsonMapper/JsonMapper_Exception.php

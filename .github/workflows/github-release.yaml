@@ -67,8 +67,6 @@ jobs:
       image: mcr.microsoft.com/devcontainers/php:1-8.2-bullseye
     steps:
       - uses: actions/checkout@v4
-      - name: composer install
-        run: composer install --no-dev
       
       - name: install scoper
         run: |

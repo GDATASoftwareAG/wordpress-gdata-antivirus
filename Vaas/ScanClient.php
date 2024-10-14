@@ -55,7 +55,7 @@ if (! class_exists('ScanClient')) {
 
 			$post_scan_enabled = (bool) get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_post_scan_enabled', true);
 			if ($post_scan_enabled === true) {
-				\add_filter('wp_insert_post_data', array( $this, 'scan_post' ), 10, 3);
+				add_filter('wp_insert_post_data', array( $this, 'scan_post' ), 10, 3);
 			}
 		}
 
