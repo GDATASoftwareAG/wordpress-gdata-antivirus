@@ -4,10 +4,8 @@ namespace Gdatacyberdefenseag\GdataAntivirus;
 
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\FindingsQuery;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IFindingsQuery;
-use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IGdataAntivirusDatabase;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IScansQuery;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\ScansQuery;
-use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\WordPressDatabase;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\WordPressFileSystem;
 use Gdatacyberdefenseag\GdataAntivirus\PluginPage\AdminNotices;
@@ -42,7 +40,7 @@ if (! class_exists('GdataAntivirusPlugin')) {
 			$this->make(FullScanMenuPage::class);
 			$this->make(OnDemandScan::class);
 
-			\assert($findings_menu instanceof FindingsMenuPage);
+			assert($findings_menu instanceof FindingsMenuPage);
 			$findings_menu->validate_findings();
 		}
 	}

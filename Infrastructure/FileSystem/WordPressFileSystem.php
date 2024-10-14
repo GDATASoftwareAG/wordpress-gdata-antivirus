@@ -12,7 +12,7 @@ class WordPressFileSystem implements IGdataAntivirusFileSystem {
     private WP_Filesystem_Base $files_system;
 
     public function __construct() {
-        \WP_Filesystem();
+        WP_Filesystem();
         global $wp_filesystem;
         $this->files_system = $wp_filesystem;
     }
