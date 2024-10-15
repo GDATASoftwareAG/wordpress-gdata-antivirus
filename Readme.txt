@@ -56,6 +56,12 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
+= 2.0.1 =
+* fix a bug with the live view
+
+= 2.0.0 =
+* scope dependencies to avoid dependency conditions
+
 = 1.0.1 =
 * add the link to the VaaS onboarding page to the admin menu
 * add a link to the github repository to the readme.txt
