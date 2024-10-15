@@ -70,6 +70,7 @@ return [
                 'test',
                 'docs',
                 'wordpress',
+                'svn',
                 $outputDir
             ])
             ->in(__DIR__)

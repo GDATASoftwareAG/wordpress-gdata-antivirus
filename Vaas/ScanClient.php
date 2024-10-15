@@ -103,9 +103,13 @@ if (! class_exists('ScanClient')) {
 
 			try {
 				$verdict = $this->vaas->ForStream($stream);
-			} catch (\Exception $e) {
+			} catch (\VaasSdk\Exceptions\VaasInvalidStateException $e) {
 				$this->connect();
 				$verdict = $this->vaas->ForStream($stream);
+			} catch (\Exception $e) {
+				$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
+				$this->logger->debug($e->getMessage());
+				return $data;
 			}
 			$this->logger->debug(var_export($verdict, true));
 			 // phpcs:ignore
@@ -145,9 +149,12 @@ if (! class_exists('ScanClient')) {
 			$stream          = $this->file_system->get_resource_stream_from_string($commend_content);
 			try {
 				$verdict = $this->vaas->ForStream($stream);
-			} catch (\Exception $e) {
+			} catch (\VaasSdk\Exceptions\VaasInvalidStateException $e) {
 				$this->connect();
 				$verdict = $this->vaas->ForStream($stream);
+			} catch (\Exception $e) {
+				$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
+				$this->logger->debug($e->getMessage());
 			}
 			$this->logger->debug(var_export($verdict, true));
 			 // phpcs:ignore
