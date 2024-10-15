@@ -101,7 +101,12 @@ if (! class_exists('ScanClient')) {
 			$post_content = wp_unslash($postdata['post_content']);
 			$stream       = $this->file_system->get_resource_stream_from_string($post_content);
 
-			$verdict = $this->vaas->ForStream($stream);
+			try {
+				$verdict = $this->vaas->ForStream($stream);
+			} catch (\Exception $e) {
+				$this->connect();
+				$verdict = $this->vaas->ForStream($stream);
+			}
 			$this->logger->debug(var_export($verdict, true));
 			 // phpcs:ignore
 			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict->Verdict) {
@@ -138,8 +143,12 @@ if (! class_exists('ScanClient')) {
 
 			$commend_content = wp_unslash($commentdata['comment_content']);
 			$stream          = $this->file_system->get_resource_stream_from_string($commend_content);
-
-			$verdict = $this->vaas->ForStream($stream);
+			try {
+				$verdict = $this->vaas->ForStream($stream);
+			} catch (\Exception $e) {
+				$this->connect();
+				$verdict = $this->vaas->ForStream($stream);
+			}
 			$this->logger->debug(var_export($verdict, true));
 			 // phpcs:ignore
 			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict->Verdict) {
