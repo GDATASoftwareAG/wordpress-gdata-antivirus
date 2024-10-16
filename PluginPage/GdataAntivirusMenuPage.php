@@ -133,7 +133,7 @@ if (! class_exists('GdataAntivirusMenuPage')) {
 
 		public function gdatacyberdefenseag_antivirus_credentials_text() {
 			?><p><?php esc_html_e('Here you can set all the options for using the API', 'gdata-antivirus'); ?></p>
-			  <p><a href="https://www.gdata.de/vaas-files/vaas-technical-onboarding.html"><?php esc_html_e('Get your credentials here.', 'gdata-antivirus'); ?></a></p>
+			  <p><a href="https://vaas.gdata.de/login"><?php esc_html_e('Get your credentials here.', 'gdata-antivirus'); ?></a></p>
 			<?php
 		}
 

@@ -4,7 +4,7 @@ Tags: antivirus, security, vaas, malware, malicious
 Requires at least: 6.2
 Tested up to: 6.6
 Requires PHP: 8.1
-Stable tag: 1.0.1
+Stable tag: 2.0.2
 License: GNU General Public License v3.0
 License URI: https://github.com/GDATASoftwareAG/vaas/blob/main/LICENSE
 
@@ -12,7 +12,7 @@ Welcome to the WordPress Antivirus Plugin with G DATA VaaS integration! It adds 
 
 == Description ==
 
-This plugin is freely available for individual and small business users, providing a high level of security for your WordPress site. For commercial entities, we offer the opportunity to secure your customers' sites. This partnership not only enhances your security offerings but also demonstrates your commitment to customer safety. [You can get your credentials via our landing page](https://www.gdata.de/vaas-files/vaas-technical-onboarding.html)
+This plugin is freely available for individual and small business users, providing a high level of security for your WordPress site. For commercial entities, we offer the opportunity to secure your customers' sites. This partnership not only enhances your security offerings but also demonstrates your commitment to customer safety. [You can get your credentials via our landing page](https://vaas.gdata.de/login)
 
 Interested organizations are encouraged to [contact us for more details](mailto:oem@gdata.de) on how to leverage this powerful antivirus solution. This integration ensures that your WordPress website remains protected from potential threats and malware.
 
@@ -55,6 +55,9 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 4. Scan on Upload.
 
 == Changelog ==
+
+= 2.0.2 =
+* also fix the bug for another failure case
 
 = 2.0.1 =
 * fix a bug with the live view
