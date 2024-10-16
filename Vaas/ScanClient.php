@@ -8,6 +8,7 @@ use Psr\Log\LoggerInterface;
 use VaasSdk\Vaas;
 use VaasSdk\Authentication\ClientCredentialsGrantAuthenticator;
 use VaasSdk\Authentication\ResourceOwnerPasswordGrantAuthenticator;
+use VaasSdk\Exceptions\VaasInvalidStateException;
 use VaasSdk\Message\Verdict;
 use VaasSdk\VaasOptions as VaasParameters;
 
@@ -103,9 +104,15 @@ if (! class_exists('ScanClient')) {
 
 			try {
 				$verdict = $this->vaas->ForStream($stream);
-			} catch (\VaasSdk\Exceptions\VaasInvalidStateException $e) {
-				$this->connect();
-				$verdict = $this->vaas->ForStream($stream);
+			} catch (VaasInvalidStateException $e) {
+				try {
+					$this->connect();
+					$verdict = $this->vaas->ForStream($stream);	
+				} catch (\Exception $e) {
+					$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
+					$this->logger->debug($e->getMessage());
+					return $data;	
+				}
 			} catch (\Exception $e) {
 				$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
 				$this->logger->debug($e->getMessage());
@@ -149,9 +156,14 @@ if (! class_exists('ScanClient')) {
 			$stream          = $this->file_system->get_resource_stream_from_string($commend_content);
 			try {
 				$verdict = $this->vaas->ForStream($stream);
-			} catch (\VaasSdk\Exceptions\VaasInvalidStateException $e) {
-				$this->connect();
-				$verdict = $this->vaas->ForStream($stream);
+			} catch (VaasInvalidStateException $e) {
+				try {
+					$this->connect();
+					$verdict = $this->vaas->ForStream($stream);	
+				} catch (\Exception $e) {
+					$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
+					$this->logger->debug($e->getMessage());
+				}
 			} catch (\Exception $e) {
 				$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
 				$this->logger->debug($e->getMessage());

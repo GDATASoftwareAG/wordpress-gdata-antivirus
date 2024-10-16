@@ -19,4 +19,4 @@ docker exec -it --user www-data gdata-antivirus-app-1 bash -c "wp plugin install
 docker exec -it --user www-data gdata-antivirus-app-1 bash -c "wp plugin activate plugin-check"
 docker exec -it --user www-data gdata-antivirus-app-1 bash -c "wp plugin activate gdata-antivirus"
 
-svn co https://plugins.svn.wordpress.org/gdata-antivirus/
+svn co https://plugins.svn.wordpress.org/gdata-antivirus/ svn

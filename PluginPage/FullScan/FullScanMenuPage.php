@@ -235,7 +235,7 @@ if (! class_exists('FullScanMenuPage')) {
 			$this->admin_notices->add_notice(__('Full Scan started', 'gdata-antivirus'));
 
 			$batch_size = get_option('gdatacyberdefenseag_antivirus_options_full_scan_batch_size', 100);
-			$it         = new RecursiveIteratorIterator(new RecursiveDirectoryIterator(ABSPATH, \FilesystemIterator::SKIP_DOTS));
+			$it         = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(ABSPATH, \FilesystemIterator::SKIP_DOTS));
 			$files      = array();
 			foreach ($it as $file_path) {
 				if (! ( $file_path instanceof \SplFileInfo )) {
