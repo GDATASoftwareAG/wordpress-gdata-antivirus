@@ -56,6 +56,9 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
+= 2.0.5 =
+* don't connect to the backend for every page load
+
 = 2.0.2 =
 * also fix the bug for another failure case
 
