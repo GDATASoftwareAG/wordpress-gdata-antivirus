@@ -9,7 +9,6 @@ do
     echo "waiting for WordPress to be installed"
     sleep 2
 done
-composer install
 
 docker exec -it --user www-data gdata-antivirus-app-1 bash -c "wp plugin uninstall hello"
 docker exec -it --user www-data gdata-antivirus-app-1 bash -c "wp plugin uninstall akismet"

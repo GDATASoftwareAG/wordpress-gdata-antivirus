@@ -56,6 +56,15 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
+= 2.0.8 =
+* bugfix: posts could not be saved
+
+= 2.0.7 =
+* enable upload scan by removing the nonce check temporary
+
+= 2.0.6 =
+* changed the full scan indicator. the counting method was error prone
+
 = 2.0.5 =
 * don't connect to the backend for every page load
 

@@ -50,7 +50,7 @@ if (! class_exists('ScanClient')) {
 
 			$post_scan_enabled = (bool) get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_post_scan_enabled', true);
 			if ($post_scan_enabled === true) {
-				add_filter('wp_insert_post_data', array( $this, 'scan_post' ), 10, 3);
+				add_filter('wp_insert_post_data', array( $this, 'scan_post' ), 10, 1);
 			}
 		}
 
@@ -87,8 +87,7 @@ if (! class_exists('ScanClient')) {
 			$this->connected = true;
 		}
 
-		public function scan_post( $data, $postdata, $unsanitized_postarr ) {
-			$data = wp_unslash($unsanitized_postarr);
+		public function scan_post( $data ) {
 			if (empty($data['post_content'])) {
 				return $data;
 			}
@@ -98,11 +97,7 @@ if (! class_exists('ScanClient')) {
 				return $data;
 			}
 
-			if (empty($postdata['post_content'])) {
-				return $data;
-			}
-
-			$post_content = wp_unslash($postdata['post_content']);
+			$post_content = wp_unslash($data['post_content']);
 			$stream       = $this->file_system->get_resource_stream_from_string($post_content);
 
 			$this->connect();
@@ -128,7 +123,7 @@ if (! class_exists('ScanClient')) {
 				$this->logger->debug('gdata-antivirus: virus found in post');
 				wp_die(esc_html__('virus found', 'gdata-antivirus'));
 			}
-			return $postdata;
+			return $data;
 		}
 
 		public function scan_comment( $commentdata ) {
