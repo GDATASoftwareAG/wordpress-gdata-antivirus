@@ -195,9 +195,9 @@ if (! class_exists('ScanClient')) {
 			$action =  sanitize_key($_REQUEST['action'] ?? '');
 			$nonce = wp_unslash($_REQUEST['_wpnonce'] ?? $_REQUEST['nonce']);
 			if ($action === 'upload-plugin') {
-				if (wp_verify_nonce($nonce, $action) === false) {
-					return $file;
-				}
+				// if (wp_verify_nonce($nonce, $action) === false) {
+				// 	return $file;
+				// }
 				$is_plugin_uplad = true;
 				if ($plugin_upload_scan_enabled === false) {
 					return $file;
