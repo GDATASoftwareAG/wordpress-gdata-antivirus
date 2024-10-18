@@ -237,6 +237,7 @@ if (! class_exists('FullScanMenuPage')) {
 			$batch_size = get_option('gdatacyberdefenseag_antivirus_options_full_scan_batch_size', 100);
 			$it         = new \RecursiveIteratorIterator(new \RecursiveDirectoryIterator(ABSPATH, \FilesystemIterator::SKIP_DOTS));
 			$files      = array();
+			$this->scans->reset();
 			foreach ($it as $file_path) {
 				if (! ( $file_path instanceof \SplFileInfo )) {
 					continue;
@@ -302,7 +303,17 @@ if (! class_exists('FullScanMenuPage')) {
 			<?php
 			$scheduled_scans = $this->scans->scheduled_count();
 			$finished_scans  = $this->scans->finished_count();
-			if ($scheduled_scans <= $finished_scans) {
+            $cron_jobs = wp_get_ready_cron_jobs();
+            $still_running=false;
+            foreach($cron_jobs as $key => $cron) {
+                foreach($cron as $name =>$job) {
+                    if ($name=='gdatacyberdefenseag_antivirus_scan_batch') {
+                        $still_running=true;
+                        break;
+                    }
+                }
+            }
+			if ($still_running === false) {
 				?>
 				<form action="admin-post.php" method="post">
 					<input type="hidden" name="action" value="full_scan">
