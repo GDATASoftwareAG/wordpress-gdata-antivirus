@@ -19,6 +19,7 @@ if (! class_exists('ScanClient')) {
 		private VaasOptions $vaas_options;
 		private IGdataAntivirusFileSystem $file_system;
 		private AdminNotices $admin_notices;
+		private bool $connected = false;
 
 		public function __construct(
 			LoggerInterface $logger,
@@ -32,13 +33,6 @@ if (! class_exists('ScanClient')) {
 			$this->file_system = $file_system;
 			$this->admin_notices = $admin_notices;
 
-			try {
-				$this->Connect();
-			} catch (\Exception $e) {
-				$this->admin_notices->add_notice($e->getMessage());
-				$this->logger->error("VaaS connection failed. Please verify if the VaaS-Url is correct.");
-				return;
-			}
 			$plugin_upload_scan_enabled = (bool) get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_plugin_upload_scan_enabled', true);
 			$media_upload_scan_enabled  = (bool) get_option('gdatacyberdefenseag_antivirus_options_on_demand_scan_media_upload_scan_enabled', true);
 			// We don't need to add the filters if both plugin and media upload scan are disabled.
@@ -60,7 +54,15 @@ if (! class_exists('ScanClient')) {
 			}
 		}
 
+		public function reconnect() {
+			$this->connected = false;
+			$this->connect();
+		}
+
 		public function connect() {
+			if ($this->connected === true) {
+				return;
+			}
 			$options    = $this->vaas_options->get_options();
 			$this->vaas = new Vaas($options['vaas_url'], $this->logger, new VaasParameters(false, false));
 			if (! $this->vaas_options->credentials_configured()) {
@@ -82,6 +84,7 @@ if (! class_exists('ScanClient')) {
 				);
 				$this->vaas->connect($client_credentials_grant_authenticator->getToken());
 			}
+			$this->connected = true;
 		}
 
 		public function scan_post( $data, $postdata, $unsanitized_postarr ) {
@@ -102,11 +105,12 @@ if (! class_exists('ScanClient')) {
 			$post_content = wp_unslash($postdata['post_content']);
 			$stream       = $this->file_system->get_resource_stream_from_string($post_content);
 
+			$this->connect();
 			try {
 				$verdict = $this->vaas->ForStream($stream);
 			} catch (VaasInvalidStateException $e) {
 				try {
-					$this->connect();
+					$this->reconnect();
 					$verdict = $this->vaas->ForStream($stream);	
 				} catch (\Exception $e) {
 					$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
@@ -154,11 +158,12 @@ if (! class_exists('ScanClient')) {
 
 			$commend_content = wp_unslash($commentdata['comment_content']);
 			$stream          = $this->file_system->get_resource_stream_from_string($commend_content);
+			$this->connect();
 			try {
 				$verdict = $this->vaas->ForStream($stream);
 			} catch (VaasInvalidStateException $e) {
 				try {
-					$this->connect();
+					$this->reconnect();
 					$verdict = $this->vaas->ForStream($stream);	
 				} catch (\Exception $e) {
 					$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
@@ -219,8 +224,17 @@ if (! class_exists('ScanClient')) {
 		}
 
 		public function scan_file( $file_path ): Verdict {
+			$this->connect();
 			try {
 				$verdict = $this->vaas->ForFile($file_path)->Verdict;
+			} catch (VaasInvalidStateException $e) {
+				try {
+					$this->reconnect();
+					$verdict = $this->vaas->ForFile($file_path)->Verdict;
+				} catch (\Exception $e) {
+					$this->logger->debug($e->getMessage());
+					return Verdict::UNKNOWN;
+				}
 			} catch (\Exception $e) {
 				$this->logger->debug($e->getMessage());
 				return Verdict::UNKNOWN;
