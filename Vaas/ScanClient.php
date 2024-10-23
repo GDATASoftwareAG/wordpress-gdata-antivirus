@@ -8,9 +8,7 @@ use Psr\Log\LoggerInterface;
 use VaasSdk\Vaas;
 use VaasSdk\Authentication\ClientCredentialsGrantAuthenticator;
 use VaasSdk\Authentication\ResourceOwnerPasswordGrantAuthenticator;
-use VaasSdk\Exceptions\VaasInvalidStateException;
 use VaasSdk\Message\VaasVerdict;
-use VaasSdk\Message\Verdict;
 use VaasSdk\Message\VerdictResponse;
 use VaasSdk\VaasOptions as VaasParameters;
 
@@ -105,7 +103,7 @@ if (! class_exists('ScanClient')) {
 			$this->connect();
 			try {
 				$vaas_verdict = $this->vaas->ForStream($stream);
-			} catch (VaasInvalidStateException $e) {
+			} catch (\Exception $e) {
 				try {
 					$this->reconnect();
 					$vaas_verdict = $this->vaas->ForStream($stream);	
@@ -114,10 +112,6 @@ if (! class_exists('ScanClient')) {
 					$this->logger->debug($e->getMessage());
 					return $data;	
 				}
-			} catch (\Exception $e) {
-				$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
-				$this->logger->debug($e->getMessage());
-				return $data;
 			}
 			$this->logger->debug(var_export($vaas_verdict->Verdict, true));
 			 // phpcs:ignore
@@ -158,7 +152,7 @@ if (! class_exists('ScanClient')) {
 			$this->connect();
 			try {
 				$vaas_verdict = $this->vaas->ForStream($stream);
-			} catch (VaasInvalidStateException $e) {
+			} catch (\Exception $e) {
 				try {
 					$this->reconnect();
 					$vaas_verdict = $this->vaas->ForStream($stream);	
@@ -166,9 +160,6 @@ if (! class_exists('ScanClient')) {
 					$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
 					$this->logger->debug($e->getMessage());
 				}
-			} catch (\Exception $e) {
-				$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
-				$this->logger->debug($e->getMessage());
 			}
 			$this->logger->debug(var_export($vaas_verdict->Verdict, true));
 			 // phpcs:ignore
@@ -225,7 +216,7 @@ if (! class_exists('ScanClient')) {
 			$this->connect();
 			try {
 				$vaas_verdict = $this->vaas->ForFile($file_path);
-			} catch (VaasInvalidStateException $e) {
+			} catch (\Exception $e) {
 				try {
 					$this->reconnect();
 					$vaas_verdict = $this->vaas->ForFile($file_path);
@@ -233,9 +224,6 @@ if (! class_exists('ScanClient')) {
 					$this->logger->debug($e->getMessage());
 					return new VaasVerdict(new VerdictResponse);
 				}
-			} catch (\Exception $e) {
-				$this->logger->debug($e->getMessage());
-				return new VaasVerdict(new VerdictResponse);
 			}
 			$this->logger->debug(
 				'gdata-antivirus: verdict for file ' . $file_path . ': ' . var_export($vaas_verdict, true)
