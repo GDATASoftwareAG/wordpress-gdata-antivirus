@@ -37,6 +37,7 @@ if (! class_exists('FindingsMenuPage')) {
 
 			add_action('admin_menu', array( $this, 'setup_menu' ));
 			add_action('admin_post_delete_findings', array( $this, 'delete_findings' ));
+			add_action('admin_post_reset_findings', array( $this, 'reset_findings' ));
 		}
 
 		public function setup_menu(): void {
@@ -53,6 +54,29 @@ if (! class_exists('FindingsMenuPage')) {
 		public function validate_findings(): void {
 			$this->logger->debug('FindingsMenuPage::validate_findings');
 			$this->findings->validate();
+		}
+
+		public function reset_findings(): void {
+			$this->logger->debug('FindingsMenuPage::reset_findings');
+			if (! isset($_POST['gdata-antivirus-reset-findings-nonce'])) {
+				wp_die(
+					esc_html__('Invalid nonce specified', 'gdata-antivirus'),
+					esc_html__('Error', 'gdata-antivirus'),
+					array(
+						'response' => intval(403),
+					)
+				);
+			}
+			if (! wp_verify_nonce(sanitize_key($_POST['gdata-antivirus-reset-findings-nonce']), 'gdata-antivirus-reset-findings')) {
+				wp_die(
+					esc_html__('Invalid nonce specified', 'gdata-antivirus'),
+					esc_html__('Error', 'gdata-antivirus'),
+					array(
+						'response' => intval(403),
+					)
+				);
+			}
+			$this->findings->delete_all();
 		}
 
 		public function delete_findings(): void {
@@ -146,6 +170,9 @@ if (! class_exists('FindingsMenuPage')) {
 				<input type="hidden" name="action" value="delete_findings">
 				<?php wp_nonce_field('gdata-antivirus-delete-findings', 'gdata-antivirus-delete-findings-nonce'); ?>
 				<?php submit_button(__('Remove Files', 'gdata-antivirus')); ?>
+				<input type="hidden" name="action" value="reset_findings">
+				<?php wp_nonce_field('gdata-antivirus-reset-findings', 'gdata-antivirus-reset-findings-nonce'); ?>
+				<?php submit_button(__('Reset Findings', 'gdata-antivirus')); ?>
 			</form>
 
 			<?php

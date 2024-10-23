@@ -3,6 +3,7 @@
 namespace Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database;
 
 use Psr\Log\LoggerInterface;
+use wpdb;
 
 class FindingsQuery implements IFindingsQuery {
     private LoggerInterface $logger;
@@ -90,6 +91,18 @@ class FindingsQuery implements IFindingsQuery {
         $wpdb->delete(
             $this->get_table_name(),
             array( 'file_path' => $file )
+        );
+    }
+
+    public function delete_all(): void {
+        global $wpdb;
+        assert($wpdb instanceof wpdb);
+
+        if (! $this->table_exists()) {
+            return;
+        }
+        $wpdb->query(
+            $wpdb->prepare('TRUNCATE TABLE %s', $this->get_table_name())
         );
     }
 
