@@ -57,6 +57,15 @@ The devcontainer is configured to mount the source code into the containers. Thi
 
 Within the devcontainer it starts a wordpress-environment with `docker composer` within that you can even debug the code running directly in wordpress. 
 
+### How to rebuild within the container
+
+When you change code, it is not instantly put into the container because the directory that is actually mounted is the scoped-code directory.
+When starting something bigger you can just set the mount-point in the ./compose.yml and the `/var/www/html/wp-content/plugins/gdata-antivirus` in the ./.vscode/launch.json to the working directory meaning `.` or full path `/workspaces/wordpress-gdata-antivirus`.
+
+Doing this, you still have to test your changes with the scoped code, so basically reset your changes and rebuild the container.
+
+To avoid rebuilding the container on every change you can also just run the ./.devcontainer/configureWordPress.sh script with the simple `source .devcontainer/configureWordPress.sh` command. This will run the scoper and restart the composed containers.
+
 ## Disclaimer
 
 While this plugin enhances the security of your WordPress installation, no security measure is foolproof. Regular backups and other security best practices are still recommended to ensure the safety of your website.
