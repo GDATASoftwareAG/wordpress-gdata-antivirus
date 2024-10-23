@@ -77,6 +77,7 @@ if (! class_exists('FindingsMenuPage')) {
 				);
 			}
 			$this->findings->delete_all();
+			wp_redirect(admin_url());
 		}
 
 		public function delete_findings(): void {

@@ -102,7 +102,7 @@ class FindingsQuery implements IFindingsQuery {
             return;
         }
         $wpdb->query(
-            $wpdb->prepare('TRUNCATE TABLE %s', $this->get_table_name())
+            $wpdb->prepare('TRUNCATE TABLE %i', $this->get_table_name())
         );
     }
 
