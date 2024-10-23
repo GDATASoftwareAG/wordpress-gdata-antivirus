@@ -3,6 +3,7 @@
 namespace Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database;
 
 use Psr\Log\LoggerInterface;
+use wpdb;
 
 class FindingsQuery implements IFindingsQuery {
     private LoggerInterface $logger;
@@ -25,13 +26,15 @@ class FindingsQuery implements IFindingsQuery {
         $charset_collate = $wpdb->get_charset_collate();
         $sql             = 'CREATE TABLE ' . $this->get_table_name() . ' (
             file_path VARCHAR(512) NOT NULL,
+            detection VARCHAR(128) NOT NULL,
+            sha256 VARCHAR(64) NOT NULL,
             UNIQUE KEY file_path (file_path)
         )' . $charset_collate . ';';
 
         require_once ABSPATH . 'wp-admin/includes/upgrade.php';
         dbDelta($sql);
         wp_cache_set($this->get_table_name(), 'true', 'GdataAntivirus');
-    }
+    }   
 
     public function remove(): void {
         global $wpdb;
@@ -64,7 +67,7 @@ class FindingsQuery implements IFindingsQuery {
         return false;
     }
 
-    public function add( string $file ): void {
+    public function add( DetectedFile $detected_file ): void {
         global $wpdb;
 
         if (! $this->table_exists()) {
@@ -74,7 +77,11 @@ class FindingsQuery implements IFindingsQuery {
         try {
             $wpdb->insert(
                 $this->get_table_name(),
-                array( 'file_path' => $file )
+                array( 
+                    'file_path' => $detected_file->path,
+                    'detection' => $detected_file->detection,
+                    'sha256' => $detected_file->sha256
+                )
             );
         } catch (\Exception $e) {
             $this->logger->debug($e->getMessage());
@@ -93,6 +100,18 @@ class FindingsQuery implements IFindingsQuery {
         );
     }
 
+    public function delete_all(): void {
+        global $wpdb;
+        assert($wpdb instanceof wpdb);
+
+        if (! $this->table_exists()) {
+            return;
+        }
+        $wpdb->query(
+            $wpdb->prepare('TRUNCATE TABLE %i', $this->get_table_name())
+        );
+    }
+
     public function get_all(): array {
         global $wpdb;
 
@@ -100,7 +119,7 @@ class FindingsQuery implements IFindingsQuery {
             return array();
         }
         return $wpdb->get_results(
-            $wpdb->prepare('SELECT file_path FROM %i', $this->get_table_name()),
+            $wpdb->prepare('SELECT file_path, detection, sha256 FROM %i', $this->get_table_name()),
             ARRAY_A
         );
     }
