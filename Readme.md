@@ -66,6 +66,14 @@ Doing this, you still have to test your changes with the scoped code, so basical
 
 To avoid rebuilding the container on every change you can also just run the ./.devcontainer/configureWordPress.sh script with the simple `source .devcontainer/configureWordPress.sh` command. This will run the scoper and restart the composed containers.
 
+### Switch to live development mode
+
+To switch to a mode, where your changes are directly affecting the running wordpress container we provide the switch-live-develop-mode.sh script. Running this the first time will change the .vscode/launch.json and compose.yml files, so that the code in the root folder is directly mounted into the container and the debugger also points to this code (if you have a debugger running you have to restart it once).
+
+When running this script within a running container, you have to run `source .devcontainer/configureWordPress.sh` once to start live mode and once when you switch back to scoped mode.
+
+Please do not commit the code while in live mode. Just run the script again and it will reset these changes.
+
 ## Disclaimer
 
 While this plugin enhances the security of your WordPress installation, no security measure is foolproof. Regular backups and other security best practices are still recommended to ensure the safety of your website.
