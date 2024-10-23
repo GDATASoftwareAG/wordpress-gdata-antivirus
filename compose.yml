@@ -17,6 +17,7 @@ services:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: wordpress
       WORDPRESS_TEST_DB_NAME: wordpress_test
+      WORDPRESS_DEBUG: true
     volumes:
       - ./scoped-code/:/var/www/html/wp-content/plugins/gdata-antivirus:ro,cached
 
