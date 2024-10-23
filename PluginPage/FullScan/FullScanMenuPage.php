@@ -246,9 +246,10 @@ if (! class_exists('FullScanMenuPage')) {
 				if ($file_path->isDir()) {
 					continue;
 				}
-				if (str_contains($file_path->getPathname(), "eicar") === false) {
-					continue;
-				}
+				// For testing purposes, we only scan files with eicar in the name
+				// if (str_contains($file_path->getPathname(), "eicar") === false) {
+				// 	continue;
+				// }
 				$this->logger->debug($file_path->getPathname());
 				array_push($files, $file_path->getPathname());
 				if (count($files) >= $batch_size) {

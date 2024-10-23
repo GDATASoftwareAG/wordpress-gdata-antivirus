@@ -74,6 +74,12 @@ When running this script within a running container, you have to run `source .de
 
 Please do not commit the code while in live mode. Just run the script again and it will reset these changes.
 
+### Running the cron
+
+If you want to run the cron event directly user this command.
+
+`docker exec  --user www-data -it gdata-antivirus-app-1 bash -c "XDEBUG_CONFIG='client_port=9080 client_host=172.19.0.1' wp --debug cron event run gdatacyberdefenseag_antivirus_scan_batch"`
+
 ## Disclaimer
 
 While this plugin enhances the security of your WordPress installation, no security measure is foolproof. Regular backups and other security best practices are still recommended to ensure the safety of your website.

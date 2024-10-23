@@ -126,7 +126,8 @@ return [
         "SplFileInfo",
         "WP_Filesystem_Direct",
         "WP_Filesystem_Base",
-        "GdataAntivirusPlugin"
+        "GdataAntivirusPlugin",
+        "wpdb"
     ],
     'exclude-functions' => [
         // 'mb_str_split',
