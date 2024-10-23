@@ -56,6 +56,11 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
+= 2.0.9 =
+* bugfix: reconnect on long running scans
+* add detection and sha256 name to upload detection
+* add detection and sha256 to the findings page
+
 = 2.0.8 =
 * bugfix: posts could not be saved
 
