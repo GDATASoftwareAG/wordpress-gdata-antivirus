@@ -274,7 +274,7 @@ if (! class_exists('FullScanMenuPage')) {
 						continue;
 					}
 					$scan_client = $this->scan_client;
-					if ($scan_client->scan_file($file) === \VaasSdk\Message\Verdict::MALICIOUS) {
+					if ($scan_client->scan_file($file)->Verdict === \VaasSdk\Message\Verdict::MALICIOUS) {
 						$this->logger->debug('add to findings ' . $file);
 						$this->findings->add($file);
 					}
