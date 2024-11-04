@@ -8,8 +8,8 @@ use Psr\Log\LoggerInterface;
 use VaasSdk\Vaas;
 use VaasSdk\Authentication\ClientCredentialsGrantAuthenticator;
 use VaasSdk\Authentication\ResourceOwnerPasswordGrantAuthenticator;
-use VaasSdk\Exceptions\VaasInvalidStateException;
-use VaasSdk\Message\Verdict;
+use VaasSdk\Message\VaasVerdict;
+use VaasSdk\Message\VerdictResponse;
 use VaasSdk\VaasOptions as VaasParameters;
 
 if (! class_exists('ScanClient')) {
@@ -102,26 +102,22 @@ if (! class_exists('ScanClient')) {
 
 			$this->connect();
 			try {
-				$verdict = $this->vaas->ForStream($stream);
-			} catch (VaasInvalidStateException $e) {
+				$vaas_verdict = $this->vaas->ForStream($stream);
+			} catch (\Exception $e) {
 				try {
 					$this->reconnect();
-					$verdict = $this->vaas->ForStream($stream);	
+					$vaas_verdict = $this->vaas->ForStream($stream);	
 				} catch (\Exception $e) {
 					$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
 					$this->logger->debug($e->getMessage());
 					return $data;	
 				}
-			} catch (\Exception $e) {
-				$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
-				$this->logger->debug($e->getMessage());
-				return $data;
 			}
-			$this->logger->debug(var_export($verdict, true));
+			$this->logger->debug(var_export($vaas_verdict->Verdict, true));
 			 // phpcs:ignore
-			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict->Verdict) {
+			if (\VaasSdk\Message\Verdict::MALICIOUS === $vaas_verdict->Verdict) {
 				$this->logger->debug('gdata-antivirus: virus found in post');
-				wp_die(esc_html__('virus found', 'gdata-antivirus'));
+				wp_die(esc_html__("Virus found! - Detection: $vaas_verdict->Detection - SHA256: $vaas_verdict->Sha256 - Guid: $vaas_verdict->Guid", 'gdata-antivirus'));
 			}
 			return $data;
 		}
@@ -155,24 +151,21 @@ if (! class_exists('ScanClient')) {
 			$stream          = $this->file_system->get_resource_stream_from_string($commend_content);
 			$this->connect();
 			try {
-				$verdict = $this->vaas->ForStream($stream);
-			} catch (VaasInvalidStateException $e) {
+				$vaas_verdict = $this->vaas->ForStream($stream);
+			} catch (\Exception $e) {
 				try {
 					$this->reconnect();
-					$verdict = $this->vaas->ForStream($stream);	
+					$vaas_verdict = $this->vaas->ForStream($stream);	
 				} catch (\Exception $e) {
 					$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
 					$this->logger->debug($e->getMessage());
 				}
-			} catch (\Exception $e) {
-				$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
-				$this->logger->debug($e->getMessage());
 			}
-			$this->logger->debug(var_export($verdict, true));
+			$this->logger->debug(var_export($vaas_verdict->Verdict, true));
 			 // phpcs:ignore
-			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict->Verdict) {
+			if (\VaasSdk\Message\Verdict::MALICIOUS === $vaas_verdict->Verdict) {
 				$this->logger->debug('gdata-antivirus: virus found in comment');
-				wp_die(esc_html__('virus found', 'gdata-antivirus'));
+				wp_die(esc_html__("Virus found! - Detection: $vaas_verdict->Detection - SHA256: $vaas_verdict->Sha256 - Guid: $vaas_verdict->Guid", 'gdata-antivirus'));
 			}
 			return $commentdata;
 		}
@@ -211,33 +204,31 @@ if (! class_exists('ScanClient')) {
 				}
 			}
 
-			$verdict = $this->scan_file($file['tmp_name']);
+			$vaas_verdict = $this->scan_file($file['tmp_name']);
+			$verdict = $vaas_verdict->Verdict;
 			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict) {
-				$file['error'] = __('virus found', 'gdata-antivirus');
+				$file['error'] = __("Virus found! - Detection: $vaas_verdict->Detection - SHA256: $vaas_verdict->Sha256 - Guid: $vaas_verdict->Guid", 'gdata-antivirus');
 			}
 			return $file;
 		}
 
-		public function scan_file( $file_path ): Verdict {
+		public function scan_file( $file_path ): VaasVerdict {
 			$this->connect();
 			try {
-				$verdict = $this->vaas->ForFile($file_path)->Verdict;
-			} catch (VaasInvalidStateException $e) {
+				$vaas_verdict = $this->vaas->ForFile($file_path);
+			} catch (\Exception $e) {
 				try {
 					$this->reconnect();
-					$verdict = $this->vaas->ForFile($file_path)->Verdict;
+					$vaas_verdict = $this->vaas->ForFile($file_path);
 				} catch (\Exception $e) {
 					$this->logger->debug($e->getMessage());
-					return Verdict::UNKNOWN;
+					return new VaasVerdict(new VerdictResponse);
 				}
-			} catch (\Exception $e) {
-				$this->logger->debug($e->getMessage());
-				return Verdict::UNKNOWN;
 			}
 			$this->logger->debug(
-				'gdata-antivirus: verdict for file ' . $file_path . ': ' . var_export($verdict, true)
+				'gdata-antivirus: verdict for file ' . $file_path . ': ' . var_export($vaas_verdict, true)
 			);
-			return $verdict;
+			return $vaas_verdict;
 		}
 	}
 }

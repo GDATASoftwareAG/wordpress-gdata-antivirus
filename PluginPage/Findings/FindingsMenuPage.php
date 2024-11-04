@@ -37,6 +37,7 @@ if (! class_exists('FindingsMenuPage')) {
 
 			add_action('admin_menu', array( $this, 'setup_menu' ));
 			add_action('admin_post_delete_findings', array( $this, 'delete_findings' ));
+			add_action('admin_post_reset_findings', array( $this, 'reset_findings' ));
 		}
 
 		public function setup_menu(): void {
@@ -53,6 +54,30 @@ if (! class_exists('FindingsMenuPage')) {
 		public function validate_findings(): void {
 			$this->logger->debug('FindingsMenuPage::validate_findings');
 			$this->findings->validate();
+		}
+
+		public function reset_findings(): void {
+			$this->logger->debug('FindingsMenuPage::reset_findings');
+			if (! isset($_POST['gdata-antivirus-reset-findings-nonce'])) {
+				wp_die(
+					esc_html__('Invalid nonce specified', 'gdata-antivirus'),
+					esc_html__('Error', 'gdata-antivirus'),
+					array(
+						'response' => intval(403),
+					)
+				);
+			}
+			if (! wp_verify_nonce(sanitize_key($_POST['gdata-antivirus-reset-findings-nonce']), 'gdata-antivirus-reset-findings')) {
+				wp_die(
+					esc_html__('Invalid nonce specified', 'gdata-antivirus'),
+					esc_html__('Error', 'gdata-antivirus'),
+					array(
+						'response' => intval(403),
+					)
+				);
+			}
+			$this->findings->delete_all();
+			wp_redirect(admin_url());
 		}
 
 		public function delete_findings(): void {
@@ -107,8 +132,14 @@ if (! class_exists('FindingsMenuPage')) {
 					<thead>
 						<tr>
 							<td id="cb" class="manage-column column-cb check-column"><label class="screen-reader-text" for="cb-select-all-1">Select All</label><input id="cb-select-all-1" type="checkbox"></td>
-							<th scope="col" id="title" class="manage-column column-title column-primary">
+							<th scope="col" id="title_file" class="manage-column column-title column-primary">
 								File
+							</th>
+							<th scope="col" id="title_detection" class="manage-column column-title column-primary">
+								Detection
+							</th>
+							<th scope="col" id="title_sha256" class="manage-column column-title column-primary">
+								Sha256
 							</th>
 						</tr>
 					</thead>
@@ -134,6 +165,16 @@ if (! class_exists('FindingsMenuPage')) {
 										echo esc_html($finding['file_path']);
 										?>
 									</td>
+									<td>
+										<?php
+										echo esc_html($finding['detection']);
+										?>
+									</td>
+									<td>
+										<?php
+										echo esc_html($finding['sha256']);
+										?>
+									</td>
 								</tr>
 								<?php
 							}
@@ -143,9 +184,14 @@ if (! class_exists('FindingsMenuPage')) {
 					</tbody>
 				</table>
 
-				<input type="hidden" name="action" value="delete_findings">
 				<?php wp_nonce_field('gdata-antivirus-delete-findings', 'gdata-antivirus-delete-findings-nonce'); ?>
-				<?php submit_button(__('Remove Files', 'gdata-antivirus')); ?>
+				<?php submit_button(__('Remove Files', 'gdata-antivirus'), 'primary', 'delete_findings', true, Array(
+					'formaction' => 'admin-post.php?action=delete_findings'
+				)); ?>
+				<?php wp_nonce_field('gdata-antivirus-reset-findings', 'gdata-antivirus-reset-findings-nonce'); ?>
+				<?php submit_button(__('Reset', 'gdata-antivirus'), 'primary', 'reset_findings', true, Array(
+					'formaction' => 'admin-post.php?action=reset_findings'
+				)); ?>
 			</form>
 
 			<?php

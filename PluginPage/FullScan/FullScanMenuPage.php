@@ -2,6 +2,7 @@
 
 namespace Gdatacyberdefenseag\GdataAntivirus\PluginPage\FullScan;
 
+use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\DetectedFile;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IFindingsQuery;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Database\IScansQuery;
 use Gdatacyberdefenseag\GdataAntivirus\PluginPage\AdminNotices;
@@ -245,6 +246,10 @@ if (! class_exists('FullScanMenuPage')) {
 				if ($file_path->isDir()) {
 					continue;
 				}
+				// For testing purposes, we only scan files with eicar in the name
+				// if (str_contains($file_path->getPathname(), "eicar") === false) {
+				// 	continue;
+				// }
 				$this->logger->debug($file_path->getPathname());
 				array_push($files, $file_path->getPathname());
 				if (count($files) >= $batch_size) {
@@ -274,9 +279,10 @@ if (! class_exists('FullScanMenuPage')) {
 						continue;
 					}
 					$scan_client = $this->scan_client;
-					if ($scan_client->scan_file($file) === \VaasSdk\Message\Verdict::MALICIOUS) {
+					$vaas_verdict = $scan_client->scan_file($file);
+					if ($vaas_verdict->Verdict === \VaasSdk\Message\Verdict::MALICIOUS) {
 						$this->logger->debug('add to findings ' . $file);
-						$this->findings->add($file);
+						$this->findings->add(new DetectedFile($file, $vaas_verdict->Detection, $vaas_verdict->Sha256));
 					}
 				}
             } finally {
