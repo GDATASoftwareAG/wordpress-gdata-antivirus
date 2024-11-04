@@ -282,7 +282,7 @@ if (! class_exists('FullScanMenuPage')) {
 					$vaas_verdict = $scan_client->scan_file($file);
 					if ($vaas_verdict->Verdict === \VaasSdk\Message\Verdict::MALICIOUS) {
 						$this->logger->debug('add to findings ' . $file);
-						$this->findings->add(new DetectedFile($file, $vaas_verdict->Detection, $vaas_verdict->Sha256));
+						$this->findings->add(new DetectedFile($file, $vaas_verdict->Detection, $vaas_verdict->Sha256, $vaas_verdict->Guid));
 					}
 				}
             } finally {

@@ -141,6 +141,9 @@ if (! class_exists('FindingsMenuPage')) {
 							<th scope="col" id="title_sha256" class="manage-column column-title column-primary">
 								Sha256
 							</th>
+							<th scope="col" id="title_request_id" class="manage-column column-title column-primary">
+								Request-Id
+							</th>
 						</tr>
 					</thead>
 
@@ -173,6 +176,11 @@ if (! class_exists('FindingsMenuPage')) {
 									<td>
 										<?php
 										echo esc_html($finding['sha256']);
+										?>
+									</td>
+									<td>
+										<?php
+										echo esc_html($finding['request_id']);
 										?>
 									</td>
 								</tr>

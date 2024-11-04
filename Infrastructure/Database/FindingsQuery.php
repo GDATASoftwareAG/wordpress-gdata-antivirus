@@ -28,6 +28,7 @@ class FindingsQuery implements IFindingsQuery {
             file_path VARCHAR(512) NOT NULL,
             detection VARCHAR(128) NOT NULL,
             sha256 VARCHAR(64) NOT NULL,
+            request_id VARCHAR(256) NOT NULL,
             UNIQUE KEY file_path (file_path)
         )' . $charset_collate . ';';
 
@@ -80,7 +81,8 @@ class FindingsQuery implements IFindingsQuery {
                 array( 
                     'file_path' => $detected_file->path,
                     'detection' => $detected_file->detection,
-                    'sha256' => $detected_file->sha256
+                    'sha256' => $detected_file->sha256,
+                    'request_id' => $detected_file->request_id
                 )
             );
         } catch (\Exception $e) {
@@ -119,7 +121,7 @@ class FindingsQuery implements IFindingsQuery {
             return array();
         }
         return $wpdb->get_results(
-            $wpdb->prepare('SELECT file_path, detection, sha256 FROM %i', $this->get_table_name()),
+            $wpdb->prepare('SELECT file_path, detection, sha256, request_id FROM %i', $this->get_table_name()),
             ARRAY_A
         );
     }
