@@ -246,7 +246,7 @@ if (! class_exists('FullScanMenuPage')) {
 				if ($file_path->isDir()) {
 					continue;
 				}
-				// For testing purposes, we only scan files with eicar in the name
+				// // For testing purposes, we only scan files with eicar in the name
 				// if (str_contains($file_path->getPathname(), "eicar") === false) {
 				// 	continue;
 				// }
