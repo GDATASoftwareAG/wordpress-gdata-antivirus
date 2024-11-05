@@ -57,19 +57,19 @@ if (! class_exists('FullScanMenuPage')) {
 			$schedule_start    = get_option('gdatacyberdefenseag_antivirus_options_full_scan_schedule_start', '01:00');
 			$next              = wp_next_scheduled('gdatacyberdefenseag_antivirus_scheduled_full_scan');
 
-			if (! $full_scan_enabled && $next) {
+			if ($full_scan_enabled !== true && $next) {
 				wp_unschedule_event($next, 'gdatacyberdefenseag_antivirus_scheduled_full_scan');
 				return;
 			}
 
-			if ($full_scan_enabled && ! $next) {
+			if ($full_scan_enabled === true && ! $next) {
 				$timestamp = strtotime($schedule_start);
 				$this->logger->debug('schedule start timestamp: ' . $timestamp);
 				wp_schedule_event($timestamp, 'daily', 'gdatacyberdefenseag_antivirus_scheduled_full_scan');
 				return;
 			}
 			$nextschedule_start = gmdate('H:i', $next);
-			if ($nextschedule_start !== $schedule_start) {
+			if ($full_scan_enabled === true && $nextschedule_start !== $schedule_start) {
 				wp_unschedule_event($next, 'gdatacyberdefenseag_antivirus_scheduled_full_scan');
 				$timestamp = strtotime($schedule_start);
 				wp_schedule_event($timestamp, 'daily', 'gdatacyberdefenseag_antivirus_scheduled_full_scan');
