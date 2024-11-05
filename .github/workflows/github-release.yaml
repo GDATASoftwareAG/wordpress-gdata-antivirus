@@ -104,6 +104,35 @@ jobs:
         uses: actions/download-artifact@master
         with:
           name: plugin-zip
+
+      - name: install subversion
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install subversion
+
+      - name: checkout svn
+        run: |
+          svn co https://plugins.svn.wordpress.org/gdata-antivirus/ svn/gdata-antivirus
+  
+      - name: unzip
+        run: unzip gdata-antivirus-${{needs.get-version.outputs.plugin_version}}.zip -d svn/gdata-antivirus-${{needs.get-version.outputs.plugin_version}}
+
+      - name: check version changelog
+        run: |
+          grep "= ${{needs.get-version.outputs.plugin_version}} =" svn/gdata-antivirus-${{needs.get-version.outputs.plugin_version}}/Readme.txt
+
+      - name: copy files
+        run: |
+          rm -rf svn/gdata-antivirus/trunk/*
+          cp -r svn/gdata-antivirus-${{needs.get-version.outputs.plugin_version}}/* svn/gdata-antivirus/trunk/
+          svn update svn/gdata-antivirus/trunk/*
+          svn cp svn/gdata-antivirus/trunk/ svn/gdata-antivirus/tags/${{needs.get-version.outputs.plugin_version}}
+
+      - name: commit
+        if: startsWith(github.ref, 'refs/tags/v') && !contains(github.ref, 'beta')
+        run: |
+          svn ci -m 'release ${{needs.get-version.outputs.plugin_version}}' --username ${{ secrets.SVN_USERNAME }} --password ${{ secrets.SVN_PASSWORD }} svn/gdata-antivirus
+
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
