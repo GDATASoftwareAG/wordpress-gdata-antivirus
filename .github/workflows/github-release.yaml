@@ -104,6 +104,22 @@ jobs:
         uses: actions/download-artifact@master
         with:
           name: plugin-zip
+
+      - name: install subversion
+        run: |
+          sudo apt-get update
+          sudo apt-get -y install subversion
+
+      - name: checkout svn
+        run: |
+          svn co https://plugins.svn.wordpress.org/gdata-antivirus/ svn/gdata-antivirus
+  
+      - name: unzip
+        run: unzip gdata-antivirus-${{needs.get-version.outputs.plugin_version}}.zip -d svn/gdata-antivirus-${{needs.get-version.outputs.plugin_version}}
+
+      - name: check version changelog
+        run: grep "= ${{needs.get-version.outputs.plugin_version}} =" svn/gdata-antivirus-${{needs.get-version.outputs.plugin_version}}/Readme.txt
+
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
