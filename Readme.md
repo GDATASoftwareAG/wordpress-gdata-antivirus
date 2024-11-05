@@ -78,7 +78,9 @@ Please do not commit the code while in live mode. Just run the script again and 
 
 If you want to run the cron event directly user this command.
 
-`docker exec  --user www-data -it gdata-antivirus-app-1 bash -c "XDEBUG_CONFIG='client_port=9080 client_host=172.19.0.1' wp --debug cron event run gdatacyberdefenseag_antivirus_scan_batch"`
+`docker exec  --user www-data -it gdata-antivirus-app-1 bash -c "XDEBUG_CONFIG='client_port=9080 client_host=172.19.0.1' wp --debug cron event run --all"`
+
+To debug the the cli you also have to configure xdebug to connect to your container ip. 
 
 ## Disclaimer
 
