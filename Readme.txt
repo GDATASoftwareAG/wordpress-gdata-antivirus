@@ -56,6 +56,10 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
+= 2.1.0 =
+* bugfix: [full scan runs in loop](https://github.com/GDATASoftwareAG/wordpress-gdata-antivirus/issues/37)
+* bugifx: fails on duplicate key when detecting the same file twice
+
 = 2.0.9 =
 * bugfix: reconnect on long running scans
 * add detection and sha256 name to upload detection

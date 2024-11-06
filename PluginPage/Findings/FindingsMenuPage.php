@@ -135,6 +135,9 @@ if (! class_exists('FindingsMenuPage')) {
 							<th scope="col" id="title_file" class="manage-column column-title column-primary">
 								File
 							</th>
+							<th scope="col" id="title_file" class="manage-column column-title column-primary">
+								Last seen
+							</th>
 							<th scope="col" id="title_detection" class="manage-column column-title column-primary">
 								Detection
 							</th>
@@ -166,6 +169,11 @@ if (! class_exists('FindingsMenuPage')) {
 									<td>
 										<?php
 										echo esc_html($finding['file_path']);
+										?>
+									</td>
+									<td>
+										<?php
+										echo esc_html($finding['updated_at']);
 										?>
 									</td>
 									<td>
