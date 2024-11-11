@@ -12,10 +12,10 @@
 !/local-env/wp-content/plugins/.gitkeep
 !/local-env/wp-content/plugins/gdata-antivirus/
 !/local-env/wp-content/plugins/gdata-antivirus/.gitkeep
-/wordpress/
 test.sh
 gdata-antivirus.zip
 test.php
+wordpress/
 scoped-code/
-/svn/
+svn/
 eicar*
