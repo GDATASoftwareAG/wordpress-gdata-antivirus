@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6dbc678bbb2da49ad0fe8a69d78735ca",
+    "content-hash": "90239b0210e343f7c30d9becd306130f",
     "packages": [
         {
             "name": "amphp/amp",
@@ -1336,16 +1336,16 @@
         },
         {
             "name": "illuminate/container",
-            "version": "v11.30.0",
+            "version": "v11.32.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/container.git",
-                "reference": "06dfc614aff58384b28ba5ad191f6a02d6b192cb"
+                "reference": "6e31eb49e9c9e68356a55cd8f18fb8830b8158cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/container/zipball/06dfc614aff58384b28ba5ad191f6a02d6b192cb",
-                "reference": "06dfc614aff58384b28ba5ad191f6a02d6b192cb",
+                "url": "https://api.github.com/repos/illuminate/container/zipball/6e31eb49e9c9e68356a55cd8f18fb8830b8158cd",
+                "reference": "6e31eb49e9c9e68356a55cd8f18fb8830b8158cd",
                 "shasum": ""
             },
             "require": {
@@ -1383,20 +1383,20 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-10-11T15:30:11+00:00"
+            "time": "2024-11-14T15:31:35+00:00"
         },
         {
             "name": "illuminate/contracts",
-            "version": "v11.30.0",
+            "version": "v11.32.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/contracts.git",
-                "reference": "56312862af937bd6da8e6dc8bbd88188dfb478f8"
+                "reference": "44c15aec6ea0d997e0885aa5b04876fe8a141433"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/contracts/zipball/56312862af937bd6da8e6dc8bbd88188dfb478f8",
-                "reference": "56312862af937bd6da8e6dc8bbd88188dfb478f8",
+                "url": "https://api.github.com/repos/illuminate/contracts/zipball/44c15aec6ea0d997e0885aa5b04876fe8a141433",
+                "reference": "44c15aec6ea0d997e0885aa5b04876fe8a141433",
                 "shasum": ""
             },
             "require": {
@@ -1431,7 +1431,7 @@
                 "issues": "https://github.com/laravel/framework/issues",
                 "source": "https://github.com/laravel/framework"
             },
-            "time": "2024-09-22T15:08:08+00:00"
+            "time": "2024-11-15T15:40:33+00:00"
         },
         {
             "name": "kelunik/certificate",
@@ -2552,20 +2552,20 @@
         },
         {
             "name": "johnpbloch/wordpress",
-            "version": "6.6.2",
+            "version": "6.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress.git",
-                "reference": "1bd4fb6bbee375a3428e2aa3593ee2549974b0c1"
+                "reference": "d3a4bdf75c79166487cf889f71acca52852d9716"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/1bd4fb6bbee375a3428e2aa3593ee2549974b0c1",
-                "reference": "1bd4fb6bbee375a3428e2aa3593ee2549974b0c1",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/d3a4bdf75c79166487cf889f71acca52852d9716",
+                "reference": "d3a4bdf75c79166487cf889f71acca52852d9716",
                 "shasum": ""
             },
             "require": {
-                "johnpbloch/wordpress-core": "6.6.2",
+                "johnpbloch/wordpress-core": "6.7.0",
                 "johnpbloch/wordpress-core-installer": "^1.0 || ^2.0",
                 "php": ">=7.0.0"
             },
@@ -2594,20 +2594,20 @@
                 "issues": "https://core.trac.wordpress.org/",
                 "source": "https://core.trac.wordpress.org/browser"
             },
-            "time": "2024-09-10T15:26:46+00:00"
+            "time": "2024-11-14T16:46:29+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core",
-            "version": "6.6.2",
+            "version": "6.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress-core.git",
-                "reference": "dbb5f96e78905e26cbfb4c4796d9d5b92c451a81"
+                "reference": "3b6bdf11cf72ecb3777914259604dda961798ce2"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/dbb5f96e78905e26cbfb4c4796d9d5b92c451a81",
-                "reference": "dbb5f96e78905e26cbfb4c4796d9d5b92c451a81",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/3b6bdf11cf72ecb3777914259604dda961798ce2",
+                "reference": "3b6bdf11cf72ecb3777914259604dda961798ce2",
                 "shasum": ""
             },
             "require": {
@@ -2615,7 +2615,7 @@
                 "php": ">=7.2.24"
             },
             "provide": {
-                "wordpress/core-implementation": "6.6.2"
+                "wordpress/core-implementation": "6.7.0"
             },
             "type": "wordpress-core",
             "notification-url": "https://packagist.org/downloads/",
@@ -2642,7 +2642,7 @@
                 "source": "https://core.trac.wordpress.org/browser",
                 "wiki": "https://codex.wordpress.org/"
             },
-            "time": "2024-09-10T15:26:41+00:00"
+            "time": "2024-11-14T16:46:24+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core-installer",
