@@ -56,6 +56,11 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
+= 2.1.2 =
+* update illuminate/container from 11.33.2 to 11.34.2
+* update phpunit/phpunit from 11.4.3 to 11.4.4
+* update symfony/finder from 7.1.6 to 7.2.0
+
 = 2.1.1 =
 * updates: update illuminate/container to 11.33.2
 
