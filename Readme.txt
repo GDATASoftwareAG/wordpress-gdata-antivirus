@@ -56,6 +56,14 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
+= 2.1.3 = 
+
+| Package | Type | Update | Change |
+|---|---|---|---|
+| [illuminate/container](https://laravel.com) ([source](https://togithub.com/illuminate/container)) | require | minor | `11.35.1` -> `11.37.0` |
+| [phpunit/phpunit](https://phpunit.de/) ([source](https://togithub.com/sebastianbergmann/phpunit)) | require-dev | patch | `11.5.1` -> `11.5.2` |
+| [symfony/finder](https://symfony.com) ([source](https://togithub.com/symfony/finder)) | require-dev | patch | `7.2.0` -> `7.2.2` |
+
 = 2.1.2 =
 * update illuminate/container from 11.33.2 to 11.34.2
 * update phpunit/phpunit from 11.4.3 to 11.4.4
