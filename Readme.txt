@@ -56,7 +56,7 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
-= 2.1.4 = 
+= 2.1.5 = 
 
 | Package | Type | Update | Change |
 |---|---|---|---|
