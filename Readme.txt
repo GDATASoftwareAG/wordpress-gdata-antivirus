@@ -56,6 +56,12 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
+= 2.1.6 = 
+
+| Package | Type | Update | Change |
+|---|---|---|---|
+| [illuminate/container](https://laravel.com) ([source](https://togithub.com/illuminate/container)) | require | minor | `11.37.0` -> `11.40.0` |
+
 = 2.1.5 = 
 
 | Package | Type | Update | Change |
