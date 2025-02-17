@@ -50,11 +50,13 @@ jobs:
         php-version: ["8.1", "8.2", "8.3", "8.4"]
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/devcontainers/php:1-${{ matrix.php-version }}-bullseye
+      image: php:${{ matrix.php-version }}-cli
     steps:
       - uses: actions/checkout@v4
-      - name: composer install
-        run: composer install
+      - name: install dependencies
+        uses: php-actions/composer@v6
+        with:
+          php_version: ${{ matrix.php-version }}
       - name: phpunit
         run: ./vendor/bin/phpunit --testdox tests/
 
