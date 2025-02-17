@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpunit
+			bootstrap="tests/bootstrap.php"
+            verbose="true"
+			convertErrorsToExceptions="true"
+			convertNoticesToExceptions="true"
+			
+		    convertDeprecationsToExceptions="true"
+		    timeoutForSmallTests="900"
+		    timeoutForMediumTests="900"
+		    timeoutForLargeTests="900"
+		>
+	<testsuite name='G DATA Antivirus'>
+	    <directory>tests/**</directory>
+        <exclude>wordpress/**</exclude>
+        <exclude>vendor/**</exclude>
+		<directory suffix='Test.php'>.</directory>
+	</testsuite>
+	<php>
+		<const name='GDATACYBERDEFENCEAG_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__' value='gdata-cyberdefence-ag-antivirus.php' />
+		<const name='GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG' value='gdata-antivirus-menu' />
+		<const name='GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FINDINGS_SLUG' value='gdata-antivirus-menu-findings' />
+		<const name='GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FINDINGS_TABLE_NAME' value='GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FINDINGS_TABLE' />
+		<const name='GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FULL_SCAN_SLUG' value='gdata-antivirus-menu-full-scan' />
+		<const name='GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FULL_SCAN_OPERATIONS_TABLE_NAME' value='GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FULL_SCAN_OPERATIONS' />
+		<const name='GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_ON_DEMAND_SCAN_SLUG' value='gdata-antivirus-menu-on-demand-scan' />
+		<const name='ABSPATH' value='./wordpress/' />
+		<const name='WP_CONTENT_DIR' value='./wordpress/wp-content' />
+		<const name='WP_LANG_DIR' value='/wordpress/wp-content/languages' />
+		<const name='WPINC' value='wp-includes' />
+		<const name='WP_DEBUG' value='true' />
+		<const name='WP_DEBUG_LOG' value='php://stdout' />
+		<const name='WP_PLUGIN_DIR' value='./wordpress/wp-content/plugins' />
+		<const name='WPMU_PLUGIN_DIR' value='' />
+	</php>
+
+</phpunit>

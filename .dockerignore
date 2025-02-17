@@ -25,3 +25,4 @@ LICENSE
 README.md
 wordpress/**
 svn/**
+composer.lock

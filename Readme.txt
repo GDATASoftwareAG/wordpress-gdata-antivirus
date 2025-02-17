@@ -2,7 +2,7 @@
 Contributors: @gdatavaas
 Tags: antivirus, security, vaas, malware, malicious
 Requires at least: 6.2
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 8.1
 Stable tag: 2.0.2
 License: GNU General Public License v3.0

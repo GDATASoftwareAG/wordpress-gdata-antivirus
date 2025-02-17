@@ -19,8 +19,10 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\NullLogger;
 
 if (! class_exists('GdataAntivirusPlugin')) {
-	class GdataAntivirusPlugin extends Container {
-		public function __construct( LoggerInterface $logger = new NullLogger() ) {
+	class GdataAntivirusPlugin extends Container
+	{
+		public function __construct(LoggerInterface $logger = new NullLogger())
+		{
 			$logger->info('GdataAntivirusPlugin::__construct');
 			$this->singleton(FindingsMenuPage::class, FindingsMenuPage::class);
 			$this->singleton(FullScanMenuPage::class, FullScanMenuPage::class);
@@ -31,10 +33,13 @@ if (! class_exists('GdataAntivirusPlugin')) {
 			$this->singleton(GdataAntivirusMenuPage::class, GdataAntivirusMenuPage::class);
 			$this->singleton(ScanClient::class, ScanClient::class);
 			$this->singleton(AdminNotices::class, AdminNotices::class);
-			$this->singleton(LoggerInterface::class, function () use ( $logger ) {
+			$this->singleton(LoggerInterface::class, function () use ($logger) {
 				return $logger;
 			});
+		}
 
+		public function start()
+		{
 			$this->make(GdataAntivirusMenuPage::class);
 			$findings_menu = $this->make(FindingsMenuPage::class);
 			$this->make(FullScanMenuPage::class);
