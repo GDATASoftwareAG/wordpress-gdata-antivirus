@@ -18,9 +18,6 @@
         "illuminate/container": "^11.30"
     },
     "config": {
-        "platform": {
-            "php": "8.2"
-        },
         "allow-plugins": {
             "johnpbloch/wordpress-core-installer": true,
             "dealerdirect/phpcodesniffer-composer-installer": true
