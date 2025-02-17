@@ -5,13 +5,6 @@ namespace Gdatacyberdefenseag\GdataAntivirus\PluginPage;
 use Psr\Log\LoggerInterface;
 
 if (! class_exists('AdminNotices')) {
-	interface AdminNoticesInterface
-	{
-		public static function add_notice(string $text): void;
-		public function save_notices(): void;
-		public function output_notices(): void;
-	}
-
 	class AdminNotices implements AdminNoticesInterface
 	{
 		private static $notices = array();

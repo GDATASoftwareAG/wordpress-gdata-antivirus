@@ -28,7 +28,6 @@ use Gdatacyberdefenseag\GdataAntivirus\tests\unittests\Infrastructure\TestDebugL
 use Gdatacyberdefenseag\GdataAntivirus\Vaas\ScanClient;
 use Gdatacyberdefenseag\GdataAntivirus\Vaas\VaasOptions;
 use PHPUnit\Framework\TestCase;
-use VaasSdk\VaasVerdict;
 use VaasSdk\Verdict;
 
 use function PHPUnit\Framework\assertEquals;
@@ -38,7 +37,7 @@ class ScanClientTest extends TestCase
     public function testScanFunction()
     {
         $vaas_options = $this->getMockBuilder(VaasOptions::class)
-            ->onlyMethods(array('get_options'))
+            ->onlyMethods(array('get_options', 'credentials_configured'))
             ->disableOriginalConstructor()
             ->disableOriginalClone()
             ->getMock();
@@ -47,10 +46,13 @@ class ScanClientTest extends TestCase
             ->willReturn(array(
                 'authentication_method' => 'ResourceOwnerPasswordGrant',
                 'username' => 'wordpress-testing',
-                'password' => '!SecurePassword!',
+                'password' => getenv('VAAS_PASSWORD'),
                 'token_endpoint' => 'https://account-staging.gdata.de/realms/vaas-staging/protocol/openid-connect/token',
                 'vaas_url' => 'https://gateway.staging.vaas.gdatasecurity.de',
             ));
+        $vaas_options
+            ->method('credentials_configured')
+            ->willReturn(true);
 
         $on_demand_scan_options = $this->getMockBuilder(OnDemandScanOptions::class)
             ->onlyMethods(array(
@@ -95,5 +97,6 @@ class ScanClientTest extends TestCase
 
         $verdict = $scan_client->scan_file(stream_get_meta_data($temp_file)['uri']);
         assertEquals(Verdict::CLEAN, $verdict->verdict);
+        fclose($temp_file);
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 use Symfony\Component\Finder\Finder;
 
 // You can do your own things here, e.g. collecting symbols to expose dynamically
@@ -42,7 +43,7 @@ return [
         Finder::create()
             ->files()
             ->ignoreVCS(true)
-			->ignoreDotFiles(true)
+            ->ignoreDotFiles(true)
             ->notName([
                 'test.php',
                 'scoper.inc.php',
@@ -98,15 +99,6 @@ return [
     // For more see: https://github.com/humbug/php-scoper/blob/master/docs/configuration.md#patchers
     'patchers' => [
         static function (string $filePath, string $prefix, string $contents): string {
-            if (str_ends_with($filePath, 'vendor/netresearch/jsonmapper/src/JsonMapper.php') === true) {
-                $contents = str_replace("namespace $prefix;", "namespace $prefix\\JsonMapper;", $contents);
-            }
-            if (str_ends_with($filePath, 'vendor/netresearch/jsonmapper/src/JsonMapper/Exception.php') === true) {
-                $contents = str_replace("namespace $prefix;", "namespace $prefix\\JsonMapper;", $contents);
-            }
-            if (str_ends_with($filePath, 'vendor/gdata/vaas/Vaas.php') === true) {
-                $contents = str_replace("use $prefix\JsonMapper", "use $prefix\JsonMapper\JsonMapper", $contents);
-            }
             return $contents;
         },
     ],

@@ -10,8 +10,9 @@ use VaasSdk\Vaas;
 use VaasSdk\Authentication\ClientCredentialsGrantAuthenticator;
 use VaasSdk\Authentication\ResourceOwnerPasswordGrantAuthenticator;
 use VaasSdk\VaasVerdict;
-use VaasSdk\Message\VerdictResponse;
+use VaasSdk\VerdictResponse;
 use VaasSdk\Options\VaasOptions as VaasParameters;
+use VaasSdk\Verdict;
 
 if (! class_exists('ScanClient')) {
 	class ScanClient
@@ -244,7 +245,9 @@ if (! class_exists('ScanClient')) {
 					$vaas_verdict = $this->vaas->forFileAsync($file_path)->await();
 				} catch (\Exception $e) {
 					$this->logger->debug($e->getMessage());
-					return new VaasVerdict(new VerdictResponse);
+					$vaas_verdict =  new VaasVerdict();
+					$vaas_verdict->verdict = Verdict::UNKNOWN;
+					return $vaas_verdict;
 				}
 			}
 			$this->logger->debug(

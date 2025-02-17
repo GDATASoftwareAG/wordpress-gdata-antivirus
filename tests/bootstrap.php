@@ -1,9 +1,9 @@
 <?php
 
+include(__DIR__ . "/../vendor/autoload.php");
+
 global $_GET;
 $_GET['load'] = array("foobar");
-
-
 
 $GLOBALS['_global_function_handler_e'] = 'my_global_function_handler_e';
 // phpcs:ignore
