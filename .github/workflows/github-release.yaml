@@ -47,7 +47,7 @@ jobs:
   test:
     strategy:
       matrix:
-        php-version: ["8.2", "8.3", "8.4"]
+        php-version: ["8.1", "8.2", "8.3", "8.4"]
     runs-on: ubuntu-latest
     container:
       image: bitnami/php-fpm:${{ matrix.php-version }}
