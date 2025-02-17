@@ -45,9 +45,12 @@ jobs:
           fi
 
   test:
+    strategy:
+      matrix:
+        php-version: ["8.2", "8.3"]
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/devcontainers/php:1-8.2-bullseye
+      image: mcr.microsoft.com/devcontainers/php:1-${{ matrix.php-version }}-bullseye
     steps:
       - uses: actions/checkout@v4
       - name: composer install
