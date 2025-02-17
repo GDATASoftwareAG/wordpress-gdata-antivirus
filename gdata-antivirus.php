@@ -1,4 +1,5 @@
 <?php
+
 /**
  * G DATA Antivirus
  *
@@ -22,14 +23,16 @@
 
 namespace Gdatacyberdefenseag\GdataAntivirus;
 
-require_once file_exists(__DIR__.'/vendor/scoper-autoload.php')
-    ? __DIR__.'/vendor/scoper-autoload.php'
-    : __DIR__.'/vendor/autoload.php';
+require_once file_exists(__DIR__ . '/vendor/scoper-autoload.php')
+    ? __DIR__ . '/vendor/scoper-autoload.php'
+    : __DIR__ . '/vendor/autoload.php';
 
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\WordPressFileSystem;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\Logging\GdataAntivirusPluginDebugLogger;
 use Gdatacyberdefenseag\GdataAntivirus\GdataAntivirusPlugin;
+use Gdatacyberdefenseag\GdataAntivirus\PluginPage\AdminNotices;
+use Gdatacyberdefenseag\GdataAntivirus\PluginPage\AdminNoticesInterface;
 use Psr\Log\LoggerInterface;
 
 define('GDATACYBERDEFENCEAG_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__', __FILE__);
@@ -49,3 +52,8 @@ $app->singleton(
     LoggerInterface::class,
     GdataAntivirusPluginDebugLogger::class
 );
+$app->singleton(
+    AdminNoticesInterface::class,
+    AdminNotices::class
+);
+$app->start();
