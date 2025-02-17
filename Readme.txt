@@ -56,6 +56,13 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
+= 2.1.6 =
+
+| Package | Type | Update | Change |
+|---|---|---|---|
+| [illuminate/container](https://laravel.com) ([source](https://togithub.com/illuminate/container)) | require | minor | `11.40.0` -> `11.41.3` |
+| [phpunit/phpunit](https://phpunit.de/) ([source](https://togithub.com/sebastianbergmann/phpunit)) | require-dev | patch | `11.5.3` -> `11.5.7` |
+
 = 2.1.5 = 
 
 | Package | Type | Update | Change |
