@@ -1,4 +1,5 @@
 <?php
+
 /**
  * G DATA Antivirus
  *
@@ -33,78 +34,41 @@ use Gdatacyberdefenseag\GdataAntivirus\Vaas\VaasOptions;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 
-global $_GET;
-$_GET['load'] = array( "foobar" );
-
-
-
-$GLOBALS['_global_function_handler_e'] = 'my_global_function_handler_e';
-// phpcs:ignore
-$GLOBALS['wp_plugin_paths'] = array();
-
-define('ABSPATH', __DIR__."/../../wordpress/");
-define('WP_CONTENT_DIR', \ABSPATH . 'wp-content');
-define('WP_LANG_DIR', \WP_CONTENT_DIR . 'languages');
-define('WPINC', 'wp-includes');
-define('WP_DEBUG', true);
-define('WP_DEBUG_LOG', 'php://stdout');
-define('WP_PLUGIN_DIR', \WP_CONTENT_DIR . '/plugins');
-define('WPMU_PLUGIN_DIR', '');
-
-require_once ABSPATH . WPINC . '/version.php';
-require_once ABSPATH . WPINC . '/compat.php';
-require_once ABSPATH . WPINC . '/load.php';
-require_once ABSPATH . WPINC . '/functions.php';
-require_once ABSPATH . WPINC . '/pomo/mo.php';
-require_once ABSPATH . WPINC . '/l10n.php';
-require_once ABSPATH . WPINC . '/plugin.php';
-require_once ABSPATH . WPINC . '/cache.php';
-
-// include __DIR__ . '/wordpress/wp-includes/formatting.php';.
-
-define('GDATACYBERDEFENCEAG_ANTIVIRUS_PLUGIN_WITH_CLASSES__FILE__', __FILE__);
-define('GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG', 'gdata-antivirus-menu');
-define('GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FINDINGS_SLUG', GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG . '-findings');
-define('GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FINDINGS_TABLE_NAME', 'GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FINDINGS_TABLE');
-define('GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FULL_SCAN_SLUG', GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG . '-full-scan');
-define('GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FULL_SCAN_OPERATIONS_TABLE_NAME', 'GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_FULL_SCAN_OPERATIONS');
-define('GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_ON_DEMAND_SCAN_SLUG', GDATACYBERDEFENCEAG_ANTIVIRUS_MENU_SLUG . '-on-demand-scan');
-
-class GdataAntivirusTest extends TestCase {
-    public function testDependencyInjection() {
-        $this->markTestSkipped('must be revisited.');
-
+class GdataAntivirusTest extends TestCase
+{
+    public function testDependencyInjection()
+    {
         wp_cache_init();
 
         $vaas_options = $this->getMockBuilder(VaasOptions::class)
-        ->onlyMethods(array( 'get_options' ))
-        ->disableOriginalConstructor()
-        ->disableOriginalClone()
-        ->getMock();
+            ->onlyMethods(array('get_options'))
+            ->disableOriginalConstructor()
+            ->disableOriginalClone()
+            ->getMock();
         $vaas_options
-        ->method('get_options')
-        ->willReturn(array(
-            'authentication_method' => 'ResourceOwnerPasswordGrant',
-            'username' => 'username',
-            'password' => 'password',
-            'token_endpoint' => 'https://token_endpoint',
-            'vaas_url' => 'wws://vaas_url',
-        ));
+            ->method('get_options')
+            ->willReturn(array(
+                'authentication_method' => 'ResourceOwnerPasswordGrant',
+                'username' => 'username',
+                'password' => 'password',
+                'token_endpoint' => 'https://token_endpoint',
+                'vaas_url' => 'wws://vaas_url',
+            ));
 
         $scan_client = $this->getMockBuilder(ScanClient::class)
-        ->disableOriginalConstructor()
-        ->getMock();
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $logger = new TestDebugLogger();
         $app = new GdataAntivirusPlugin($logger);
         $app->singleton(LoggerInterface::class, TestDebugLogger::class);
         $app->singleton(IGdataAntivirusFileSystem::class, PlainPhpFileSystem::class);
         $app->singleton(IFindingsQuery::class, NoopFindingsQuery::class);
-        $app->singleton(VaasOptions::class, function () use ( $vaas_options ) {
-        return $vaas_options;
+        $app->singleton(VaasOptions::class, function () use ($vaas_options) {
+            return $vaas_options;
         });
-        $app->singleton(ScanClient::class, function () use ( $scan_client ) {
-        return $scan_client;
+        $app->singleton(ScanClient::class, function () use ($scan_client) {
+            return $scan_client;
         });
 
         $logger->debug("get FindingsMenuPage");

@@ -2,22 +2,25 @@
 
 namespace Gdatacyberdefenseag\GdataAntivirus\Vaas;
 
-class VaasOptions {
+class VaasOptions
+{
     public static array $option_defaults = array(
         'authentication_method' => 'ResourceOwnerPasswordGrant',
         'client_id'             => '',
         'client_secret'         => '',
         'username'              => '',
         'password'              => '',
-        'vaas_url'              => 'wss://gateway.staging.vaas.gdatasecurity.de',
+        'vaas_url'              => 'https://gateway.staging.vaas.gdatasecurity.de',
         'token_endpoint'        => 'https://account-staging.gdata.de/realms/vaas-staging/protocol/openid-connect/token',
     );
 
-    public function __construct() {
-        add_action('init', array( $this, 'setup_fields' ));
+    public function __construct()
+    {
+        add_action('init', array($this, 'setup_fields'));
     }
 
-    public function setup_fields(): void {
+    public function setup_fields(): void
+    {
         register_setting(
             'gdatacyberdefenseag_antivirus_options_credentials',
             'gdatacyberdefenseag_antivirus_options_credentials ',
@@ -28,13 +31,15 @@ class VaasOptions {
         );
     }
 
-    public function get_options(): array {
+    public function get_options(): array
+    {
         $options = get_option('gdatacyberdefenseag_antivirus_options_credentials', self::$option_defaults);
         $options = array_merge(self::$option_defaults, $options);
         return $options;
     }
 
-    public function credentials_configured(): bool {
+    public function credentials_configured(): bool
+    {
         $options = $this->get_options();
         if ($options['authentication_method'] === 'ResourceOwnerPasswordGrant') {
             $credentials_configured = ! empty($options['username']) && ! empty($options['password']);

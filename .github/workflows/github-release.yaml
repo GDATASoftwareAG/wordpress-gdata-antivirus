@@ -45,11 +45,16 @@ jobs:
           fi
 
   test:
+    strategy:
+      matrix:
+        php-version: ["8.1", "8.2", "8.3", "8.4"]
+    env:
+      VAAS_PASSWORD: ${{ secrets.VAAS_PASSWORD }}
     runs-on: ubuntu-latest
     container:
-      image: mcr.microsoft.com/devcontainers/php:1-8.2-bullseye
+      image: bitnami/php-fpm:${{ matrix.php-version }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4        
       - name: composer install
         run: composer install
       - name: phpunit
