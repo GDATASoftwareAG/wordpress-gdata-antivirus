@@ -56,6 +56,10 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
+= 3.0.0 =
+
+Major release due to the major update of the VaaS-SDK.
+
 = 2.1.6 =
 
 | Package | Type | Update | Change |

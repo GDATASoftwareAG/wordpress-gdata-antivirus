@@ -19,3 +19,4 @@ wordpress/
 scoped-code/
 svn/
 eicar*
+composer.lock
