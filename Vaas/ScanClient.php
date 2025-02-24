@@ -10,7 +10,6 @@ use VaasSdk\Vaas;
 use VaasSdk\Authentication\ClientCredentialsGrantAuthenticator;
 use VaasSdk\Authentication\ResourceOwnerPasswordGrantAuthenticator;
 use VaasSdk\VaasVerdict;
-use VaasSdk\VerdictResponse;
 use VaasSdk\Options\VaasOptions as VaasParameters;
 use VaasSdk\Verdict;
 
@@ -38,6 +37,7 @@ if (! class_exists('ScanClient')) {
 			$this->vaas_options = $vaas_options;
 			$this->file_system = $file_system;
 			$this->admin_notices = $admin_notices;
+			$this->on_demand_scan_options = $on_demand_scan_options;
 
 			$plugin_upload_scan_enabled = $on_demand_scan_options->get_plugin_upload_scan_enabled_option();
 			$media_upload_scan_enabled  = $on_demand_scan_options->get_on_demand_scan_media_upload_enabled_option();
@@ -108,6 +108,9 @@ if (! class_exists('ScanClient')) {
 
 		public function scan_post($data)
 		{
+			if (! $this->vaas_options->credentials_configured()) {
+				return $data;
+			}
 			if (empty($data['post_content'])) {
 				return $data;
 			}
@@ -119,14 +122,15 @@ if (! class_exists('ScanClient')) {
 
 			$post_content = wp_unslash($data['post_content']);
 			$stream       = $this->file_system->get_resource_stream_from_string($post_content);
+			$stream_length = strlen($post_content);
 
 			$this->connect();
 			try {
-				$vaas_verdict = $this->vaas->ForStream($stream);
+				$vaas_verdict = $this->vaas->forStreamAsync($stream, $stream_length)->await();
 			} catch (\Exception $e) {
 				try {
 					$this->reconnect();
-					$vaas_verdict = $this->vaas->ForStream($stream);
+					$vaas_verdict = $this->vaas->forStreamAsync($stream, $stream_length)->await();
 				} catch (\Exception $e) {
 					$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
 					$this->logger->debug($e->getMessage());
@@ -135,15 +139,18 @@ if (! class_exists('ScanClient')) {
 			}
 			$this->logger->debug(var_export($vaas_verdict->Verdict, true));
 			// phpcs:ignore
-			if (\VaasSdk\Message\Verdict::MALICIOUS === $vaas_verdict->Verdict) {
+			if (\VaasSdk\Verdict::MALICIOUS === $vaas_verdict->verdict) {
 				$this->logger->debug('gdata-antivirus: virus found in post');
-				wp_die(esc_html__("Virus found! - Detection: $vaas_verdict->Detection - SHA256: $vaas_verdict->Sha256 - Guid: $vaas_verdict->Guid", 'gdata-antivirus'));
+				wp_die(esc_html__("Virus found! - Detection: $vaas_verdict->detection - SHA256: $vaas_verdict->sha256", 'gdata-antivirus'));
 			}
 			return $data;
 		}
 
 		public function scan_comment($commentdata)
 		{
+			if (! $this->vaas_options->credentials_configured()) {
+				return $commentdata;
+			}
 			$comment_scan_enabled  = $this->on_demand_scan_options->get_comment_scan_enabled_option();
 			$pingback_scan_enabled = $this->on_demand_scan_options->get_pingback_scan_enabled_option();
 
@@ -170,13 +177,14 @@ if (! class_exists('ScanClient')) {
 
 			$commend_content = wp_unslash($commentdata['comment_content']);
 			$stream          = $this->file_system->get_resource_stream_from_string($commend_content);
+			$comment_length  = strlen($commend_content);
 			$this->connect();
 			try {
-				$vaas_verdict = $this->vaas->ForStream($stream);
+				$vaas_verdict = $this->vaas->forStreamAsync($stream, $comment_length)->await();
 			} catch (\Exception $e) {
 				try {
 					$this->reconnect();
-					$vaas_verdict = $this->vaas->ForStream($stream);
+					$vaas_verdict = $this->vaas->forStreamAsync($stream, $comment_length)->await();
 				} catch (\Exception $e) {
 					$this->admin_notices->add_notice(esc_html__('virus scan failed', 'gdata-antivirus'));
 					$this->logger->debug($e->getMessage());
@@ -184,15 +192,18 @@ if (! class_exists('ScanClient')) {
 			}
 			$this->logger->debug(var_export($vaas_verdict->Verdict, true));
 			// phpcs:ignore
-			if (\VaasSdk\Message\Verdict::MALICIOUS === $vaas_verdict->Verdict) {
+			if (\VaasSdk\Verdict::MALICIOUS === $vaas_verdict->verdict) {
 				$this->logger->debug('gdata-antivirus: virus found in comment');
-				wp_die(esc_html__("Virus found! - Detection: $vaas_verdict->Detection - SHA256: $vaas_verdict->Sha256 - Guid: $vaas_verdict->Guid", 'gdata-antivirus'));
+				wp_die(esc_html__("Virus found! - Detection: $vaas_verdict->detection - SHA256: $vaas_verdict->sha256", 'gdata-antivirus'));
 			}
 			return $commentdata;
 		}
 
 		public function scan_single_upload($file)
 		{
+			if (! $this->vaas_options->credentials_configured()) {
+				return $file;
+			}
 			$plugin_upload_scan_enabled = $this->on_demand_scan_options->get_plugin_upload_scan_enabled_option();
 			$media_upload_scan_enabled  = $this->on_demand_scan_options->get_on_demand_scan_media_upload_enabled_option();
 
@@ -227,15 +238,20 @@ if (! class_exists('ScanClient')) {
 			}
 
 			$vaas_verdict = $this->scan_file($file['tmp_name']);
-			$verdict = $vaas_verdict->Verdict;
-			if (\VaasSdk\Message\Verdict::MALICIOUS === $verdict) {
-				$file['error'] = __("Virus found! - Detection: $vaas_verdict->Detection - SHA256: $vaas_verdict->Sha256 - Guid: $vaas_verdict->Guid", 'gdata-antivirus');
+			if (\VaasSdk\Verdict::MALICIOUS === $vaas_verdict->verdict) {
+				$file['error'] = __("Virus found! - Detection: $vaas_verdict->detection - SHA256: $vaas_verdict->sha256", 'gdata-antivirus');
 			}
 			return $file;
 		}
 
 		public function scan_file($file_path): VaasVerdict
 		{
+			if (! $this->vaas_options->credentials_configured()) {
+				$this->logger->debug("No VaaS credentials configured");
+				$vaas_verdict =  new VaasVerdict();
+				$vaas_verdict->verdict = Verdict::UNKNOWN;
+				return $vaas_verdict;
+			}
 			$this->connect();
 			try {
 				$vaas_verdict = $this->vaas->forFileAsync($file_path)->await();

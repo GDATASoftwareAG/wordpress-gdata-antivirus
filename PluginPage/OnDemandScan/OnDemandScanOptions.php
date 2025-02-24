@@ -10,7 +10,7 @@ class OnDemandScanOptions
         'client_secret'         => '',
         'username'              => '',
         'password'              => '',
-        'vaas_url'              => 'wss://gateway.staging.vaas.gdatasecurity.de',
+        'vaas_url'              => 'https://gateway.staging.vaas.gdatasecurity.de',
         'token_endpoint'        => 'https://account-staging.gdata.de/realms/vaas-staging/protocol/openid-connect/token',
     );
 
