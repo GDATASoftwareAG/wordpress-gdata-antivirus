@@ -56,6 +56,14 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
+= 3.0.1 =
+
+| Package | Type | Update | Change |
+|---|---|---|---|
+| [gdata/vaas](https://togithub.com/GDATASoftwareAG/vaas) ([source](https://togithub.com/GDATASoftwareAG/vaas-php)) | require | patch | `11.0.0` -> `11.0.1` |
+
+[Details](https://github.com/GDATASoftwareAG/wordpress-gdata-antivirus/pull/55)
+
 = 3.0.0 =
 
 Major release due to the major update of the VaaS-SDK.
