@@ -56,6 +56,10 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
+= 3.0.3 =
+
+* Add platform directive (8.1), so we can actually support older php versions.
+
 = 3.0.2 =
 
 * Show error message for wrong credentials
