@@ -56,6 +56,10 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
+= 3.0.2 =
+
+* Show error message for wrong credentials
+
 = 3.0.1 =
 
 | Package | Type | Update | Change |
