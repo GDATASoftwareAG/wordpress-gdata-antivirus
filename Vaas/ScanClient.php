@@ -2,6 +2,7 @@
 
 namespace Gdatacyberdefenseag\GdataAntivirus\Vaas;
 
+use Exception;
 use Gdatacyberdefenseag\GdataAntivirus\Infrastructure\FileSystem\IGdataAntivirusFileSystem;
 use Gdatacyberdefenseag\GdataAntivirus\PluginPage\AdminNoticesInterface;
 use Gdatacyberdefenseag\GdataAntivirus\PluginPage\OnDemandScan\OnDemandScanOptions;
@@ -58,6 +59,9 @@ if (! class_exists('ScanClient')) {
 			if ($post_scan_enabled === true) {
 				add_filter('wp_insert_post_data', array($this, 'scan_post'), 10, 1);
 			}
+			add_action( 'admin_notices', array($this, 'credentials_check_admin_notice'));
+
+			$this->connect();
 		}
 
 		public function reconnect()
@@ -66,10 +70,20 @@ if (! class_exists('ScanClient')) {
 			$this->connect();
 		}
 
-		public function connect()
+		public function credentials_check_admin_notice() {
+			if ($this->vaas_options->credentials_configured()) {
+				if ($this->connect() === false) {
+					echo '<div class="notice notice-error is-dismissible">
+					<p>VaaS - Error: The credentials did not work. Please check the settings.</p>
+					</div>'; 
+				}
+			}
+		}
+
+		public function connect(): bool
 		{
 			if ($this->connected === true) {
-				return;
+				return true;
 			}
 
 			$options    = $this->vaas_options->get_options();
@@ -79,10 +93,10 @@ if (! class_exists('ScanClient')) {
 			$vaas_parameters->useHashLookup = true;
 			$vaas_parameters->vaasUrl = $options['vaas_url'];
 			if (! $this->vaas_options->credentials_configured()) {
-				return;
+				return false;
 			}
 			if ($options['authentication_method'] == 'ResourceOwnerPasswordGrant') {
-				$resource_owner_password_grant_authenticator = new ResourceOwnerPasswordGrantAuthenticator(
+				$authenticator = new ResourceOwnerPasswordGrantAuthenticator(
 					'wordpress-customer',
 					$options['username'],
 					$options['password'],
@@ -90,20 +104,26 @@ if (! class_exists('ScanClient')) {
 				);
 				$this->vaas = Vaas::builder()
 					->withOptions($vaas_parameters)
-					->withAuthenticator($resource_owner_password_grant_authenticator)
+					->withAuthenticator($authenticator)
 					->build();
 			} else {
-				$client_credentials_grant_authenticator = new ClientCredentialsGrantAuthenticator(
+				$authenticator = new ClientCredentialsGrantAuthenticator(
 					$options['client_id'],
 					$options['client_secret'],
 					$options['token_endpoint']
 				);
 				$this->vaas = Vaas::builder()
 					->withOptions($vaas_parameters)
-					->withAuthenticator($client_credentials_grant_authenticator)
+					->withAuthenticator($authenticator)
 					->build();
 			}
+			try {
+				$authenticator->getTokenAsync()->await();
+			} catch (Exception $e) {
+				return false;
+			}
 			$this->connected = true;
+			return true;
 		}
 
 		public function scan_post($data)
