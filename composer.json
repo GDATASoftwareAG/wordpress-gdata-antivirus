@@ -31,7 +31,7 @@
         "cs:fix": "vendor/bin/phpcbf"
     },
     "require-dev": {
-        "johnpbloch/wordpress": "6.7.2",
+        "johnpbloch/wordpress": "6.8.0",
         "phpunit/phpunit": "^12.0 || ^11.0 || ^10.0",
         "wp-coding-standards/wpcs": "^3.1",
         "symfony/finder": "^7.1 || ^6.0"
