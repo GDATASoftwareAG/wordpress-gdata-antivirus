@@ -2,7 +2,7 @@
 Contributors: @gdatavaas
 Tags: antivirus, security, vaas, malware, malicious
 Requires at least: 6.2
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 8.1
 Stable tag: 2.0.2
 License: GNU General Public License v3.0
@@ -55,6 +55,10 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 4. Scan on Upload.
 
 == Changelog ==
+
+= 3.2.0 =
+
+* tested current wordpress versions
 
 = 3.1.2 =
 

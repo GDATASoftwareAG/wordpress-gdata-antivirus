@@ -13,7 +13,7 @@
  * Plugin Name: G DATA Antivirus
  * Version: 1.2.3
  * Requires at least: 6.2
- * Tested up to: 6.6
+ * Tested up to: 6.8
  * Requires PHP: 8.1
  * Plugin URI: https://github.com/GDATASoftwareAG/wordpress-gdata-antivirus
  * Description: Vaas is a virus scanner for your WordPress installation.
