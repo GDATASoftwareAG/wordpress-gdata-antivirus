@@ -74,7 +74,7 @@ if (! class_exists('ScanClient')) {
 			if ($this->vaas_options->credentials_configured()) {
 				if ($this->connect() === false) {
 					echo '<div class="notice notice-error is-dismissible">
-					<p>VaaS - Error: The credentials did not work. Please check the settings.</p>
+					<p>'.__('VaaS - Error: The credentials did not work. Please check the settings.', 'gdata-antivirus').'</p>
 					</div>'; 
 				}
 			}

@@ -19,6 +19,8 @@
  * Description: Vaas is a virus scanner for your WordPress installation.
  * License: GNU General Public License v3.0
  * License URI: https://github.com/GDATASoftwareAG/vaas/blob/main/LICENSE
+ * Text Domain: gdata-antivirus
+ * Domain Path: /languages/
  */
 
 namespace Gdatacyberdefenseag\GdataAntivirus;
