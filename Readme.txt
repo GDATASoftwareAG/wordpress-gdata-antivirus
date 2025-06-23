@@ -56,6 +56,10 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
+= 3.2.1 =
+
+* dependency updates
+
 = 3.2.0 =
 
 * tested current wordpress versions
