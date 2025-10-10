@@ -57,7 +57,8 @@ jobs:
       - uses: actions/checkout@v4
       - name: setup composer
         run: |
-          curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+          curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+          && apt update && apt install -y zip
       - name: install dependencies
         run: composer install
       - name: phpunit
