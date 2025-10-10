@@ -3,7 +3,7 @@
 {
 	"name": "PHP",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/php:1-8.3-bullseye",
+	"image": "mcr.microsoft.com/devcontainers/php:8.4-bullseye",
 	"customizations": {
 		"vscode": {
 			"extensions": [
@@ -15,7 +15,7 @@
 	},
 	"features": {
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
-		"ghcr.io/wxw-matt/devcontainer-features/apt:latest": {
+		"ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
 			"packages": "bash-completion vim iputils-ping telnet subversion"
 		}
 	},

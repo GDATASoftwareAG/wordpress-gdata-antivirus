@@ -52,10 +52,14 @@ jobs:
       VAAS_PASSWORD: ${{ secrets.VAAS_PASSWORD }}
     runs-on: ubuntu-latest
     container:
-      image: bitnami/php-fpm:${{ matrix.php-version }}
+      image: php:${{ matrix.php-version }}-fpm
     steps:
-      - uses: actions/checkout@v4        
-      - name: composer install
+      - uses: actions/checkout@v4
+      - name: setup composer
+        run: |
+          curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
+          && apt update && apt install -y zip
+      - name: install dependencies
         run: composer install
       - name: phpunit
         run: ./vendor/bin/phpunit --testdox tests/
