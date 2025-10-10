@@ -2,9 +2,9 @@
 Contributors: @gdatavaas
 Tags: antivirus, security, vaas, malware, malicious
 Requires at least: 6.2
-Tested up to: 6.8
+Tested up to: 6.8.3
 Requires PHP: 8.1
-Stable tag: 2.0.2
+Stable tag: 3.3.0
 License: GNU General Public License v3.0
 License URI: https://github.com/GDATASoftwareAG/vaas/blob/main/LICENSE
 
@@ -55,6 +55,11 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 4. Scan on Upload.
 
 == Changelog ==
+
+= 3.3.0 =
+
+* compatibilify to wordpress 6.8.3
+* dependency updates
 
 = 3.2.10 =
 
