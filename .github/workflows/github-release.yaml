@@ -54,9 +54,9 @@ jobs:
     container:
       image: php:${{ matrix.php-version }}-fpm
     steps:
-      - uses: actions/checkout@v4        
+      - uses: actions/checkout@v4
       - name: composer install
-        run: composer install
+        uses: php-actions/composer@v6
       - name: phpunit
         run: ./vendor/bin/phpunit --testdox tests/
 
