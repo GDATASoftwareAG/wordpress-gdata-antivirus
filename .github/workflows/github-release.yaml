@@ -55,8 +55,11 @@ jobs:
       image: php:${{ matrix.php-version }}-fpm
     steps:
       - uses: actions/checkout@v4
-      - name: composer install
-        uses: php-actions/composer@v6
+      - name: setup composer
+        run: |
+          curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+      - name: install dependencies
+        run: composer install
       - name: phpunit
         run: ./vendor/bin/phpunit --testdox tests/
 
