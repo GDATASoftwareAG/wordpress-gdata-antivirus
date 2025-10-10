@@ -52,7 +52,7 @@ jobs:
       VAAS_PASSWORD: ${{ secrets.VAAS_PASSWORD }}
     runs-on: ubuntu-latest
     container:
-      image: bitnami/php-fpm:${{ matrix.php-version }}
+      image: php:${{ matrix.php-version }}-fpm
     steps:
       - uses: actions/checkout@v4        
       - name: composer install
