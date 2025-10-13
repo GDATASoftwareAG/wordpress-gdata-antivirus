@@ -18,7 +18,7 @@ jobs:
       plugin_version: ${{ steps.get-version.outputs.plugin_version }}
       plugin_prerelease: ${{ steps.get-version.outputs.plugin_prerelease }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - id: get-version
         run: |
           if [[ $GITHUB_REF == refs/tags/v* ]]; then
@@ -54,7 +54,7 @@ jobs:
     container:
       image: php:${{ matrix.php-version }}-fpm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: setup composer
         run: |
           curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
@@ -73,9 +73,9 @@ jobs:
       - get-version
       - test
     container:
-      image: mcr.microsoft.com/devcontainers/php:1-8.2-bullseye
+      image: mcr.microsoft.com/devcontainers/php:2-8.2-bullseye
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       
       - name: install scoper
         run: |
