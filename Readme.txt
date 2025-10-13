@@ -56,6 +56,12 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
+= 3.3.1 =
+
+* development dependency updates
+* runtime dependeny updates
+    * illuminate/container
+
 = 3.3.0 =
 
 * compatibilify to wordpress 6.8.3
