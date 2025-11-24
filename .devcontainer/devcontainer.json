@@ -16,8 +16,9 @@
 	"features": {
 		"ghcr.io/devcontainers/features/docker-in-docker:2": {},
 		"ghcr.io/rocker-org/devcontainer-features/apt-packages:1": {
-			"packages": "bash-completion vim iputils-ping telnet subversion"
-		}
+			"packages": "subversion"
+		},
+		"ghcr.io/georgofenbeck/features/thefuck-pipx:1": {}
 	},
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
