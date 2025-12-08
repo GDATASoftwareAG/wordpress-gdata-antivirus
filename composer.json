@@ -14,7 +14,7 @@
     ],
     "require": {
         "php": ">=8.1",
-        "gdata/vaas": "11.0.1",
+        "gdata/vaas": "11.1.0",
         "illuminate/container": "^11.30 || ^10 || ^12"
     },
     "config": {
@@ -31,7 +31,7 @@
         "cs:fix": "vendor/bin/phpcbf"
     },
     "require-dev": {
-        "johnpbloch/wordpress": "6.8.3",
+        "johnpbloch/wordpress": "6.9.0",
         "phpunit/phpunit": "^12.0 || ^11.0 || ^10.0",
         "wp-coding-standards/wpcs": "^3.1",
         "symfony/finder": "^7.1 || ^6.0 || ^8.0"

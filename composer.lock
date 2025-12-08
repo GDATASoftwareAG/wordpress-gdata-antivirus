@@ -639,16 +639,16 @@
         },
         {
             "name": "amphp/parallel",
-            "version": "v2.3.2",
+            "version": "v2.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/parallel.git",
-                "reference": "321b45ae771d9c33a068186b24117e3cd1c48dce"
+                "reference": "296b521137a54d3a02425b464e5aee4c93db2c60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/parallel/zipball/321b45ae771d9c33a068186b24117e3cd1c48dce",
-                "reference": "321b45ae771d9c33a068186b24117e3cd1c48dce",
+                "url": "https://api.github.com/repos/amphp/parallel/zipball/296b521137a54d3a02425b464e5aee4c93db2c60",
+                "reference": "296b521137a54d3a02425b464e5aee4c93db2c60",
                 "shasum": ""
             },
             "require": {
@@ -711,7 +711,7 @@
             ],
             "support": {
                 "issues": "https://github.com/amphp/parallel/issues",
-                "source": "https://github.com/amphp/parallel/tree/v2.3.2"
+                "source": "https://github.com/amphp/parallel/tree/v2.3.3"
             },
             "funding": [
                 {
@@ -719,7 +719,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-08-27T21:55:40+00:00"
+            "time": "2025-11-15T06:23:42+00:00"
         },
         {
             "name": "amphp/parser",
@@ -1181,16 +1181,16 @@
         },
         {
             "name": "gdata/vaas",
-            "version": "11.0.1",
+            "version": "11.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/GDATASoftwareAG/vaas-php.git",
-                "reference": "32d6c8818479af4b93385277c78bda1262e6c18b"
+                "reference": "6308b4b7678e8252c81264f72d98c0d53cd80f6e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/GDATASoftwareAG/vaas-php/zipball/32d6c8818479af4b93385277c78bda1262e6c18b",
-                "reference": "32d6c8818479af4b93385277c78bda1262e6c18b",
+                "url": "https://api.github.com/repos/GDATASoftwareAG/vaas-php/zipball/6308b4b7678e8252c81264f72d98c0d53cd80f6e",
+                "reference": "6308b4b7678e8252c81264f72d98c0d53cd80f6e",
                 "shasum": ""
             },
             "require": {
@@ -1223,9 +1223,9 @@
             ],
             "support": {
                 "issues": "https://github.com/GDATASoftwareAG/vaas-php/issues",
-                "source": "https://github.com/GDATASoftwareAG/vaas-php/tree/v11.0.1"
+                "source": "https://github.com/GDATASoftwareAG/vaas-php/tree/v11.1.0"
             },
-            "time": "2025-02-12T13:14:40+00:00"
+            "time": "2025-12-02T09:48:38+00:00"
         },
         {
             "name": "illuminate/container",
@@ -2085,20 +2085,20 @@
         },
         {
             "name": "johnpbloch/wordpress",
-            "version": "6.8.3",
+            "version": "6.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress.git",
-                "reference": "1edda09c44b2e185b21941ae92e7ddfce09c31b8"
+                "reference": "fbc8bf2209d0ab8d579d937b3df89003a3b86b8e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/1edda09c44b2e185b21941ae92e7ddfce09c31b8",
-                "reference": "1edda09c44b2e185b21941ae92e7ddfce09c31b8",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress/zipball/fbc8bf2209d0ab8d579d937b3df89003a3b86b8e",
+                "reference": "fbc8bf2209d0ab8d579d937b3df89003a3b86b8e",
                 "shasum": ""
             },
             "require": {
-                "johnpbloch/wordpress-core": "6.8.3",
+                "johnpbloch/wordpress-core": "6.9.0",
                 "johnpbloch/wordpress-core-installer": "^1.0 || ^2.0",
                 "php": ">=7.0.0"
             },
@@ -2127,20 +2127,20 @@
                 "issues": "https://core.trac.wordpress.org/",
                 "source": "https://core.trac.wordpress.org/browser"
             },
-            "time": "2025-09-30T18:14:25+00:00"
+            "time": "2025-12-02T19:11:04+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core",
-            "version": "6.8.3",
+            "version": "6.9.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/johnpbloch/wordpress-core.git",
-                "reference": "0641ab5518c94c1ab094ad4ccdc46aa9c4657fc1"
+                "reference": "4626d4e896c36ab77a69ce58627bc76243b5dd07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/0641ab5518c94c1ab094ad4ccdc46aa9c4657fc1",
-                "reference": "0641ab5518c94c1ab094ad4ccdc46aa9c4657fc1",
+                "url": "https://api.github.com/repos/johnpbloch/wordpress-core/zipball/4626d4e896c36ab77a69ce58627bc76243b5dd07",
+                "reference": "4626d4e896c36ab77a69ce58627bc76243b5dd07",
                 "shasum": ""
             },
             "require": {
@@ -2148,7 +2148,7 @@
                 "php": ">=7.2.24"
             },
             "provide": {
-                "wordpress/core-implementation": "6.8.3"
+                "wordpress/core-implementation": "6.9.0"
             },
             "type": "wordpress-core",
             "notification-url": "https://packagist.org/downloads/",
@@ -2175,7 +2175,7 @@
                 "source": "https://core.trac.wordpress.org/browser",
                 "wiki": "https://codex.wordpress.org/"
             },
-            "time": "2025-09-30T18:14:19+00:00"
+            "time": "2025-12-02T19:10:58+00:00"
         },
         {
             "name": "johnpbloch/wordpress-core-installer",
