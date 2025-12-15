@@ -1,6 +1,6 @@
 === Antivirus with G DATA VaaS Integration ===
 Contributors: @gdatavaas
-Tags: antivirus, security, vaas, malware, malicious
+Tags: antivirus, security, scan, malware, anti-malware
 Requires at least: 6.2
 Tested up to: 6.8.3
 Requires PHP: 8.1
