@@ -3,7 +3,7 @@
 {
 	"name": "PHP",
 	// Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile
-	"image": "mcr.microsoft.com/devcontainers/php:8.4-bookworm",
+	"image": "mcr.microsoft.com/devcontainers/php:8.5-bookworm",
 	"customizations": {
 		"vscode": {
 			"extensions": [
