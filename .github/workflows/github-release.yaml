@@ -73,7 +73,7 @@ jobs:
       - get-version
       - test
     container:
-      image: mcr.microsoft.com/devcontainers/php:2-8.2-bullseye
+      image: mcr.microsoft.com/devcontainers/php:2-8.4-trixie
     steps:
       - uses: actions/checkout@v6
       
