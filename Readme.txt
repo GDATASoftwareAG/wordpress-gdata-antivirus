@@ -1,4 +1,4 @@
-=== Antivirus with G DATA VaaS Integration ===
+=== G DATA Antivirus ===
 Contributors: @gdatavaas
 Tags: antivirus, security, scan, malware, anti-malware
 Requires at least: 6.2
@@ -55,6 +55,10 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 4. Scan on Upload.
 
 == Changelog ==
+
+= 4.0.2 =
+
+* Rewording the plugin title
 
 = 4.0.1 =
 

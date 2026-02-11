@@ -1,4 +1,4 @@
-# Antivirus with G DATA VaaS Integration
+# G DATA Antivirus
 
 ## Licensing and Partnerships
 
