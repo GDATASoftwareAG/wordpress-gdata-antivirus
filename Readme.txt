@@ -56,6 +56,11 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 
 == Changelog ==
 
+= 4.0.0 =
+
+* Remove support for php 8.1 as it is EOL
+* dependency updates
+
 = 3.3.5 =
 
 * dependency updates
