@@ -2,8 +2,8 @@
 Contributors: @gdatavaas
 Tags: antivirus, security, scan, malware, anti-malware
 Requires at least: 6.2
-Tested up to: 6.8.3
-Requires PHP: 8.1
+Tested up to: 6.9.1
+Requires PHP: 8.2
 Stable tag: 3.3.0
 License: GNU General Public License v3.0
 License URI: https://github.com/GDATASoftwareAG/vaas/blob/main/LICENSE
@@ -55,6 +55,10 @@ While the released code is hosted on the WordPress svn, we develop the plugin on
 4. Scan on Upload.
 
 == Changelog ==
+
+= 4.0.1 =
+
+* Changes minimum required php version to 8.2 for the wordpress plugin store
 
 = 4.0.0 =
 
